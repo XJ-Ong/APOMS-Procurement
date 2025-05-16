@@ -1,22 +1,22 @@
 package com.group.apomsproject;
 
 public class Supplier {
-    private int supplierID;
+    private String supplierID;
     private String supplierName;
-    private int itemID;
+    private String itemID;
     
-    public Supplier(int supplierID, String supplierName, int itemID)
+    public Supplier(String supplierID, String supplierName, String itemID)
     {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
         this.itemID = itemID;
     }
 
-    public int getSupplierID() {
+    public String getSupplierID() {
         return supplierID;
     }
 
-    public void setSupplierID(int supplierID) {
+    public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
     }
 
@@ -28,11 +28,11 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public int getItemID() {
+    public String getItemID() {
         return itemID;
     }
 
-    public void setItemID(int itemID) {
+    public void setItemID(String itemID) {
         this.itemID = itemID;
     }
 }
