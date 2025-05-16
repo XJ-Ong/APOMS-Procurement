@@ -4,8 +4,9 @@ public class InventoryManager extends User
 {
     private int IMID;
 
-    public InventoryManager(int IMID, String userName, String userAddress, String userContact) {
-        super(userName, userAddress, userContact, userPassword);
+    public InventoryManager(int IMID, String userName, String userPassword, String userAddress, String userContact)
+    {
+        super(userName, userPassword, userAddress, userContact);
         this.IMID = IMID;
     }
 

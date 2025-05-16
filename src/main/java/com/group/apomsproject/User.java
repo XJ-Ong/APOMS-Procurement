@@ -38,4 +38,12 @@ public class User
     public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
 }
