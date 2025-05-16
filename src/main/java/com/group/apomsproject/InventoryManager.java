@@ -5,7 +5,7 @@ public class InventoryManager extends User
     private int IMID;
 
     public InventoryManager(int IMID, String userName, String userAddress, String userContact) {
-        super(userName, userAddress, userContact);
+        super(userName, userAddress, userContact, userPassword);
         this.IMID = IMID;
     }
 
@@ -39,5 +39,13 @@ public class InventoryManager extends User
 
     public void setUserContact(String userContact) {
         this.userContact = userContact;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 }

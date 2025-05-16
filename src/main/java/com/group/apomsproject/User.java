@@ -1,12 +1,16 @@
 package com.group.apomsproject;
 
-public class User {
+public class User
+{
     protected String userName;
+    protected String userPassword;
     protected String userAddress;
     protected String userContact;
 
-    public User(String userName, String userAddress, String userContact) {
+    public User(String userName, String userAddress, String userContact, String userPassword)
+    {
         this.userName = userName;
+        this.userPassword = userPassword;
         this.userAddress = userAddress;
         this.userContact = userContact;
     }
