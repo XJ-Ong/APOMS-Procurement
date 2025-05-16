@@ -2,19 +2,19 @@ package com.group.apomsproject;
 
 public class InventoryManager extends User
 {
-    private int IMID;
+    private String IMID;
 
-    public InventoryManager(int IMID, String userName, String userPassword, String userAddress, String userContact)
+    public InventoryManager(String IMID, String userName, String userPassword, String userAddress, String userContact)
     {
         super(userName, userPassword, userAddress, userContact);
         this.IMID = IMID;
     }
 
-    public int getIMID() {
+    public String getIMID() {
         return IMID;
     }
 
-    public void setIMID(int IMID) {
+    public void setIMID(String IMID) {
         this.IMID = IMID;
     }
 
