@@ -3,13 +3,13 @@ package com.group.apomsproject;
 public class Supplier {
     private String supplierID;
     private String supplierName;
-    private String itemID;
+    private String itemCode;
     
-    public Supplier(String supplierID, String supplierName, String itemID)
+    public Supplier(String supplierID, String supplierName, String itemCode)
     {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
-        this.itemID = itemID;
+        this.itemCode = itemCode;
     }
 
     public String getSupplierID() {
@@ -28,11 +28,7 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public String getItemID() {
-        return itemID;
-    }
-
-    public void setItemID(String itemID) {
-        this.itemID = itemID;
+    public String getItemCode() {
+        return itemCode;
     }
 }
