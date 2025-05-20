@@ -22,5 +22,12 @@ public class HeaderRegistry {
                 "IMID", "userName", "userPassword", "userAddress", "userContact"
         );
         registerHeaders(InventoryManager.class, IMHeaders);
+        
+        // CSV Headers for Item
+        List<String> ItemHeaders = Arrays.asList
+        (
+                "itemCode", "itemName", "supplierID", "stockLevel", "unitPrice", "reorderLevel"
+        );
+        registerHeaders(Item.class, ItemHeaders);
     }
 }

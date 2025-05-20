@@ -1,0 +1,11 @@
+itemCode,itemName,supplierID,stockLevel,unitPrice,reorderLevel
+ITM001,Laptop,S01,50,999.99,20
+ITM002,Mouse,S02,200,19.99,50
+ITM003,Keyboard,S01,75,49.99,30
+ITM004,Monitor,S03,30,199.99,10
+ITM005,Printer,S04,20,149.99,5
+ITM006,USB Cable,S02,150,9.99,40
+ITM007,External HDD,S03,40,89.99,15
+ITM008,Webcam,S01,60,59.99,25
+ITM009,Headphones,S04,80,29.99,20
+ITM010,Router,S05,25,79.99,10

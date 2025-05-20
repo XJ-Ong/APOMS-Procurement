@@ -18,7 +18,7 @@ public class SupplierManager {
         if (supplier == null
                 || supplier.getSupplierID() == null
                 || supplier.getSupplierName() == null
-                || supplier.getContactInfo() == null) {
+                || supplier.getSupplierContact() == null) {
 
             System.out.println("Invalid supplier entry. Please provide all required details.");
             return;

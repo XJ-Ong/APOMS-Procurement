@@ -1,5 +1,11 @@
 package com.group.apomsproject;
 
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
 public class IMGUI extends javax.swing.JFrame {
 
     /**
@@ -18,44 +24,208 @@ public class IMGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        btnViewInventory = new javax.swing.JButton();
+        btnTab2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jTabbedPane5 = new javax.swing.JTabbedPane();
+        tab1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        invTable = new javax.swing.JTable();
+        btnLoadInventory = new javax.swing.JButton();
+        btnClearTable = new javax.swing.JButton();
+        tab2 = new javax.swing.JPanel();
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Inventory Manager GUI");
+        jPanel4.setBackground(new java.awt.Color(0, 0, 0));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(227, 227, 227)
+        jLabel1.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel1.setFont(new java.awt.Font("Snap ITC", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Manager");
+
+        btnViewInventory.setBackground(new java.awt.Color(0, 0, 0));
+        btnViewInventory.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        btnViewInventory.setForeground(new java.awt.Color(255, 255, 255));
+        btnViewInventory.setText("View Inventory");
+        btnViewInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewInventoryActionPerformed(evt);
+            }
+        });
+
+        btnTab2.setBackground(new java.awt.Color(0, 0, 0));
+        btnTab2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        btnTab2.setForeground(new java.awt.Color(255, 255, 255));
+        btnTab2.setText("tab2");
+        btnTab2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTab2ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setBackground(new java.awt.Color(153, 153, 153));
+        jLabel2.setFont(new java.awt.Font("Snap ITC", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Inventory");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(btnViewInventory))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(btnTab2)))
+                        .addGap(0, 10, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addContainerGap(248, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jLabel1)
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addComponent(btnViewInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnTab2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(386, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 620));
+
+        invTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(invTable);
+
+        btnLoadInventory.setText("Load Inventory");
+        btnLoadInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadInventoryActionPerformed(evt);
+            }
+        });
+
+        btnClearTable.setText("Clear Table");
+        btnClearTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearTableActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tab1Layout = new javax.swing.GroupLayout(tab1);
+        tab1.setLayout(tab1Layout);
+        tab1Layout.setHorizontalGroup(
+            tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tab1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(btnLoadInventory)
+                .addGap(18, 18, 18)
+                .addComponent(btnClearTable)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        tab1Layout.setVerticalGroup(
+            tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLoadInventory)
+                    .addComponent(btnClearTable))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE))
         );
+
+        jTabbedPane5.addTab("tab1", tab1);
+
+        javax.swing.GroupLayout tab2Layout = new javax.swing.GroupLayout(tab2);
+        tab2.setLayout(tab2Layout);
+        tab2Layout.setHorizontalGroup(
+            tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 880, Short.MAX_VALUE)
+        );
+        tab2Layout.setVerticalGroup(
+            tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 575, Short.MAX_VALUE)
+        );
+
+        jTabbedPane5.addTab("tab2", tab2);
+
+        getContentPane().add(jTabbedPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 880, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnViewInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewInventoryActionPerformed
+        jTabbedPane5.setSelectedIndex(0);
+    }//GEN-LAST:event_btnViewInventoryActionPerformed
+
+    private void btnLoadInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadInventoryActionPerformed
+        FileOperations fh = new FileOperations();
+        DefaultTableModel model = fh.getTable("Item");
+        invTable.setModel(model);
+    }//GEN-LAST:event_btnLoadInventoryActionPerformed
+
+    private void btnTab2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTab2ActionPerformed
+        jTabbedPane5.setSelectedIndex(1);
+    }//GEN-LAST:event_btnTab2ActionPerformed
+
+    private void btnClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableActionPerformed
+        DefaultTableModel model = (DefaultTableModel) invTable.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_btnClearTableActionPerformed
 
     /**
      * @param args the command line arguments
@@ -93,7 +263,21 @@ public class IMGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearTable;
+    private javax.swing.JButton btnLoadInventory;
+    private javax.swing.JButton btnTab2;
+    private javax.swing.JButton btnViewInventory;
+    private javax.swing.JTable invTable;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane5;
+    private javax.swing.JPanel tab1;
+    private javax.swing.JPanel tab2;
     // End of variables declaration//GEN-END:variables
 }

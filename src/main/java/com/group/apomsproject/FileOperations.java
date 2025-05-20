@@ -4,6 +4,7 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.*;
 
 public class FileOperations
 {
@@ -100,7 +101,7 @@ public class FileOperations
                 {
                     if(i < values.length)
                     {
-                    row.put(headers[i], values[i]);
+                        row.put(headers[i], values[i]);
                     }
                     else
                     {
@@ -267,10 +268,7 @@ public class FileOperations
                                 Object convertedValue = StringToType(value, paramType);
                                 setter.invoke(instance, convertedValue);
                             }
-                            catch (NoSuchMethodException e)
-                            {
-                                continue;
-                            }
+                            catch (NoSuchMethodException e){}
                         }
                     }
                     objects.add(instance);
@@ -287,5 +285,56 @@ public class FileOperations
         }
         
         return objects;
+    }
+    
+    public DefaultTableModel getTable(String className)
+    {
+        String filename = className + ".csv";
+        DefaultTableModel model = new DefaultTableModel();
+        
+        try
+        {
+            Class<?> Object = Class.forName("com.group.apomsproject." + className);
+            List<String> headerList = HeaderRegistry.getHeaders(Object);
+            
+            if(headerList.isEmpty())
+            {
+                throw new Exception("No headers defined for this class: " + className);
+            }
+            
+            String[] headers = headerList.toArray(new String[0]);
+            
+            for(String header : headers)
+            {
+                model.addColumn(header);
+            }
+                    
+            List<Map<String, String>> data = ReadFile(filename);
+            
+            if(data.isEmpty())
+            {
+                throw new Exception("Empty CSV file or no data read");
+            }
+            
+            for(Map<String, String> row : data)
+            {
+                String[] rowData = new String[headers.length];
+                for(int i = 0; i < headers.length; i++)
+                {
+                    rowData[i] = row.getOrDefault(headers[i], "");
+                }
+                model.addRow(rowData);
+            }
+        }   
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+        
+        return model;
     }
 }
