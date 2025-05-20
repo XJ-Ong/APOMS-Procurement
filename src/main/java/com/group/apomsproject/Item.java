@@ -8,7 +8,7 @@ public class Item {
     private double unitPrice;
     private int reorderLevel;
 
-    public Item(String itemCode, String itemName, String supplierId, int stockLevel, double unitPrice, int reorderLevel) {
+    public Item(String itemCode, String itemName, String supplierID, int stockLevel, double unitPrice, int reorderLevel) {
         this.itemCode = itemCode;
         this.itemName = itemName;
         this.supplierID = supplierID;
