@@ -48,5 +48,15 @@ public class PurchaseRequisition {
         this.SMID = SMID;
     }
     
+    public PurchaseRequisition(String PRID, int quantity, String deliveryDate, String status, String SMID) {
+        this.PRID = PRID;
+        this.quantity = quantity;
+        this.deliveryDate = deliveryDate;
+        this.status = status;
+        this.SMID = SMID;
+    }
     
+    public String toCSV() {
+        return PRID + "," + quantity + "," + deliveryDate + "," + status + "," + SMID;
+    }
  }

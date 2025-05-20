@@ -56,7 +56,7 @@ public class PurchaseOrder {
     
     
 
-    public PurchaseOrder(String POID, String PRID, String itemCode, int quantity, String supplierID, String PMID) {
+    public PurchaseOrder(String POID, String PRID, String itemCode, int quantity, String supplierID, String status, String PMID) {
         //if (!isPOIDUnique(POID)) {
         //    throw new IllegalArgumentException("POID must be unique.");
         //}

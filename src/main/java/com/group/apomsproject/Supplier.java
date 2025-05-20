@@ -3,13 +3,13 @@ package com.group.apomsproject;
 public class Supplier {
     private String supplierID;
     private String supplierName;
-    private String itemCode;
+    private String contactInfo;
     
-    public Supplier(String supplierID, String supplierName, String itemCode)
+    public Supplier(String supplierID, String supplierName, String contactInfo)
     {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
-        this.itemCode = itemCode;
+        this.contactInfo = contactInfo;
     }
 
     public String getSupplierID() {
@@ -28,7 +28,15 @@ public class Supplier {
         this.supplierName = supplierName;
     }
 
-    public String getItemCode() {
-        return itemCode;
+    public String getContactInfo() {
+        return contactInfo;
+    }
+    
+    public void setContactInfo(String contactInfo){
+        this.contactInfo = contactInfo;
+    }
+    
+    public String toCSV() {
+        return supplierID + "," + supplierName + "," + contactInfo;
     }
 }

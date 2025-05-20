@@ -61,5 +61,8 @@ public class Item {
         this.reorderLevel = reorderLevel;
     }
     
+    public String toCSV() {
+        return itemCode + "," + itemName + "," + supplierID + "," + unitPrice + "," + reorderLevel;
+    }
     
 }
