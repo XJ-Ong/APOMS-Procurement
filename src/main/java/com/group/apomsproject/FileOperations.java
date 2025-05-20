@@ -10,24 +10,32 @@ public class FileOperations
 
     public void WriteFile(Object obj)
     {
-        Class<?> object = obj.getClass();
-        String fileName = object.getSimpleName() + ".csv";
-        List<String> headers = new ArrayList<>();
-        List<Method> getters = new ArrayList<>();
+        Class<?> Object = obj.getClass();
+        String fileName = Object.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(Object);
 
-        // Collect getters and headers
-        for (Method method : object.getDeclaredMethods())
+        if(headers.isEmpty())
         {
-            String methodName = method.getName();
-            if (methodName.startsWith("get") && !methodName.equals("getClass"))
+            JOptionPane.showMessageDialog(null, "no defined headers for this class");
+            return;
+        }
+        
+        Map<String, Method> getterMap = new HashMap<>();
+        for(String header : headers)
+        {
+            String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
+            try
             {
-                getters.add(method);
-                String header = methodName.replace("get", "");
-                header = header.substring(0, 1).toLowerCase() + header.substring(1);
-                headers.add(header);
+                Method getter = Object.getMethod(getterName);
+                getterMap.put(header, getter);
+            }
+            catch(NoSuchMethodException e)
+            {
+                JOptionPane.showMessageDialog(null, "Getter not found for header: " + header);
+                return;
             }
         }
-
+        
         try
         {
             File file = new File(fileName);
@@ -42,21 +50,20 @@ public class FileOperations
                     bw.newLine();
                 }
 
-                // Collect data values
                 List<String> rowData = new ArrayList<>();
-                for (Method getter : getters)
+                for(String header : headers)
                 {
+                    Method getter = getterMap.get(header);
                     Object value = getter.invoke(obj);
                     String strValue = (value != null) ? value.toString() : "";
-
-                    // Escape CSV special characters
+                    
                     if (strValue.contains(",") || strValue.contains("\"") || strValue.contains("\n"))
                     {
                         strValue = "\"" + strValue.replace("\"", "\"\"") + "\"";
                     }
                     rowData.add(strValue);
                 }
-
+                
                 // Write the row
                 bw.write(String.join(",", rowData));
                 bw.newLine();
@@ -130,5 +137,155 @@ public class FileOperations
         }
         fields.add(currentField.toString());
         return fields.toArray(new String[0]);
+    }
+    
+    private Object StringToType(String value, Class<?> targetType)
+    {
+        if(value.isEmpty())
+        {
+            if(targetType == int.class){return 0;}
+            if(targetType == double.class){return 0.0;}
+            if(targetType == boolean.class){return false;}
+            if(targetType == long.class){return 0L;}
+            if(targetType == float.class){return 0.0f;}
+            if(targetType == short.class){return (short) 0;}
+            if(targetType == byte.class){return (byte) 0;}
+            if(targetType == char.class){return '\0';}
+            return null;
+        }
+        
+        try
+        {
+            if(targetType == String.class){return value;}
+            else if(targetType == int.class){return Integer.parseInt(value);}
+            else if(targetType == double.class){return Double.parseDouble(value);}
+            else if(targetType == boolean.class){return Boolean.parseBoolean(value);}
+            else if(targetType == long.class){return Long.parseLong(value);}
+            else if(targetType == float.class){return Float.parseFloat(value);}
+            else if(targetType == short.class){return Short.parseShort(value);}
+            else if(targetType == byte.class){return Byte.parseByte(value);}
+            else if(targetType == char.class){return value.charAt(0);}
+            else
+            {
+                Constructor<?> constructor = targetType.getConstructor(String.class);
+                return constructor.newInstance(value);
+            } 
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Failed to convert '" + value + "' to" + targetType + "." + e.getMessage());
+            return StringToType("", targetType);
+        }
+    }
+    
+    public <T> List<T> recreateObj(String className)
+    {
+        List<T> objects = new ArrayList<>();
+        String filename = className + ".csv";
+        List<Map<String, String>> data = ReadFile(filename);
+        
+        try
+        {
+            Class<T> Object = (Class<T>) Class.forName("com.group.apomsproject." + className);
+            List<String> headers  = HeaderRegistry.getHeaders(Object);
+            if(headers.isEmpty())
+            {
+                JOptionPane.showMessageDialog(null, "No headers defined for class: " + className);
+                return objects;
+            }
+            
+            Map<String, Method> getterMap = new HashMap<>();
+            Map<String, Class<?>> typeMap = new HashMap<>();
+            for(String header : headers)
+            {
+                String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
+                try
+                {
+                    Method getter = Object.getMethod(getterName);
+                    getterMap.put(header, getter);
+                    typeMap.put(header, getter.getReturnType());
+                }
+                catch(NoSuchMethodException e)
+                {
+                    JOptionPane.showMessageDialog(null, "Getter not found: " + getterName + " for header: " + header);
+                }
+            }
+            
+            for(Map<String, String> row : data)
+            {
+                try
+                {
+                    Constructor<?>[] constructors = Object.getConstructors();
+                    Constructor<?> bestConstructor = null;
+                    Object[] args = null;
+                    
+                    for(Constructor<?> constructor : constructors)
+                    {
+                        Parameter[] params = constructor.getParameters();
+                        if(params.length == headers.size())
+                        {
+                            boolean allMatched = true;
+                            args = new Object[params.length];
+                            for(int i = 0; i < params.length; i++)
+                            {
+                                String header = headers.get(i);
+                                if (getterMap.containsKey(header))
+                                {
+                                    String value = row.getOrDefault(header, "");
+                                    args[i] = StringToType(value, params[i].getType());
+                                }
+                                else
+                                {
+                                    allMatched = false;
+                                    break;
+                                }
+                            }
+                            if(allMatched) {
+                                bestConstructor = constructor;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    T instance;
+                    if(bestConstructor != null)
+                    {
+                        instance = (T) bestConstructor.newInstance(args);
+                    }
+                    else
+                    {
+                        instance = Object.getDeclaredConstructor().newInstance();
+                        for (Map.Entry<String, String> entry : row.entrySet())
+                        {
+                            String header = entry.getKey();
+                            String value = entry.getValue();
+                            String setterName = "set" + header.substring(0, 1).toUpperCase() + header.substring(1);
+                            try
+                            {
+                                Class<?> paramType = typeMap.getOrDefault(header, String.class);
+                                Method setter = Object.getMethod(setterName, paramType);
+                                Object convertedValue = StringToType(value, paramType);
+                                setter.invoke(instance, convertedValue);
+                            }
+                            catch (NoSuchMethodException e)
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    objects.add(instance);
+                }
+                catch(Exception e)
+                {
+                    JOptionPane.showMessageDialog(null, "Error creating object for row: " + e.getMessage());
+                }
+            }
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+        }
+        
+        return objects;
     }
 }

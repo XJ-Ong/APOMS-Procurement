@@ -1,4 +1,2 @@
-iMID,userName,userAddress,userContact,userPassword
+IMID,userName,userPassword,userAddress,userContact
 I01,IMtest,1234,PJ,+6011-11112234
-I01,+6011-11112234,1234,IMtest,PJ
-1234,+6011-11112234,IMtest,PJ,I01

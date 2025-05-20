@@ -7,7 +7,7 @@ public class User
     protected String userAddress;
     protected String userContact;
 
-    public User(String userName, String userAddress, String userContact, String userPassword)
+    public User(String userName, String userPassword, String userAddress, String userContact)
     {
         this.userName = userName;
         this.userPassword = userPassword;

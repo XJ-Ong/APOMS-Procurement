@@ -1,6 +1,28 @@
 package com.group.apomsproject;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.*;
+import javax.swing.*;
 
 public class MainGUI extends javax.swing.JFrame {
+    
+    private <T extends User> boolean Login(List<T> users, String enteredID, String enteredPassword, String idGetterName) {
+        try {
+            for (T user : users) {
+                // Use reflection to get the ID dynamically
+                java.lang.reflect.Method getID = user.getClass().getMethod(idGetterName);
+                String userID = (String) getID.invoke(user);
+                String userPassword = user.getUserPassword();
+
+                if (userID.equals(enteredID) && userPassword.equals(enteredPassword)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error validating credentials: " + e.getMessage());
+        }
+        return false;
+    }
 
     /**
      * Creates new form MainGUI
@@ -23,7 +45,7 @@ public class MainGUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
         txtPassword = new javax.swing.JTextField();
         btnOK = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -45,20 +67,20 @@ public class MainGUI extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Name");
+        jLabel4.setText("UserID");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Password");
 
-        txtName.setBackground(new java.awt.Color(51, 51, 51));
-        txtName.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        txtName.setForeground(new java.awt.Color(255, 255, 255));
-        txtName.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtName.setBorder(null);
-        txtName.addActionListener(new java.awt.event.ActionListener() {
+        txtId.setBackground(new java.awt.Color(51, 51, 51));
+        txtId.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        txtId.setForeground(new java.awt.Color(255, 255, 255));
+        txtId.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtId.setBorder(null);
+        txtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNameActionPerformed(evt);
+                txtIdActionPerformed(evt);
             }
         });
 
@@ -109,7 +131,7 @@ public class MainGUI extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -133,7 +155,7 @@ public class MainGUI extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5)
@@ -159,20 +181,44 @@ public class MainGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNameActionPerformed
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtNameActionPerformed
+    }//GEN-LAST:event_txtIdActionPerformed
 
     private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPasswordActionPerformed
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKActionPerformed
+        String id = txtId.getText();
+        String pass = txtPassword.getText();
+        FileOperations fh = new FileOperations();
         
+        if(id.isEmpty() && pass.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Please enter your UserID and Password");
+        }
+        else
+        {
+            if(id.startsWith("I"))
+            {
+                List<InventoryManager> managers = fh.recreateObj("InventoryManager");
+                if(Login(managers, id, pass, "getIMID"))
+                {
+                    IMGUI gui = new IMGUI();
+                    gui.setVisible(true);
+                    dispose();
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Error UserID or Password");
+            }
+        }
     }//GEN-LAST:event_btnOKActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        txtName.setText("");
+        txtId.setText("");
         txtPassword.setText("");
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -219,7 +265,7 @@ public class MainGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtPassword;
     // End of variables declaration//GEN-END:variables
 }
