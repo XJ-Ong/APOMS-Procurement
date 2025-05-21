@@ -7,12 +7,15 @@ import javax.swing.*;
 import javax.swing.table.*;
 
 public class IMGUI extends javax.swing.JFrame {
-
+    private final InventoryManager manager;
     /**
      * Creates new form IMGUI
+     * @param manager
      */
-    public IMGUI() {
+    public IMGUI(InventoryManager manager) {
+        this.manager = manager;
         initComponents();
+        lblIMName.setText(manager.getUserName());
     }
 
     /**
@@ -33,6 +36,7 @@ public class IMGUI extends javax.swing.JFrame {
         btnViewInventory = new javax.swing.JButton();
         btnTab2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        lblIMName = new javax.swing.JLabel();
         jTabbedPane5 = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -99,6 +103,9 @@ public class IMGUI extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Inventory");
 
+        lblIMName.setForeground(new java.awt.Color(255, 255, 255));
+        lblIMName.setText("managername");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -114,13 +121,17 @@ public class IMGUI extends javax.swing.JFrame {
                                 .addContainerGap()
                                 .addComponent(jLabel2))
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(btnViewInventory))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addGap(51, 51, 51)
-                                .addComponent(btnTab2)))
+                                .addComponent(btnTab2))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(btnViewInventory)))
                         .addGap(0, 10, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblIMName)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,7 +144,9 @@ public class IMGUI extends javax.swing.JFrame {
                 .addComponent(btnViewInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnTab2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(386, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
+                .addComponent(lblIMName)
+                .addGap(19, 19, 19))
         );
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 620));
@@ -213,8 +226,7 @@ public class IMGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnViewInventoryActionPerformed
 
     private void btnLoadInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadInventoryActionPerformed
-        FileOperations fh = new FileOperations();
-        DefaultTableModel model = fh.getTable("Item");
+        DefaultTableModel model = manager.LoadInventory();
         invTable.setModel(model);
     }//GEN-LAST:event_btnLoadInventoryActionPerformed
 
@@ -223,8 +235,7 @@ public class IMGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTab2ActionPerformed
 
     private void btnClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableActionPerformed
-        DefaultTableModel model = (DefaultTableModel) invTable.getModel();
-        model.setRowCount(0);
+        manager.ClearTable((DefaultTableModel) invTable.getModel());
     }//GEN-LAST:event_btnClearTableActionPerformed
 
     /**
@@ -257,7 +268,7 @@ public class IMGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new IMGUI().setVisible(true);
+                new IMGUI(new InventoryManager("ITest", "TestManager", "password", "123 Street", "1234567890")).setVisible(true);
             }
         });
     }
@@ -277,6 +288,7 @@ public class IMGUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane5;
+    private javax.swing.JLabel lblIMName;
     private javax.swing.JPanel tab1;
     private javax.swing.JPanel tab2;
     // End of variables declaration//GEN-END:variables

@@ -6,25 +6,28 @@ import javax.swing.*;
 
 public class MainGUI extends javax.swing.JFrame {
     
-    private <T extends User> boolean Login(List<T> users, String enteredID, String enteredPassword, String idGetterName) {
+    private <T> T Login(List<T> objs, String enteredID, String enteredPassword, String idGetterName) {
         try {
-            for (T user : users) {
-                // Use reflection to get the ID dynamically
-                java.lang.reflect.Method getID = user.getClass().getMethod(idGetterName);
-                String userID = (String) getID.invoke(user);
-                String userPassword = user.getUserPassword();
-
-                if (userID.equals(enteredID) && userPassword.equals(enteredPassword)) {
-                    return true;
+            for (T obj : objs)
+            {
+                Method getID = obj.getClass().getMethod(idGetterName);
+                String userID = (String) getID.invoke(obj);
+                
+                Method getPassword = obj.getClass().getMethod("getUserPassword");
+                String userPassword = (String) getPassword.invoke(obj);
+                
+                if(userID.equals(enteredID) && userPassword.equals(enteredPassword))
+                {
+                    return obj;
                 }
             }
         } catch (Exception e) {
             throw new RuntimeException("Error validating credentials: " + e.getMessage());
         }
-        return false;
+        return null;
     }
 
-    /**
+    /**+
      * Creates new form MainGUI
      */
     public MainGUI() {
@@ -203,9 +206,10 @@ public class MainGUI extends javax.swing.JFrame {
             if(id.startsWith("I"))
             {
                 List<InventoryManager> managers = fh.recreateObj("InventoryManager");
-                if(Login(managers, id, pass, "getIMID"))
+                InventoryManager manager = Login(managers, id, pass, "getIMID");
+                if(manager != null)
                 {
-                    IMGUI gui = new IMGUI();
+                    IMGUI gui = new IMGUI(manager);
                     gui.setVisible(true);
                     dispose();
                 }
