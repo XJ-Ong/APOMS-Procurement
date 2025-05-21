@@ -3,51 +3,66 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.group.apomsproject;
+
 import javax.swing.table.DefaultTableModel;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.List;
+import java.util.Map;
+
 /**
- *
  * @author sitesh
  */
 public class Searching {
-    public DefaultTableModel searchItems(String keyword, String csvFilePath) {
+    public DefaultTableModel searchItems(String keyword, String className, String csvFilePath) {
         DefaultTableModel model = new DefaultTableModel();
         keyword = keyword.trim().toLowerCase();
-        String line;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
-            boolean isFirstLine = true;
+        try {
+            // Initialize FileOperations
+            FileOperations fileOps = new FileOperations();
 
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
+            // Get class dynamically
+            Class<?> targetClass = Class.forName("com.group.apomsproject." + className);
 
-                String[] values = line.split(",");
+            // Get headers from HeaderRegistry
+            List<String> headers = HeaderRegistry.getHeaders(targetClass);
+            if (headers.isEmpty()) {
+                throw new RuntimeException("No headers defined for class: " + className);
+            }
+            if (headers.size() < 2) {
+                throw new RuntimeException("Class " + className + " must have at least two headers for search");
+            }
 
-                if (isFirstLine) {
-                    for (String column : values) {
-                        model.addColumn(column.trim());
-                    }
-                    isFirstLine = false;
-                    continue;
-                }
+            // Add columns to model
+            for (String header : headers) {
+                model.addColumn(header);
+            }
 
-                if (values.length >= 3) {
-                    String itemId = values[0].toLowerCase();
-                    String itemName = values[1].toLowerCase();
+            // Read CSV data using FileOperations
+            List<Map<String, String>> data = fileOps.ReadFile(csvFilePath);
 
-                    if (itemId.contains(keyword) || itemName.contains(keyword) || keyword.isEmpty()) {
-                        model.addRow(values);
+            // Filter rows based on keyword
+            for (Map<String, String> row : data) {
+                // Ensure row has at least the first two columns
+                if (row.containsKey(headers.get(0)) && row.containsKey(headers.get(1))) {
+                    String firstColumn = row.getOrDefault(headers.get(0), "").toLowerCase();
+                    String secondColumn = row.getOrDefault(headers.get(1), "").toLowerCase();
+
+                    if (firstColumn.contains(keyword) || secondColumn.contains(keyword) || keyword.isEmpty()) {
+                        String[] rowData = new String[headers.size()];
+                        for (int i = 0; i < headers.size(); i++) {
+                            rowData[i] = row.getOrDefault(headers.get(i), "");
+                        }
+                        model.addRow(rowData);
                     }
                 }
             }
 
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Class not found: " + className, e);
         } catch (Exception e) {
             throw new RuntimeException("Error reading file: " + e.getMessage(), e);
         }
 
         return model;
     }
-    
 }

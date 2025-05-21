@@ -139,13 +139,13 @@ public class ViewPurchaseRequisitionGUI extends javax.swing.JFrame {
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(13, Short.MAX_VALUE)
+                        .addContainerGap(10, Short.MAX_VALUE)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jButton2))
-                        .addGap(18, 18, 18)))
+                        .addGap(15, 15, 15)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
@@ -177,19 +177,24 @@ public class ViewPurchaseRequisitionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
-        String keyword = jTextField1.getText();
-    String csvFilePath = "C:\\Users\\sitesh\\Desktop\\PurchasemanagerSystem\\requisitions.csv";
-
     try {
-        Searching searching = new Searching();
-        DefaultTableModel resultModel = searching.searchItems(keyword, csvFilePath);
-        jTable1.setModel(resultModel);
+            // Ensure HeaderRegistry is initialized
+            HeaderRegistry.init();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
+            // Get keyword from text field
+            String keyword = jTextField1.getText();
+
+            // Initialize Searching
+            Searching searching = new Searching();
+
+            // Search items.csv for Item class
+            DefaultTableModel resultModel = searching.searchItems(keyword, "Requisition", "requisition.csv");
+
+            // Link model to JTable
+            jTable1.setModel(resultModel);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

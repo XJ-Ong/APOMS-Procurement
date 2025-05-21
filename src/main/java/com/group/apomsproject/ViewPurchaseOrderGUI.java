@@ -180,19 +180,24 @@ public class ViewPurchaseOrderGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        
-        String keyword = jTextField1.getText();
-    String csvFilePath = "C:\\Users\\sitesh\\Desktop\\PurchasemanagerSystem\\orders.csv";
+try {
+            // Ensure HeaderRegistry is initialized
+            HeaderRegistry.init();
 
-    try {
-        Searching searching = new Searching();
-        DefaultTableModel resultModel = searching.searchItems(keyword, csvFilePath);
-        jTable1.setModel(resultModel);
+            // Get keyword from text field
+            String keyword = jTextField1.getText();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
+            // Initialize Searching
+            Searching searching = new Searching();
+
+            // Search items.csv for Item class
+            DefaultTableModel resultModel = searching.searchItems(keyword, "Order", "orders.csv");
+
+            // Link model to JTable
+            jTable1.setModel(resultModel);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed

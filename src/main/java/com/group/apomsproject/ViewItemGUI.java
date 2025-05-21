@@ -230,19 +230,24 @@ public class ViewItemGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        
-    String keyword = jTextField1.getText();
-    String csvFilePath = "C:\\Users\\sitesh\\Desktop\\PurchasemanagerSystem\\items.csv";
-
     try {
-        Searching searching = new Searching();
-        DefaultTableModel resultModel = searching.searchItems(keyword, csvFilePath);
-        jTable2.setModel(resultModel);
+            // Ensure HeaderRegistry is initialized
+            HeaderRegistry.init();
 
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
-    }
+            // Get keyword from text field
+            String keyword = jTextField1.getText();
+
+            // Initialize Searching
+            Searching searching = new Searching();
+
+            // Search items.csv for Item class
+            DefaultTableModel resultModel = searching.searchItems(keyword, "Item", "items.csv");
+
+            // Link model to JTable
+            jTable2.setModel(resultModel);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
