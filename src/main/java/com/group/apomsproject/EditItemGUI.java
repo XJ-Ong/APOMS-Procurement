@@ -145,8 +145,8 @@ public class EditItemGUI extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String itemID = txtItemID.getText().trim();
-        
-        Item item = itemManager.findItemByID(itemID);
+        ItemManager manager = new ItemManager();
+        Item item = manager.findItemByID(itemID);
         
         if (item != null) {
         // Load data into JTable
@@ -165,6 +165,7 @@ public class EditItemGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        ItemManager manager = new ItemManager();
         DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No item data to update.");
@@ -180,7 +181,7 @@ public class EditItemGUI extends javax.swing.JFrame {
             int newReorderLevel = Integer.parseInt(model.getValueAt(0, 4).toString());
 
         // Now call your logic
-            itemManager.editItem(itemID, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
+            manager.editItem(itemID, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
             JOptionPane.showMessageDialog(this, "Item updated successfully.");
         } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Error updating item: " + e.getMessage());

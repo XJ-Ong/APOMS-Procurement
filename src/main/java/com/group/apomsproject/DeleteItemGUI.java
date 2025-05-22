@@ -1,7 +1,6 @@
 package com.group.apomsproject;
 
 
-import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -142,15 +141,15 @@ public class DeleteItemGUI extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String itemID = txtDeleteItemID.getText().trim();
-        
-        Item item = itemManager.findItemByID(itemID);
+        ItemManager manager = new ItemManager();
+        Item item = manager.findItemByID(itemID);
         
         DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
         model.setRowCount(0); // Clear table
         
         if (item != null) {
             model.addRow(new Object[] {
-                item.getItemID(),
+                item.getItemCode(),
                 item.getItemName(),
                 item.getSupplierID(),
                 item.getStockLevel(),
@@ -164,13 +163,14 @@ public class DeleteItemGUI extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         String itemID = txtDeleteItemID.getText().trim();
+        ItemManager itemManager = new ItemManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete Item ID: " + itemID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = itemManager.deleteItemById(itemID); // You must implement this
+            boolean success = itemManager.deleteItem(itemID); // You must implement this
 
             if (success) {
                 ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
@@ -209,10 +209,8 @@ public class DeleteItemGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new DeleteItemGUI().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new DeleteItemGUI().setVisible(true);
         });
     }
 
