@@ -163,14 +163,17 @@ public class AddItemGUI extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
+            String itemFile = "items.csv";
+            String itemID = SalesManagerApp.generateItemID(itemFile);
             String itemName = txtItemName.getText();
             String supplierID = txtSupplierID.getText();
             int stockLevel = Integer.parseInt(txtStockLevel.getText());
             double unitPrice = Integer.parseInt(txtUnitPrice.getText());
             int reorderLevel = Integer.parseInt(txtReorderLevel.getText());
             
-            ItemManager item = new ItemManager(itemName, supplierID, stockLevel, unitPrice, reorderLevel);
-            addItem(item);
+            Item item = new Item(itemID, itemName, supplierID, stockLevel, unitPrice, reorderLevel);
+            ItemManager manager = new ItemManager();
+            manager.addItem(item);
         } catch (NumberFormatException e){
             System.out.println("Invalid input. Please enter numeric values for Stock Level, Unit Price, and Reorder Level.");
         }

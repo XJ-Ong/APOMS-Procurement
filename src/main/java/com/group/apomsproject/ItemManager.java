@@ -19,6 +19,7 @@ public class ItemManager {
                 || item.getItemCode() == null
                 || item.getItemName() == null
                 || item.getSupplierID() == null
+                || item.getStockLevel() < 0
                 || item.getUnitPrice() < 0
                 || item.getReorderLevel() < 0) {
 
@@ -59,7 +60,7 @@ public class ItemManager {
         }
     }
 
-    public void editItem(String itemCode, String newName, String newSupplierID, double newUnitPrice,
+    public void editItem(String itemCode, String newName, String newSupplierID, int newStockLevel, double newUnitPrice,
             int newReorderLevel) {
         List<String> lines = new ArrayList<>();
         boolean found = false;
@@ -69,7 +70,7 @@ public class ItemManager {
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith(itemCode + ",")) {
                     // Replace the line with the new data
-                    String updatedLine = itemCode + "," + newName + "," + newSupplierID + "," + newUnitPrice + ","
+                    String updatedLine = itemCode + "," + newName + "," + newSupplierID + "," + newStockLevel + "," + newUnitPrice + ","
                             + newReorderLevel;
                     lines.add(updatedLine);
                     found = true;
