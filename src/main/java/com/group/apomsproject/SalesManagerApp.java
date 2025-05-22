@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class SalesManagerApp {
 
-    private static String generateSalesID(String salesFile) {
+    public static String generateSalesID(String salesFile) {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(salesFile))) {
             while (reader.readLine() != null) {
@@ -29,7 +29,7 @@ public class SalesManagerApp {
         return String.format("SA%03d", count + 1);
     }
 
-    private static String generateItemID(String itemFile) {
+    public static String generateItemID(String itemFile) {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(itemFile))) {
             while (reader.readLine() != null) {
@@ -43,7 +43,7 @@ public class SalesManagerApp {
         return String.format("I%03d", count + 1);
     }
 
-    private static String generateSupplierID(String supplierFile) {
+    public static String generateSupplierID(String supplierFile) {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(supplierFile))) {
             while (reader.readLine() != null) {
@@ -126,8 +126,7 @@ public class SalesManagerApp {
 
                         // Add it using the OOP method
                         itemManager.addItem(item);
-                        System.out.println("Item added successfully.");
-                        ;
+                        System.out.println("Item added successfully.");                        
                 }
                     case 2 -> {
                         System.out.println("Editing Item...");
@@ -137,12 +136,14 @@ public class SalesManagerApp {
                         String newItemName = scanner.nextLine();
                         System.out.print("Enter new Supplier ID: ");
                         String newSupplierID = scanner.nextLine();
+                        System.out.print("Enter new Stock Level: ");
+                        int newStockLevel = scanner.nextInt();
                         System.out.print("Enter new Unit Price: ");
                         double newUnitPrice = scanner.nextDouble();
                         System.out.print("Enter new Reorder Level: ");
                         int newReorderLevel = scanner.nextInt();
                         // Edit item using correct method signature
-                        itemManager.editItem(itemIDToEdit, newItemName, newSupplierID, newUnitPrice, newReorderLevel);
+                        itemManager.editItem(itemIDToEdit, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
                         System.out.println("Item edited successfully.");
                 }
                     case 3 -> {
