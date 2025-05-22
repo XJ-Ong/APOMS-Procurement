@@ -13,12 +13,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author User
  */
-public class DeleteItemGUI extends javax.swing.JFrame {
+public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form DeleteItemGUI
+     * Creates new form DeleteDailySalesEntryGUI
      */
-    public DeleteItemGUI() {
+    public DeleteDailySalesEntryGUI() {
         initComponents();
     }
 
@@ -31,24 +31,21 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtDeleteItemID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtDeleteSalesID = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDeleteItem = new javax.swing.JTable();
+        tblDeleteSales = new javax.swing.JTable();
         btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        jLabel2.setText("Item ID:");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Delete Item");
+        jLabel1.setText("Delete Daily Sales Entry");
 
-        jLabel3.setText("Item ID:");
+        jLabel2.setText("Sales ID:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +54,7 @@ public class DeleteItemGUI extends javax.swing.JFrame {
             }
         });
 
-        tblDeleteItem.setModel(new javax.swing.table.DefaultTableModel(
+        tblDeleteSales.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -68,7 +65,7 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblDeleteItem);
+        jScrollPane1.setViewportView(tblDeleteSales);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -89,115 +86,106 @@ public class DeleteItemGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSearch)
-                .addGap(60, 60, 60))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(152, 152, 152)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(txtDeleteSalesID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnSearch))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnCancel)
-                .addGap(15, 15, 15))
+                .addGap(7, 7, 7))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtDeleteSalesID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete)
                     .addComponent(btnCancel))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        SalesManagerGUI salesManagerFrame = new SalesManagerGUI();
+        salesManagerFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
-        ItemManager manager = new ItemManager();
-        Item item = manager.findItemByID(itemID);
+        String salesID = txtDeleteSalesID.getText().trim();
+        SalesManager manager = new SalesManager();
+        Sales sales = manager.findSalesByID(salesID);
         
-        DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
+        DefaultTableModel model = (DefaultTableModel) tblDeleteSales.getModel();
         model.setRowCount(0); // Clear table
         
-        if (item != null) {
+        if (sales != null) {
             model.addRow(new Object[] {
-                item.getItemCode(),
-                item.getItemName(),
-                item.getSupplierID(),
-                item.getStockLevel(),
-                item.getUnitPrice(),
-                item.getReorderLevel()
+                sales.getSalesID(),
+                sales.getItemCode(),
+                sales.getQuantitySold(),
+                sales.getSMID()
             });
         } else {
-            JOptionPane.showMessageDialog(this, "Item not found.");
+            JOptionPane.showMessageDialog(this, "Sales not found.");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
-        ItemManager itemManager = new ItemManager();
+        String salesID = txtDeleteSalesID.getText().trim();
+        SalesManager salesManager = new SalesManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete Item ID: " + itemID + "?",
+            "Are you sure you want to delete Sales ID: " + salesID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = itemManager.deleteItem(itemID); // You must implement this
+            boolean success = salesManager.deleteDailySalesEntry(salesID); // You must implement this
 
             if (success) {
-                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
+                ((DefaultTableModel) tblDeleteSales.getModel()).setRowCount(0);
                 JOptionPane.showMessageDialog(this, "Item deleted successfully.");
             } else {
                 JOptionPane.showMessageDialog(this, "Failed to delete item.");
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        ItemManagerGUI itemManagerFrame = new ItemManagerGUI();
-        itemManagerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,19 +204,21 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteDailySalesEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteDailySalesEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteDailySalesEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeleteDailySalesEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new DeleteItemGUI().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DeleteDailySalesEntryGUI().setVisible(true);
+            }
         });
     }
 
@@ -238,10 +228,9 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblDeleteItem;
-    private javax.swing.JTextField txtDeleteItemID;
+    private javax.swing.JTable tblDeleteSales;
+    private javax.swing.JTextField txtDeleteSalesID;
     // End of variables declaration//GEN-END:variables
 }

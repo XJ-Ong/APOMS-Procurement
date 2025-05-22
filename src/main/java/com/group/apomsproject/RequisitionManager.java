@@ -40,38 +40,37 @@ public class RequisitionManager {
         }
     }
 
-    public void deleteRequisition(String requisitionId) {
+    public boolean deleteRequisition(String prID) {
         List<String> lines = new ArrayList<>();
-        boolean found = false;
+        boolean prDeleted = false;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!line.startsWith(requisitionId + ",")) {
-                    lines.add(line);
-                } else {
-                    found = true;
+                if (line.startsWith(prID + ",")) {
+                    prDeleted = true; // Mark item for deletion
+                    continue; // Skip this line
                 }
+                lines.add(line); // Keep other lines
             }
         } catch (IOException e) {
-            System.out.println("Error reading requisitions file: " + e.getMessage());
-            return;
+            System.out.println("Error reading file: " + e.getMessage());
+            return false;
         }
 
-        if (!found) {
-            System.out.println("Requisition ID not found.");
-            return;
-        }
-
+    // Rewrite the file without the deleted item
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String l : lines) {
                 writer.write(l);
                 writer.newLine();
             }
-            System.out.println("Requisition deleted.");
+            System.out.println("Purchase requisition deleted.");
         } catch (IOException e) {
-            System.out.println("Error writing requisitions file: " + e.getMessage());
+            System.out.println("Error writing file: " + e.getMessage());
+            return false;
         }
+
+        return prDeleted;
     }
 
     public void editRequisition(String requisitionId, int newQuantity, String newDeliveryDate, String newStatus,
@@ -123,5 +122,32 @@ public class RequisitionManager {
             System.out.println("Error reading requisitions: " + e.getMessage());
         }
     }
+    
+    public PurchaseRequisition findRequisitionByID(String prID) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 5) continue; // Skip invalid lines
+
+            // Extract values from CSV
+                String id = parts[0].trim();
+                int quantity = Integer.parseInt(parts[1].trim());
+                String date = parts[2].trim();
+                String status = parts[3].trim();
+                String smID = parts[4].trim();
+
+
+            // Compare with user input
+                if (id.equalsIgnoreCase(prID)) {
+                    return new PurchaseRequisition(id, quantity, date, status, smID);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error reading item file: " + e.getMessage());
+        }
+
+        return null; // Not found
+    }    
 }
 

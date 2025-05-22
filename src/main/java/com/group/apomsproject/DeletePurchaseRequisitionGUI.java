@@ -13,12 +13,12 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author User
  */
-public class DeleteItemGUI extends javax.swing.JFrame {
+public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
 
     /**
-     * Creates new form DeleteItemGUI
+     * Creates new form DeletePurchaseRequisitionGUI
      */
-    public DeleteItemGUI() {
+    public DeletePurchaseRequisitionGUI() {
         initComponents();
     }
 
@@ -31,24 +31,21 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtDeleteItemID = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtDeletePurchaseRequisitionID = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblDeleteItem = new javax.swing.JTable();
+        tblDeletePurchaseRequisition = new javax.swing.JTable();
         btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
 
-        jLabel2.setText("Item ID:");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Delete Item");
+        jLabel1.setText("Delete Purchase Requisition");
 
-        jLabel3.setText("Item ID:");
+        jLabel2.setText("Purchase Requisition ID:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +54,7 @@ public class DeleteItemGUI extends javax.swing.JFrame {
             }
         });
 
-        tblDeleteItem.setModel(new javax.swing.table.DefaultTableModel(
+        tblDeletePurchaseRequisition.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -68,7 +65,7 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblDeleteItem);
+        jScrollPane1.setViewportView(tblDeletePurchaseRequisition);
 
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -89,115 +86,108 @@ public class DeleteItemGUI extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtDeletePurchaseRequisitionID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnSearch)
-                .addGap(60, 60, 60))
+                .addGap(35, 35, 35))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(149, 149, 149)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(97, 97, 97)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCancel)
-                .addGap(15, 15, 15))
+                .addGap(14, 14, 14))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(22, 22, 22)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtDeletePurchaseRequisitionID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnDelete)
                     .addComponent(btnCancel))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
-        ItemManager manager = new ItemManager();
-        Item item = manager.findItemByID(itemID);
-        
-        DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
-        model.setRowCount(0); // Clear table
-        
-        if (item != null) {
-            model.addRow(new Object[] {
-                item.getItemCode(),
-                item.getItemName(),
-                item.getSupplierID(),
-                item.getStockLevel(),
-                item.getUnitPrice(),
-                item.getReorderLevel()
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "Item not found.");
-        }
-    }//GEN-LAST:event_btnSearchActionPerformed
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        PurchaseRequisitionManagerGUI purchaseRequisitionManagerFrame = new PurchaseRequisitionManagerGUI();
+        purchaseRequisitionManagerFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
-        ItemManager itemManager = new ItemManager();
+        String prID = txtDeletePurchaseRequisitionID.getText().trim();
+        RequisitionManager prManager = new RequisitionManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete Item ID: " + itemID + "?",
+            "Are you sure you want to delete Purchase Requisition ID: " + prID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = itemManager.deleteItem(itemID); // You must implement this
+            boolean success = prManager.deleteRequisition(prID); // You must implement this
 
             if (success) {
-                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Item deleted successfully.");
+                ((DefaultTableModel) tblDeletePurchaseRequisition.getModel()).setRowCount(0);
+                JOptionPane.showMessageDialog(this, "Purchase requisition deleted successfully.");
             } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete item.");
+                JOptionPane.showMessageDialog(this, "Failed to delete purchase requisition.");
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        ItemManagerGUI itemManagerFrame = new ItemManagerGUI();
-        itemManagerFrame.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btnCancelActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String prID = txtDeletePurchaseRequisitionID.getText().trim();
+        RequisitionManager prManager = new RequisitionManager();
+        PurchaseRequisition purchaseRequisition = prManager.findRequisitionByID(prID);
+        
+        DefaultTableModel model = (DefaultTableModel) tblDeletePurchaseRequisition.getModel();
+        model.setRowCount(0); // Clear table
+        
+        if (purchaseRequisition != null) {
+            model.addRow(new Object[] {
+                purchaseRequisition.getPRID(),
+                purchaseRequisition.getQuantity(),
+                purchaseRequisition.getDeliveryDate(),
+                purchaseRequisition.getStatus(),
+                purchaseRequisition.getSMID()
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "purchase requisition not found.");
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -216,19 +206,21 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeletePurchaseRequisitionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeletePurchaseRequisitionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeletePurchaseRequisitionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DeleteItemGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DeletePurchaseRequisitionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new DeleteItemGUI().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DeletePurchaseRequisitionGUI().setVisible(true);
+            }
         });
     }
 
@@ -238,10 +230,9 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblDeleteItem;
-    private javax.swing.JTextField txtDeleteItemID;
+    private javax.swing.JTable tblDeletePurchaseRequisition;
+    private javax.swing.JTextField txtDeletePurchaseRequisitionID;
     // End of variables declaration//GEN-END:variables
 }

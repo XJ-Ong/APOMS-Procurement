@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SalesManager {
-    private final String salesFile = "daily_sales.csv";
+    private final String file = "daily_sales.csv";
 
     public void addDailySalesEntry(Sales sale) {
         if (sale == null
@@ -16,10 +16,9 @@ public class SalesManager {
 
             System.out.println("Invalid sales entry. Please provide all details correctly.");
             return;
-        }
-        ;
+        };
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(salesFile, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(sale.toCSV());
             writer.newLine();
             System.out.println("Sales recorded for item ID: " + sale.getItemCode());
@@ -29,50 +28,44 @@ public class SalesManager {
     }
 
     // Add delete or edit methods if needed
-    public void deleteDailySalesEntry(String salesID, String itemCode) {
+    public boolean deleteDailySalesEntry(String salesID) {
         List<String> lines = new ArrayList<>();
-        boolean found = false;
+        boolean salesDeleted = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(salesFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!line.startsWith(salesID + ",")) {
-                    lines.add(line);
-                } else {
-                    String[] parts = line.split(",");
-                    if (parts.length >= 4 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
-                        found = true;
-                        continue; // skip this line
-                    }
-                    lines.add(line);
+                if (line.startsWith(salesID + ",")) {
+                    salesDeleted = true; // Mark item for deletion
+                    continue; // Skip this line
                 }
+                lines.add(line); // Keep other lines
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
-            return;
+            return false;
         }
 
-        if (!found) {
-            System.out.println("Sales entry not found.");
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(salesFile))) {
+    // Rewrite the file without the deleted item
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String l : lines) {
                 writer.write(l);
                 writer.newLine();
             }
-            System.out.println("Sales entry deleted.");
+            System.out.println("Sales deleted.");
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
+            return false;
         }
+
+        return salesDeleted;
     }
 
     public void editDailySalesEntry(String salesID, String itemCode, int newQty, String newSMID) {
         List<String> lines = new ArrayList<>();
         boolean found = false;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(salesFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith(salesID + ",")) {
@@ -98,7 +91,7 @@ public class SalesManager {
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(salesFile))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (String l : lines) {
                 writer.write(l);
                 writer.newLine();
@@ -108,5 +101,31 @@ public class SalesManager {
             System.out.println("Error writing file: " + e.getMessage());
         }
     }
+    
+    public Sales findSalesByID(String salesID) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 4) continue; // Skip invalid lines
+
+            // Extract values from CSV
+                String id = parts[0].trim();
+                String code = parts[1].trim();
+                int quantity = Integer.parseInt(parts[2].trim());
+                String smID = parts[3].trim();
+                
+            // Compare with user input
+                if (id.equalsIgnoreCase(salesID)) {
+                    return new Sales(id, code, quantity, smID);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error reading item file: " + e.getMessage());
+        }
+
+        return null; // Not found
+    }
+
 }
 

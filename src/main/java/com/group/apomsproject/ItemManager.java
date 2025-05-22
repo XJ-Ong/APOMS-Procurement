@@ -60,6 +60,7 @@ public class ItemManager {
                 writer.write(l);
                 writer.newLine();
             }
+            System.out.println("Item deleted.");
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
             return false;
@@ -109,7 +110,7 @@ public class ItemManager {
     }
     
     public Item findItemByID(String itemID) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("items.csv"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");

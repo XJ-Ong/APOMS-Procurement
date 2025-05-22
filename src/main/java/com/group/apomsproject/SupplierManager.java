@@ -33,17 +33,22 @@ public class SupplierManager {
         }
     }
 
-    public void deleteSupplier(String supplierId) {
+    public boolean deleteSupplier(String supplierId) {
         List<String> lines = new ArrayList<>();
+        boolean supplierDeleted = false;
+        
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.startsWith(supplierId + ",")) {
-                    lines.add(line);
+                    supplierDeleted = true;
+                    continue;
                 }
+                lines.add(line);
             }
         } catch (IOException e) {
             System.out.println("Error reading file: " + e.getMessage());
+            return false;
         }
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -54,7 +59,10 @@ public class SupplierManager {
             System.out.println("Supplier deleted.");
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
+            return false;
         }
+        
+        return supplierDeleted;
     }
 
     public void editSupplier(String supplierID, String newName, String newContactInfo) {
@@ -92,6 +100,28 @@ public class SupplierManager {
         } catch (IOException e) {
             System.out.println("Error writing file: " + e.getMessage());
         }
+    }
+    
+    public Supplier findSupplierByID(String supplierID){
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+            String line;
+            while ((line = reader.readLine()) != null){
+                String[] parts = line.split(",");
+                if (parts.length !=3) continue;
+                
+                String id = parts[0].trim();
+                String name = parts[1].trim();
+                String contact = parts[2].trim();
+                
+                if (id.equalsIgnoreCase(supplierID)){
+                    return new Supplier(id, name, contact);
+                }
+            }
+        } catch (IOException | NumberFormatException e){
+            System.out.println("Error reading supplier file: " + e.getMessage());
+        }
+        
+        return null;
     }
 }
 
