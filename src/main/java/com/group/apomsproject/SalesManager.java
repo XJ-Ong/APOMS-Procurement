@@ -11,7 +11,6 @@ public class SalesManager {
         if (sale == null
                 || sale.getSalesID() == null
                 || sale.getItemCode() == null
-                || sale.getSalesDate() == null
                 || sale.getQuantitySold() <= 0
                 || sale.getSMID() == null) {
 
@@ -41,7 +40,7 @@ public class SalesManager {
                     lines.add(line);
                 } else {
                     String[] parts = line.split(",");
-                    if (parts.length >= 5 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
+                    if (parts.length >= 4 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
                         found = true;
                         continue; // skip this line
                     }
@@ -69,7 +68,7 @@ public class SalesManager {
         }
     }
 
-    public void editDailySalesEntry(String salesID, String itemCode, int newQty, String newDate, String newSMID) {
+    public void editDailySalesEntry(String salesID, String itemCode, int newQty, String newSMID) {
         List<String> lines = new ArrayList<>();
         boolean found = false;
 
@@ -80,8 +79,8 @@ public class SalesManager {
                     lines.add(line);
                 } else {
                     String[] parts = line.split(",");
-                    if (parts.length >= 5 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
-                        String updatedLine = salesID + "," + itemCode + "," + newQty + "," + newDate + "," + newSMID;
+                    if (parts.length >= 4 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
+                        String updatedLine = salesID + "," + itemCode + "," + newQty + "," + newSMID;
                         lines.add(updatedLine);
                         found = true;
                     } else {

@@ -57,7 +57,7 @@ public class SalesManagerApp {
         return String.format("SU%03d", count + 1);
     }
 
-    private static String generateRequisitionID(String requisitionFile) {
+    public static String generateRequisitionID(String requisitionFile) {
         int count = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(requisitionFile))) {
             while (reader.readLine() != null) {
@@ -236,14 +236,11 @@ public class SalesManagerApp {
                         System.out.print("Enter Quantity Sold: ");
                         int quantitySold = scanner.nextInt();
 
-                        System.out.print("Enter Sales Date (YYYY-MM-DD): ");
-                        String salesDate = scanner.nextLine();
-
                         System.out.print("Enter Sales Manager ID: ");
                         String smID = scanner.nextLine();
 
                         // Create a DailySales object
-                        Sales sale = new Sales(salesID, itemCode, quantitySold, salesDate, smID);
+                        Sales sale = new Sales(salesID, itemCode, quantitySold, smID);
 
                         // Add it using the OOP method
                         salesManager.addDailySalesEntry(sale);
@@ -257,12 +254,10 @@ public class SalesManagerApp {
                         String newItemCode = scanner.nextLine();
                         System.out.print("Enter new Quantity Sold: ");
                         int newQuantitySold = scanner.nextInt();
-                        System.out.print("Enter new Sales Date (YYYY-MM-DD): ");
-                        String newSalesDate = scanner.nextLine();
                         System.out.print("Enter new Sales Manager ID: ");
                         String newSMID = scanner.nextLine();
                         // Edit daily sales entry using correct method signature
-                        salesManager.editDailySalesEntry(salesIDToEdit, newItemCode, newQuantitySold, newSalesDate,newSMID);
+                        salesManager.editDailySalesEntry(salesIDToEdit, newItemCode, newQuantitySold, newSMID);
                         System.out.println("Daily sales entry edited successfully.");
                 }
                     case 3 -> {

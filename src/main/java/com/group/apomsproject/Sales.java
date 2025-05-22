@@ -5,14 +5,12 @@ public class Sales {
     private String salesID;
     private String itemCode;
     private int quantitySold;
-    private String salesDate;
     private String SMID;
 
-    public Sales(String salesID, String itemCode, int quantitySold, String salesDate, String SMID) {
+    public Sales(String salesID, String itemCode, int quantitySold, String SMID) {
         this.salesID = salesID;
         this.itemCode = itemCode;
         this.quantitySold = quantitySold;
-        this.salesDate = salesDate;
         this.SMID = SMID;
     }
 
@@ -39,15 +37,7 @@ public class Sales {
     public void setQuantitySold(int quantitySold) {
         this.quantitySold = quantitySold;
     }
-
-    public String getSalesDate() {
-        return salesDate;
-    }
-    
-    public void setSalesDate(String salesDate) {
-        this.salesDate = salesDate;
-    }
-    
+   
     public String getSMID(){
         return SMID;
     }
@@ -57,6 +47,6 @@ public class Sales {
     }
     
     public String toCSV() {
-        return salesID + "," + itemCode + "," + quantitySold + "," + salesDate + "," + SMID;
+        return salesID + "," + itemCode + "," + quantitySold + "," + SMID;
     }
 }
