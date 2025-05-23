@@ -2,19 +2,19 @@ package com.group.apomsproject;
 
 public class FinanceManager extends User{
     
-    private int FMID;
+    private String FMID;
 
-     public FinanceManager(int FMID, String userName, String userPassword, String userAddress, String userContact)
+     public FinanceManager(String FMID, String userName, String userPassword, String userAddress, String userContact)
     {
         super(userName, userPassword, userAddress, userContact);
         this.FMID = FMID;
     }
 
-    public int getFMID() {
+    public String getFMID() {
         return FMID;
     }
 
-    public void setFMID(int FMID) {
+    public void setFMID(String FMID) {
         this.FMID = FMID;
     }
     
