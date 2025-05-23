@@ -20,6 +20,11 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
      */
     public DeletePurchaseRequisitionGUI() {
         initComponents();
+        
+        tblDeletePurchaseRequisition.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][] {}, 
+            new String[] { "Purchase Requisition ID", "Quantity", "Delivery Date", "Status", "Sales Manager ID" }
+        ));
     }
 
     /**
@@ -55,15 +60,8 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
         });
 
         tblDeletePurchaseRequisition.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+            new Object[][] {},
+            new String[] { "Purchase Requisition ID", "Quantity", "Delivery Date", "Status", "Sales Manager ID" }
         ));
         jScrollPane1.setViewportView(tblDeletePurchaseRequisition);
 
@@ -175,6 +173,11 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
         
         DefaultTableModel model = (DefaultTableModel) tblDeletePurchaseRequisition.getModel();
         model.setRowCount(0); // Clear table
+        
+        if (prID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter Purchase Requisition ID.");
+            return;
+        }
         
         if (purchaseRequisition != null) {
             model.addRow(new Object[] {

@@ -20,6 +20,11 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
      */
     public DeleteSupplierGUI() {
         initComponents();
+        
+        tblDeleteSupplier.setModel(new javax.swing.table.DefaultTableModel(
+            new Object[][] {}, 
+            new String[] { "Supplier ID", "Supplier Name", "Supplier Contact" }
+        ));
     }
 
     /**
@@ -55,14 +60,9 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         });
 
         tblDeleteSupplier.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
+            new Object [][] {},
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Supplier ID", "Supplier Name", "Supplier Contact"
             }
         ));
         jScrollPane1.setViewportView(tblDeleteSupplier);
@@ -149,6 +149,11 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblDeleteSupplier.getModel();
         model.setRowCount(0); // Clear table
         
+        if (supplierID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter Supplier ID.");
+            return;
+        }
+        
         if (supplier != null) {
             model.addRow(new Object[] {
                 supplier.getSupplierID(),
@@ -165,7 +170,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         SupplierManager supplierManager = new SupplierManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete Item ID: " + supplierID + "?",
+            "Are you sure you want to delete Supplier ID: " + supplierID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
