@@ -264,9 +264,7 @@ public class SalesManagerApp {
                         System.out.println("Deleting Daily Sales Entry...");
                         System.out.print("Enter Sales ID to delete: ");
                         String salesIDToDelete = scanner.nextLine();
-                        System.out.print("Enter Item Code of the Sales ID: ");
-                        String itemCodeToDelete = scanner.nextLine();
-                        salesManager.deleteDailySalesEntry(salesIDToDelete, itemCodeToDelete);
+                        salesManager.deleteDailySalesEntry(salesIDToDelete);
                         System.out.println("Daily sales entry deleted successfully.");
                 }
                     case 4 -> {
