@@ -1,5 +1,7 @@
 package com.group.apomsproject;
 
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -127,6 +129,7 @@ public class AddSupplierGUI extends javax.swing.JFrame {
             Supplier supplier = new Supplier(supplierID, supplierName, supplierContact);
             SupplierManager supManager = new SupplierManager();
             supManager.addSupplier(supplier);
+            JOptionPane.showMessageDialog(this, "Supplier added successfully!");
         } catch (NumberFormatException e){
             System.out.println("Invalid input.");
         }

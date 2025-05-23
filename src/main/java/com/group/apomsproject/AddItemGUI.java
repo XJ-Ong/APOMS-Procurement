@@ -1,5 +1,7 @@
 package com.group.apomsproject;
 
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -174,6 +176,7 @@ public class AddItemGUI extends javax.swing.JFrame {
             Item item = new Item(itemID, itemName, supplierID, stockLevel, unitPrice, reorderLevel);
             ItemManager manager = new ItemManager();
             manager.addItem(item);
+            JOptionPane.showMessageDialog(this, "Item added successfully!");
         } catch (NumberFormatException e){
             System.out.println("Invalid input. Please enter numeric values for Stock Level, Unit Price, and Reorder Level.");
         }

@@ -1,5 +1,7 @@
 package com.group.apomsproject;
 
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -155,6 +157,7 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
             Sales sale = new Sales(salesID, itemCode, quantitySold, smID);
             SalesManager saManager = new SalesManager();
             saManager.addDailySalesEntry(sale);
+            JOptionPane.showMessageDialog(this, "Sales added successfully!");
         } catch (NumberFormatException e){
             System.out.println("Invalid input. Please enter numeric values for Quantity Sold.");
         }

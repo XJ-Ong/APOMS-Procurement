@@ -1,5 +1,7 @@
 package com.group.apomsproject;
 
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -146,6 +148,7 @@ public class AddPurchaseRequisitionGUI extends javax.swing.JFrame {
             PurchaseRequisition requisition = new PurchaseRequisition(requisitionID, quantity, deliveryDate, status, smID);
             RequisitionManager reqManager = new RequisitionManager();
             reqManager.addRequisition(requisition);
+            JOptionPane.showMessageDialog(this, "Requisition added successfully!");
         } catch (NumberFormatException e){
             System.out.println("Invalid input. Please enter numeric values for Stock Level, Unit Price, and Reorder Level.");
         }
