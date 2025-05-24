@@ -126,10 +126,19 @@ public class AddSupplierGUI extends javax.swing.JFrame {
             String supplierName = txtSupplierName.getText();
             String supplierContact = txtSupplierContact.getText();
             
+            if (supplierName.isEmpty() || supplierContact.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
             Supplier supplier = new Supplier(supplierID, supplierName, supplierContact);
             SupplierManager supManager = new SupplierManager();
             supManager.addSupplier(supplier);
             JOptionPane.showMessageDialog(this, "Supplier added successfully!");
+            
+            txtSupplierName.setText("");
+            txtSupplierContact.setText("");
+        
         } catch (NumberFormatException e){
             System.out.println("Invalid input.");
         }

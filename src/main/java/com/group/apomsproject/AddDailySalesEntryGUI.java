@@ -33,11 +33,9 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtItemCode = new javax.swing.JTextField();
         txtQuantitySold = new javax.swing.JTextField();
-        txtSalesDate = new javax.swing.JTextField();
         txtSalesManagerID = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
@@ -49,8 +47,6 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
         jLabel2.setText("Item Code:");
 
         jLabel3.setText("Quantity Sold:");
-
-        jLabel4.setText("Sales Date (YYYY-MM-DD):");
 
         jLabel5.setText("Sales Manager ID:");
 
@@ -82,7 +78,7 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
                                 .addComponent(txtQuantitySold, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -91,11 +87,7 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtSalesManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                                .addComponent(txtSalesDate, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtSalesManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(98, 98, 98))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -119,17 +111,13 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
                     .addComponent(txtQuantitySold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtSalesDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtSalesManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37)
+                .addGap(71, 71, 71)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnCancel))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,13 +139,25 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
             String salesFile = "daily_sales.csv";
             String salesID = SalesManagerApp.generateSalesID(salesFile);
             String itemCode = txtItemCode.getText();
-            int quantitySold = Integer.parseInt(txtQuantitySold.getText());
+            String quantity = txtQuantitySold.getText();
             String smID = txtSalesManagerID.getText();
             
-            Sales sale = new Sales(salesID, itemCode, quantitySold, smID);
+            if (itemCode.isEmpty() || smID.isEmpty() || quantity.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            int Quantity = Integer.parseInt(quantity);
+            
+            Sales sale = new Sales(salesID, itemCode, Quantity, smID);
             SalesManager saManager = new SalesManager();
             saManager.addDailySalesEntry(sale);
             JOptionPane.showMessageDialog(this, "Sales added successfully!");
+            
+            txtItemCode.setText("");
+            txtQuantitySold.setText("");
+            txtSalesManagerID.setText("");
+        
         } catch (NumberFormatException e){
             System.out.println("Invalid input. Please enter numeric values for Quantity Sold.");
         }
@@ -210,12 +210,10 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtItemCode;
     private javax.swing.JTextField txtQuantitySold;
-    private javax.swing.JTextField txtSalesDate;
     private javax.swing.JTextField txtSalesManagerID;
     // End of variables declaration//GEN-END:variables
 }

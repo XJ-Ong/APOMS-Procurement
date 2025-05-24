@@ -164,21 +164,44 @@ public class AddItemGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        try{
+        try {
             String itemFile = "items.csv";
-            String itemID = SalesManagerApp.generateItemID(itemFile);
-            String itemName = txtItemName.getText();
-            String supplierID = txtSupplierID.getText();
-            int stockLevel = Integer.parseInt(txtStockLevel.getText());
-            double unitPrice = Integer.parseInt(txtUnitPrice.getText());
-            int reorderLevel = Integer.parseInt(txtReorderLevel.getText());
-            
+            String itemID = SalesManagerApp.generateItemID(itemFile);  // ← Your original function
+            String itemName = txtItemName.getText().trim();
+            String supplierID = txtSupplierID.getText().trim();
+            String stockLevelStr = txtStockLevel.getText().trim();
+            String unitPriceStr = txtUnitPrice.getText().trim();
+            String reorderLevelStr = txtReorderLevel.getText().trim();
+
+        // Input validation
+            if (itemName.isEmpty() || supplierID.isEmpty() ||
+                stockLevelStr.isEmpty() || unitPriceStr.isEmpty() || reorderLevelStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields must be filled in.");
+                return;
+            }
+
+            int stockLevel = Integer.parseInt(stockLevelStr);
+            double unitPrice = Double.parseDouble(unitPriceStr);  // ← Corrected: double, not int
+            int reorderLevel = Integer.parseInt(reorderLevelStr);
+
+        // Create item and add
             Item item = new Item(itemID, itemName, supplierID, stockLevel, unitPrice, reorderLevel);
             ItemManager manager = new ItemManager();
-            manager.addItem(item);
+            manager.addItem(item);  // ← Your original function call
+
             JOptionPane.showMessageDialog(this, "Item added successfully!");
-        } catch (NumberFormatException e){
-            System.out.println("Invalid input. Please enter numeric values for Stock Level, Unit Price, and Reorder Level.");
+
+        // Optional: Clear form
+            txtItemName.setText("");
+            txtSupplierID.setText("");
+            txtStockLevel.setText("");
+            txtUnitPrice.setText("");
+            txtReorderLevel.setText("");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for stock level, unit price, and reorder level.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage());
         }
     }//GEN-LAST:event_btnAddActionPerformed
 
