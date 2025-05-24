@@ -186,8 +186,8 @@ public class AddItemGUI extends javax.swing.JFrame {
 
         // Create item and add
             Item item = new Item(itemID, itemName, supplierID, stockLevel, unitPrice, reorderLevel);
-            ItemManager manager = new ItemManager();
-            manager.addItem(item);  // ← Your original function call
+            FileOperations fileOps = new FileOperations();
+            fileOps.WriteFile(item);  // ← Your original function call
 
             JOptionPane.showMessageDialog(this, "Item added successfully!");
 

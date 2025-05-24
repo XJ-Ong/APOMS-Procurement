@@ -150,8 +150,8 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
             int Quantity = Integer.parseInt(quantity);
             
             Sales sale = new Sales(salesID, itemCode, Quantity, smID);
-            SalesManager saManager = new SalesManager();
-            saManager.addDailySalesEntry(sale);
+            FileOperations fileOps = new FileOperations();
+            fileOps.WriteFile(sale);
             JOptionPane.showMessageDialog(this, "Sales added successfully!");
             
             txtItemCode.setText("");

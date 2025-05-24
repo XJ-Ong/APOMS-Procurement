@@ -1,7 +1,10 @@
 package com.group.apomsproject;
 
 
-import java.awt.HeadlessException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -167,24 +170,34 @@ public class EditSalesGUI extends javax.swing.JFrame {
         String salesID = txtSalesID.getText().trim();
     
         if (salesID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an Item ID to search.");
+            JOptionPane.showMessageDialog(this, "Please enter a Sales ID to search.");
             return;
         }
 
-        SalesManager manager = new SalesManager();
-        Sales sales = manager.findSalesByID(salesID); // This method now skips the CSV header
+        FileOperations fileOps = new FileOperations();
+        String className = "Sales";
+        List<Map<String, String>> sale = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
+        DefaultTableModel model = (DefaultTableModel) tblEditSales.getModel();
+        model.setRowCount(0); // Clear table first
 
-        if (sales != null) {
-            DefaultTableModel model = (DefaultTableModel) tblEditSales.getModel();
-            model.setRowCount(0); // Clear existing rows
-            model.addRow(new Object[] {
-                sales.getSalesID(),
-                sales.getItemCode(),
-                sales.getQuantitySold(),
-                sales.getSMID()
-            });
+        for (Map<String, String> row : sale) {
+            if (row.get("Sales ID").equalsIgnoreCase(salesID)) {
+                model.addRow(new Object[]{
+                    row.get("Sales ID"),
+                    row.get("Item Code"),
+                    row.get("Quantity Sold"),
+                    row.get("Sales Manager ID")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Sales ID not found.");
         } else {
-            JOptionPane.showMessageDialog(this, "Item ID not found.");
+            btnUpdate.setEnabled(true);
         }    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -201,11 +214,51 @@ public class EditSalesGUI extends javax.swing.JFrame {
             int newQuantitySold = Integer.parseInt(model.getValueAt(0, 1).toString());
             String newSMID = model.getValueAt(0, 2).toString();
 
-        // Now call your logic
-            manager.editDailySalesEntry(salesID, newItemCode, newQuantitySold, newSMID);
-            JOptionPane.showMessageDialog(this, "Sales updated successfully.");
-        } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error updating sales: " + e.getMessage());
+            FileOperations fileOps = new FileOperations();
+            List<Map<String, String>> sales = fileOps.ReadFile("Sales.csv"); // match your class name
+
+            // Prepare a list of updated Item objects
+            List<Sales> updatedSales = new ArrayList<>();
+            boolean updated = false;
+
+            for (Map<String, String> row : sales) {
+                String currentID = row.get("Purchase Requisition ID");
+
+                if (currentID.equalsIgnoreCase(salesID)) {
+                    // Update this item
+                    Sales sale = new Sales(salesID, newItemCode, newQuantitySold, newSMID);
+                    updatedSales.add(sale);
+                    updated = true;
+                } else {
+                    // Keep existing item
+                    Sales sale = new Sales(
+                        row.get("Sales ID"),
+                        row.get("Item Code"),
+                        Integer.parseInt(row.get("Quantity Sold")),
+                        row.get("Sales Manager ID")
+                    );
+                    updatedSales.add(sale);
+                }
+            }
+
+            if (updated) {
+                // Clear original file
+                new PrintWriter("Sales.csv").close();
+                
+                // Rewrite all updated items using WriteFile(Object obj)
+                for (Sales sale : updatedSales) {
+                    fileOps.WriteFile(sale); // this uses your existing WriteFile method
+                }
+
+                JOptionPane.showMessageDialog(this, "Sales updated successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Sales ID not found. Cannot update.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid numeric values. Please enter valid numbers.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating sale: " + e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

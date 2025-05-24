@@ -9,7 +9,10 @@ package com.group.apomsproject;
  *
  * @author User
  */
-import java.awt.HeadlessException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel; // <-- This is needed for JTable model
 
@@ -163,51 +166,101 @@ public class EditItemGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtItemIDActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String itemID = txtItemID.getText().trim();
-    
-        if (itemID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an Item ID to search.");
-            return;
-        }
+    String itemID = txtItemID.getText().trim();
 
-        ItemManager manager = new ItemManager();
-        Item item = manager.findItemByID(itemID); // This method now skips the CSV header
+    if (itemID.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter an Item ID to search.");
+        return;
+    }
+    FileOperations fileOps = new FileOperations();
+    String className = "Item";
+    List<Map<String, String>> items = fileOps.ReadFile(className + ".csv");
+    boolean found = false;
+    DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
+    model.setRowCount(0); // Clear table first
 
-        if (item != null) {
-            DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
-            model.setRowCount(0); // Clear existing rows
-            model.addRow(new Object[] {
-                item.getItemName(),
-                item.getSupplierID(),
-                item.getStockLevel(),
-                item.getUnitPrice(),
-                item.getReorderLevel()
+    for (Map<String, String> row : items) {
+        if (row.get("Item ID").equalsIgnoreCase(itemID)) {
+            model.addRow(new Object[]{
+                row.get("Item Name"),
+                row.get("Supplier ID"),
+                row.get("Stock Level"),
+                row.get("Unit Price"),
+                row.get("Reorder Level")
             });
-        } else {
-            JOptionPane.showMessageDialog(this, "Item ID not found.");
+            found = true;
+            break;
         }
+    }
+
+    if (!found) {
+        JOptionPane.showMessageDialog(this, "Item ID not found.");
+    } else {
+        btnUpdate.setEnabled(true);
+    }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        ItemManager manager = new ItemManager();
         DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No item data to update.");
             return;
         }
-
         try {
-            String itemID = txtItemID.getText().trim(); // from your text field
+            String itemID = txtItemID.getText().trim();
             String newItemName = model.getValueAt(0, 0).toString();
             String newSupplierID = model.getValueAt(0, 1).toString();
+
             int newStockLevel = Integer.parseInt(model.getValueAt(0, 2).toString());
             double newUnitPrice = Double.parseDouble(model.getValueAt(0, 3).toString());
             int newReorderLevel = Integer.parseInt(model.getValueAt(0, 4).toString());
 
-        // Now call your logic
-            manager.editItem(itemID, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
-            JOptionPane.showMessageDialog(this, "Item updated successfully.");
-        } catch (HeadlessException | NumberFormatException e) {
+            FileOperations fileOps = new FileOperations();
+            List<Map<String, String>> items = fileOps.ReadFile("Item.csv"); // match your class name
+
+            // Prepare a list of updated Item objects
+            List<Item> updatedItems = new ArrayList<>();
+            boolean updated = false;
+
+            for (Map<String, String> row : items) {
+                String currentID = row.get("Item ID");
+
+                if (currentID.equalsIgnoreCase(itemID)) {
+                    // Update this item
+                    Item item = new Item(itemID, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
+                    updatedItems.add(item);
+                    updated = true;
+                } else {
+                    // Keep existing item
+                    Item item = new Item(
+                        row.get("Item ID"),
+                        row.get("Item Name"),
+                        row.get("Supplier ID"),
+                        Integer.parseInt(row.get("Stock Level")),
+                        Double.parseDouble(row.get("Unit Price")),
+                        Integer.parseInt(row.get("Reorder Level"))
+                    );
+                    updatedItems.add(item);
+                }
+            }
+
+            if (updated) {
+                // Clear original file
+                new PrintWriter("Item.csv").close();
+                
+                // Rewrite all updated items using WriteFile(Object obj)
+                for (Item item : updatedItems) {
+                    fileOps.WriteFile(item); // this uses your existing WriteFile method
+                }
+
+                JOptionPane.showMessageDialog(this, "Item updated successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Item ID not found. Cannot update.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid numeric values. Please enter valid numbers.");
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error updating item: " + e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed

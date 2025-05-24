@@ -1,7 +1,9 @@
 package com.group.apomsproject;
 
-
-import java.awt.HeadlessException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -152,28 +154,37 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         String supplierID = txtSupplierID.getText().trim();
     
         if (supplierID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an Item ID to search.");
+            JOptionPane.showMessageDialog(this, "Please enter a Supplier ID to search.");
             return;
         }
 
-        SupplierManager manager = new SupplierManager();
-        Supplier supplier = manager.findSupplierByID(supplierID); // This method now skips the CSV header
+        FileOperations fileOps = new FileOperations();
+        String className = "Supplier";
+        List<Map<String, String>> supplier = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
+        DefaultTableModel model = (DefaultTableModel) tblEditSupplier.getModel();
+        model.setRowCount(0); // Clear table first
 
-        if (supplier != null) {
-            DefaultTableModel model = (DefaultTableModel) tblEditSupplier.getModel();
-            model.setRowCount(0); // Clear existing rows
-            model.addRow(new Object[] {
-                supplier.getSupplierID(),
-                supplier.getSupplierName(),
-                supplier.getSupplierContact()
-            });
+        for (Map<String, String> row : supplier) {
+            if (row.get("Sales ID").equalsIgnoreCase(supplierID)) {
+                model.addRow(new Object[]{
+                    row.get("Supplier ID"),
+                    row.get("Supplier Name"),
+                    row.get("Supplier Contact")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Supplier ID not found.");
         } else {
-            JOptionPane.showMessageDialog(this, "Item ID not found.");
+            btnUpdate.setEnabled(true);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        SupplierManager manager = new SupplierManager();
         DefaultTableModel model = (DefaultTableModel) tblEditSupplier.getModel();
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No supplier data to update.");
@@ -185,11 +196,50 @@ public class EditSupplierGUI extends javax.swing.JFrame {
             String newSupplierName = model.getValueAt(0, 0).toString();
             String newSupplierContact = model.getValueAt(0, 1).toString();
 
-        // Now call your logic
-            manager.editSupplier(supplierID, newSupplierName, newSupplierContact);
-            JOptionPane.showMessageDialog(this, "Supplier updated successfully.");
-        } catch (HeadlessException | NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Error updating supplier: " + e.getMessage());
+            FileOperations fileOps = new FileOperations();
+            List<Map<String, String>> suppliers = fileOps.ReadFile("Supplier.csv"); // match your class name
+
+            // Prepare a list of updated Item objects
+            List<Supplier> updatedSupplier = new ArrayList<>();
+            boolean updated = false;
+
+            for (Map<String, String> row : suppliers) {
+                String currentID = row.get("Purchase Requisition ID");
+
+                if (currentID.equalsIgnoreCase(supplierID)) {
+                    // Update this item
+                    Supplier supplier = new Supplier(supplierID, newSupplierName, newSupplierContact);
+                    updatedSupplier.add(supplier);
+                    updated = true;
+                } else {
+                    // Keep existing item
+                    Supplier supplier = new Supplier(
+                        row.get("Supplier ID"),
+                        row.get("Supplier Name"),
+                        row.get("Supplier Contact")
+                    );
+                    updatedSupplier.add(supplier);
+                }
+            }
+
+            if (updated) {
+                // Clear original file
+                new PrintWriter("Supplier.csv").close();
+                
+                // Rewrite all updated items using WriteFile(Object obj)
+                for (Supplier supplier : updatedSupplier) {
+                    fileOps.WriteFile(supplier); // this uses your existing WriteFile method
+                }
+
+                JOptionPane.showMessageDialog(this, "Supplier updated successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Supplier ID not found. Cannot update.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid numeric values. Please enter valid numbers.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error updating sale: " + e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
 

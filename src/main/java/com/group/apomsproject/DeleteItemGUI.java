@@ -1,6 +1,10 @@
 package com.group.apomsproject;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,6 +18,8 @@ import javax.swing.table.DefaultTableModel;
  * @author User
  */
 public class DeleteItemGUI extends javax.swing.JFrame {
+    private final FileOperations fileOps = new FileOperations();
+    private final String className = "Item"; 
 
     /**
      * Creates new form DeleteItemGUI
@@ -154,49 +160,97 @@ public class DeleteItemGUI extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String itemID = txtDeleteItemID.getText().trim();
-        ItemManager manager = new ItemManager();
-        Item item = manager.findItemByID(itemID);
-        
-        DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
-        model.setRowCount(0); // Clear table
-        
         if (itemID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter an Item ID.");
             return;
         }
+        
+        DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
+        model.setRowCount(0); // Clear table
+        
+        List<Map<String, String>> allItems = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
 
         
-        if (item != null) {
-            model.addRow(new Object[] {
-                item.getItemCode(),
-                item.getItemName(),
-                item.getSupplierID(),
-                item.getStockLevel(),
-                item.getUnitPrice(),
-                item.getReorderLevel()
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "Item not found.");
+        for (Map<String, String> row : allItems) {
+            if (itemID.equalsIgnoreCase(row.get("Item Code"))) {  // assuming CSV header is salesID
+                model.addRow(new Object[]{
+                    row.get("Item Code"),
+                    row.get("Item Name"),
+                    row.get("Supplier ID"),
+                    row.get("Stock Level"),
+                    row.get("Unit Price"),
+                    row.get("Reorder Level")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Item ID not found.");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         String itemID = txtDeleteItemID.getText().trim();
-        ItemManager itemManager = new ItemManager();
-
+        if (itemID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an Item ID to delete.");
+            return;
+        }
+        
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete Item ID: " + itemID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = itemManager.deleteItem(itemID); // You must implement this
-
-            if (success) {
-                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Item deleted successfully.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete item.");
+        if (confirm != JOptionPane.YES_OPTION) return;
+        
+        List<Map<String, String>> allItems = fileOps.ReadFile(className + ".csv");
+        boolean deleted = false;
+        
+// Remove the entry with matching salesID
+        for (int i = 0; i < allItems.size(); i++) {
+            Map<String, String> row = allItems.get(i);
+            if (itemID.equalsIgnoreCase(row.get("Item ID"))) {
+                allItems.remove(i);
+                deleted = true;
+                break;
             }
+        }
+
+        if (deleted) {
+            // Rewrite CSV without deleted entry
+            try {
+                // Create temp file content from allSales
+                // Write headers
+                List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
+                    bw.write(String.join(",", headers));
+                    bw.newLine();
+                    for (Map<String, String> row : allItems) {
+                        StringBuilder line = new StringBuilder();
+                        for (int j = 0; j < headers.size(); j++) {
+                            String val = row.getOrDefault(headers.get(j), "");
+                            // Escape commas and quotes
+                            if (val.contains(",") || val.contains("\"") || val.contains("\n")) {
+                                val = "\"" + val.replace("\"", "\"\"") + "\"";
+                            }
+                            line.append(val);
+                            if (j < headers.size() - 1) line.append(",");
+                        }
+                        bw.write(line.toString());
+                        bw.newLine();
+                    }
+                }
+
+                // Clear table and notify user
+                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
+                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

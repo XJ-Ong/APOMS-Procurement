@@ -1,7 +1,10 @@
 package com.group.apomsproject;
 
 
-import java.awt.HeadlessException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -161,26 +164,35 @@ public class EditPurchaseRequisitionGUI extends javax.swing.JFrame {
             return;
         }
 
-        RequisitionManager manager = new RequisitionManager();
-        PurchaseRequisition purchaseRequisition = manager.findRequisitionByID(PRID); // This method now skips the CSV header
+        FileOperations fileOps = new FileOperations();
+        String className = "PurchaseRequisition";
+        List<Map<String, String>> purchaseRequisition = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
+        DefaultTableModel model = (DefaultTableModel) tblEditPurchaseRequisition.getModel();
+        model.setRowCount(0); // Clear table first
 
-        if (purchaseRequisition != null) {
-            DefaultTableModel model = (DefaultTableModel) tblEditPurchaseRequisition.getModel();
-            model.setRowCount(0); // Clear existing rows
-            model.addRow(new Object[] {
-                purchaseRequisition.getPRID(),
-                purchaseRequisition.getQuantity(),
-                purchaseRequisition.getDeliveryDate(),
-                purchaseRequisition.getStatus(),
-                purchaseRequisition.getSMID()
-            });
-        } else {
+        for (Map<String, String> row : purchaseRequisition) {
+            if (row.get("Item ID").equalsIgnoreCase(PRID)) {
+                model.addRow(new Object[]{
+                    row.get("Purchase Requisition ID"),
+                    row.get("Quantity"),
+                    row.get("Delivery Date"),
+                    row.get("Status"),
+                    row.get("SMID")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
             JOptionPane.showMessageDialog(this, "Purchase Requisition ID not found.");
+        } else {
+            btnUpdate.setEnabled(true);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        RequisitionManager manager = new RequisitionManager();
         DefaultTableModel model = (DefaultTableModel) tblEditPurchaseRequisition.getModel();
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "No purchase requisition data to update.");
@@ -188,16 +200,57 @@ public class EditPurchaseRequisitionGUI extends javax.swing.JFrame {
         }
 
         try {
-            String requisitionID = txtPurchaseRequisitionID.getText().trim(); // from your text field
+            String requisitionID = txtPurchaseRequisitionID.getText().trim();
             int newQuantity = Integer.parseInt(model.getValueAt(0, 0).toString());
             String newDeliveryDate = model.getValueAt(0, 1).toString();
             String newStatus = model.getValueAt(0, 2).toString();
             String newSMID = model.getValueAt(0, 3).toString();
             
-        // Now call your logic
-            manager.editRequisition(requisitionID, newQuantity, newDeliveryDate, newStatus, newSMID);
-            JOptionPane.showMessageDialog(this, "Purchase requisition updated successfully.");
-        } catch (HeadlessException | NumberFormatException e) {
+            FileOperations fileOps = new FileOperations();
+            List<Map<String, String>> purchaseRequisitions = fileOps.ReadFile("PurchaseRequisition.csv"); // match your class name
+
+            // Prepare a list of updated Item objects
+            List<PurchaseRequisition> updatedRequisitions = new ArrayList<>();
+            boolean updated = false;
+
+            for (Map<String, String> row : purchaseRequisitions) {
+                String currentID = row.get("Purchase Requisition ID");
+
+                if (currentID.equalsIgnoreCase(requisitionID)) {
+                    // Update this item
+                    PurchaseRequisition purchaseRequisition = new PurchaseRequisition(requisitionID, newQuantity, newDeliveryDate, newStatus, newSMID);
+                    updatedRequisitions.add(purchaseRequisition);
+                    updated = true;
+                } else {
+                    // Keep existing item
+                    PurchaseRequisition purchaseRequisition = new PurchaseRequisition(
+                        row.get("Purchase Requisition ID"),
+                        Integer.parseInt(row.get("Quantity")),
+                        row.get("Delivery Date"),
+                        row.get("Status"),
+                        row.get("SMID")
+                    );
+                    updatedRequisitions.add(purchaseRequisition);
+                }
+            }
+
+            if (updated) {
+                // Clear original file
+                new PrintWriter("PurchaseRequisition.csv").close();
+                
+                // Rewrite all updated items using WriteFile(Object obj)
+                for (PurchaseRequisition purchaseRequisition : updatedRequisitions) {
+                    fileOps.WriteFile(purchaseRequisition); // this uses your existing WriteFile method
+                }
+
+                JOptionPane.showMessageDialog(this, "Purchase requisition updated successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Purchase requisition ID not found. Cannot update.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid numeric values. Please enter valid numbers.");
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error updating purchase requisition: " + e.getMessage());
         }
     }//GEN-LAST:event_btnUpdateActionPerformed

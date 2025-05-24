@@ -153,8 +153,8 @@ public class AddPurchaseRequisitionGUI extends javax.swing.JFrame {
             int Quantity = Integer.parseInt(quantity);
             
             PurchaseRequisition requisition = new PurchaseRequisition(requisitionID, Quantity, deliveryDate, status, smID);
-            RequisitionManager reqManager = new RequisitionManager();
-            reqManager.addRequisition(requisition);
+            FileOperations fileOps = new FileOperations();
+            fileOps.WriteFile(requisition);
             JOptionPane.showMessageDialog(this, "Requisition added successfully!");
             
             txtQuantity.setText("");

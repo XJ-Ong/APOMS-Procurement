@@ -1,6 +1,10 @@
 package com.group.apomsproject;
 
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,7 +18,8 @@ import javax.swing.table.DefaultTableModel;
  * @author User
  */
 public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
-
+    private final FileOperations fileOps = new FileOperations();
+    private final String className = "PurchaseRequisition"; 
     /**
      * Creates new form DeletePurchaseRequisitionGUI
      */
@@ -148,47 +153,95 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         String prID = txtDeletePurchaseRequisitionID.getText().trim();
+        if (prID.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Sales ID to delete.");
+            return;
+        }
         RequisitionManager prManager = new RequisitionManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete Purchase Requisition ID: " + prID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            boolean success = prManager.deleteRequisition(prID); // You must implement this
-
-            if (success) {
-                ((DefaultTableModel) tblDeletePurchaseRequisition.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Purchase requisition deleted successfully.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to delete purchase requisition.");
+        if (confirm != JOptionPane.YES_OPTION) return;
+        List<Map<String, String>> allRequisition = fileOps.ReadFile(className + ".csv");
+        boolean deleted = false;
+        
+// Remove the entry with matching salesID
+        for (int i = 0; i < allRequisition.size(); i++) {
+            Map<String, String> row = allRequisition.get(i);
+            if (prID.equalsIgnoreCase(row.get("PRID"))) {
+                allRequisition.remove(i);
+                deleted = true;
+                break;
             }
+        }
+
+        if (deleted) {
+            // Rewrite CSV without deleted entry
+            try {
+                // Create temp file content from allSales
+                // Write headers
+                List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
+                    bw.write(String.join(",", headers));
+                    bw.newLine();
+                    for (Map<String, String> row : allRequisition) {
+                        StringBuilder line = new StringBuilder();
+                        for (int j = 0; j < headers.size(); j++) {
+                            String val = row.getOrDefault(headers.get(j), "");
+                            // Escape commas and quotes
+                            if (val.contains(",") || val.contains("\"") || val.contains("\n")) {
+                                val = "\"" + val.replace("\"", "\"\"") + "\"";
+                            }
+                            line.append(val);
+                            if (j < headers.size() - 1) line.append(",");
+                        }
+                        bw.write(line.toString());
+                        bw.newLine();
+                    }
+                }
+
+                // Clear table and notify user
+                ((DefaultTableModel) tblDeletePurchaseRequisition.getModel()).setRowCount(0);
+                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String prID = txtDeletePurchaseRequisitionID.getText().trim();
-        RequisitionManager prManager = new RequisitionManager();
-        PurchaseRequisition purchaseRequisition = prManager.findRequisitionByID(prID);
-        
-        DefaultTableModel model = (DefaultTableModel) tblDeletePurchaseRequisition.getModel();
-        model.setRowCount(0); // Clear table
-        
         if (prID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter Purchase Requisition ID.");
             return;
         }
         
-        if (purchaseRequisition != null) {
-            model.addRow(new Object[] {
-                purchaseRequisition.getPRID(),
-                purchaseRequisition.getQuantity(),
-                purchaseRequisition.getDeliveryDate(),
-                purchaseRequisition.getStatus(),
-                purchaseRequisition.getSMID()
-            });
-        } else {
-            JOptionPane.showMessageDialog(this, "purchase requisition not found.");
+        DefaultTableModel model = (DefaultTableModel) tblDeletePurchaseRequisition.getModel();
+        model.setRowCount(0); // Clear table
+        
+        List<Map<String, String>> allSales = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
+        
+        for (Map<String, String> row : allSales) {
+            if (prID.equalsIgnoreCase(row.get("PRID"))) {  // assuming CSV header is PRID
+                model.addRow(new Object[]{
+                    row.get("PRID"),
+                    row.get("Quantity"),
+                    row.get("Delivery Date"),
+                    row.get("Status"),
+                    row.get("SMID")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, "Sales ID not found.");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 

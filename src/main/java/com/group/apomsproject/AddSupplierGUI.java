@@ -132,8 +132,8 @@ public class AddSupplierGUI extends javax.swing.JFrame {
             }
             
             Supplier supplier = new Supplier(supplierID, supplierName, supplierContact);
-            SupplierManager supManager = new SupplierManager();
-            supManager.addSupplier(supplier);
+            FileOperations fileOps = new FileOperations();
+            fileOps.WriteFile(supplier);
             JOptionPane.showMessageDialog(this, "Supplier added successfully!");
             
             txtSupplierName.setText("");
