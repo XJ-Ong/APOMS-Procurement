@@ -104,7 +104,7 @@ public class SalesManager {
     
     public Sales findSalesByID(String salesID) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
+            String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length != 4) continue; // Skip invalid lines
@@ -126,6 +126,31 @@ public class SalesManager {
 
         return null; // Not found
     }
+    
+    public List<Sales> getAllSales() {
+        List<Sales> sale = new ArrayList<>();
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine(); // Skip header
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) continue; // Skip invalid lines
+
+                String salesID = parts[0].trim();
+                String itemCode = parts[1].trim();
+                int quantitySold = Integer.parseInt(parts[2].trim());
+                String smID = parts[3].trim();
+
+                Sales sales = new Sales(salesID, itemCode, quantitySold, smID);
+                sale.add(sales);
+            }
+
+        } catch (IOException | NumberFormatException e) {
+        System.out.println("Error loading items from CSV: " + e.getMessage());
+        }
+
+        return sale;
+    }
 }
 

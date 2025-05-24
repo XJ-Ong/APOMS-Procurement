@@ -125,7 +125,7 @@ public class RequisitionManager {
     
     public PurchaseRequisition findRequisitionByID(String prID) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
+            String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length != 5) continue; // Skip invalid lines
@@ -148,6 +148,33 @@ public class RequisitionManager {
         }
 
         return null; // Not found
-    }    
+    }   
+    
+    public List<PurchaseRequisition> getAllRequisition() {
+        List<PurchaseRequisition> purchaseRequisition = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine(); // Skip header
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 5) continue; // Skip invalid lines
+
+                String PRID = parts[0].trim();
+                int quantity = Integer.parseInt(parts[1].trim());
+                String deliveryDate = parts[2].trim();
+                String status = parts[3].trim();
+                String smID = parts[4].trim();
+
+                PurchaseRequisition pRequisition = new PurchaseRequisition(PRID, quantity, deliveryDate, status, smID);
+                purchaseRequisition.add(pRequisition);
+            }
+
+        } catch (IOException | NumberFormatException e) {
+        System.out.println("Error loading items from CSV: " + e.getMessage());
+        }
+
+        return purchaseRequisition;
+    }
 }
 

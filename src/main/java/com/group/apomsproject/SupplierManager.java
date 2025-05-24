@@ -104,7 +104,7 @@ public class SupplierManager {
     
     public Supplier findSupplierByID(String supplierID){
         try (BufferedReader reader = new BufferedReader(new FileReader(file))){
-            String line;
+            String line = reader.readLine();
             while ((line = reader.readLine()) != null){
                 String[] parts = line.split(",");
                 if (parts.length !=3) continue;
@@ -122,6 +122,31 @@ public class SupplierManager {
         }
         
         return null;
+    }
+    
+    public List<Supplier> getAllSupplier() {
+        List<Supplier> suppliers = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine(); // Skip header
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) continue; // Skip invalid lines
+
+                String supplierID = parts[0].trim();
+                String supplierName = parts[1].trim();
+                String supplierContact = parts[2].trim();
+
+                Supplier supplier = new Supplier(supplierID, supplierName, supplierContact);
+                suppliers.add(supplier);
+            }
+
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error loading items from CSV: " + e.getMessage());
+        }
+
+        return suppliers;
     }
 }
 
