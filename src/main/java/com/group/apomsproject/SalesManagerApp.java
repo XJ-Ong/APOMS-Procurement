@@ -26,7 +26,7 @@ public class SalesManagerApp {
         }
 
         // Format the ID with leading zeros, e.g., S001, S010
-        return String.format("SA%03d", count + 1);
+        return String.format("SA%03d", count);
     }
 
     public static String generateItemID(String itemFile) {
@@ -40,7 +40,7 @@ public class SalesManagerApp {
         }
 
         // Format the ID with leading zeros, e.g., S001, S010
-        return String.format("I%03d", count + 1);
+        return String.format("I%03d", count);
     }
 
     public static String generateSupplierID(String supplierFile) {
@@ -54,7 +54,7 @@ public class SalesManagerApp {
         }
 
         // Format the ID with leading zeros, e.g., S001, S010
-        return String.format("SU%03d", count + 1);
+        return String.format("SU%03d", count);
     }
 
     public static String generateRequisitionID(String requisitionFile) {
@@ -68,7 +68,7 @@ public class SalesManagerApp {
         }
 
         // Format the ID with leading zeros, e.g., R001, R010
-        return String.format("RE%03d", count + 1);
+        return String.format("RE%03d", count);
     }
 
     public static void main(String[] args) {

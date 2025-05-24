@@ -111,7 +111,7 @@ public class ItemManager {
     
     public Item findItemByID(String itemID) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
+            String line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length != 6) continue; // Skip invalid lines
@@ -134,6 +134,34 @@ public class ItemManager {
         }
 
         return null; // Not found
+    }
+    
+    public List<Item> getAllItems() {
+        List<Item> items = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine(); // Skip header
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length != 6) continue; // Skip invalid lines
+
+                String itemID = parts[0].trim();
+                String itemName = parts[1].trim();
+                String supplierID = parts[2].trim();
+                int stockLevel = Integer.parseInt(parts[3].trim());
+                double unitPrice = Double.parseDouble(parts[4].trim());
+                int reorderLevel = Integer.parseInt(parts[5].trim());
+
+                Item item = new Item(itemID, itemName, supplierID, stockLevel, unitPrice, reorderLevel);
+                items.add(item);
+            }
+
+        } catch (IOException | NumberFormatException e) {
+        System.out.println("Error loading items from CSV: " + e.getMessage());
+        }
+
+        return items;
     }
 }
 

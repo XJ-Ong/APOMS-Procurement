@@ -62,7 +62,7 @@ public class Item {
     }
 
     public String toCSV() {
-        return itemCode + "," + itemName + "," + supplierID + "," + unitPrice + "," + reorderLevel;
+        return itemCode + "," + itemName + "," + supplierID + "," + stockLevel + "," + unitPrice + "," + reorderLevel;
     }
     
 }
