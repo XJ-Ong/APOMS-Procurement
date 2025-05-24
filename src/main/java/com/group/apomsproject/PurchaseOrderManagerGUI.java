@@ -40,6 +40,11 @@ public class PurchaseOrderManagerGUI extends javax.swing.JFrame {
         jLabel2.setText("Select an Option");
 
         btnViewPurchaseOrder.setText("View Purchase Order");
+        btnViewPurchaseOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViewPurchaseOrderActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
@@ -100,6 +105,12 @@ public class PurchaseOrderManagerGUI extends javax.swing.JFrame {
         salesManagerAppFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnViewPurchaseOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPurchaseOrderActionPerformed
+        ViewPurchaseOrderGUI viewPurchaseOrderFrame = new ViewPurchaseOrderGUI();
+        viewPurchaseOrderFrame.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnViewPurchaseOrderActionPerformed
 
     /**
      * @param args the command line arguments
