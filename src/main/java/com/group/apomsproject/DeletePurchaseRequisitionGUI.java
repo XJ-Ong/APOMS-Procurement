@@ -161,7 +161,6 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Please enter a Sales ID to delete.");
             return;
         }
-        RequisitionManager prManager = new RequisitionManager();
 
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete Purchase Requisition ID: " + prID + "?",
@@ -171,7 +170,7 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
         List<Map<String, String>> allRequisition = fileOps.ReadFile(className + ".csv");
         boolean deleted = false;
         
-// Remove the entry with matching salesID
+        // Remove the entry with matching salesID
         for (int i = 0; i < allRequisition.size(); i++) {
             Map<String, String> row = allRequisition.get(i);
             if (prID.equalsIgnoreCase(row.get("PRID"))) {
@@ -182,10 +181,13 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
         }
 
         if (deleted) {
-            // Rewrite CSV without deleted entry
             try {
-                // Create temp file content from allSales
-                // Write headers
+                // Renumber PRIDs: PR001, PR002, etc.
+                for (int i = 0; i < allRequisition.size(); i++) {
+                    String newPRID = String.format("PR%03d", i + 1);
+                    allRequisition.get(i).put("PRID", newPRID);
+                }
+
                 List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
                     bw.write(String.join(",", headers));
@@ -206,14 +208,13 @@ public class DeletePurchaseRequisitionGUI extends javax.swing.JFrame {
                     }
                 }
 
-                // Clear table and notify user
                 ((DefaultTableModel) tblDeletePurchaseRequisition.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+                JOptionPane.showMessageDialog(this, "Purchase Requisition deleted and IDs renumbered.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
+            JOptionPane.showMessageDialog(this, "Purchase Requisition ID not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

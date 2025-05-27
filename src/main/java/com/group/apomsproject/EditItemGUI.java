@@ -11,6 +11,7 @@ package com.group.apomsproject;
  */
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -41,14 +42,14 @@ public class EditItemGUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        txtItemID = new javax.swing.JTextField();
+        txtSearchKeyword = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblItemEdit = new javax.swing.JTable();
         btnUpdate = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        comboSearchBy = new javax.swing.JComboBox<>();
 
         jButton1.setText("jButton1");
 
@@ -56,14 +57,12 @@ public class EditItemGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel2.setText("Item ID:");
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Edit Item");
 
-        txtItemID.addActionListener(new java.awt.event.ActionListener() {
+        txtSearchKeyword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtItemIDActionPerformed(evt);
+                txtSearchKeywordActionPerformed(evt);
             }
         });
 
@@ -101,30 +100,34 @@ public class EditItemGUI extends javax.swing.JFrame {
             }
         });
 
+        comboSearchBy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item ID", "Item Name", "Supplier ID", "Supplier Name" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(btnUpdate)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnCancel))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSearch)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(164, 164, 164))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(164, 164, 164))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(238, 238, 238)
+                                .addComponent(btnUpdate)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCancel))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSearchKeyword)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearch))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,10 +135,11 @@ public class EditItemGUI extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSearch)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtSearchKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -159,43 +163,58 @@ public class EditItemGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtItemIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemIDActionPerformed
+    private void txtSearchKeywordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchKeywordActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtItemIDActionPerformed
+    }//GEN-LAST:event_txtSearchKeywordActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-    String itemID = txtItemID.getText().trim();
+        String searchBy = comboSearchBy.getSelectedItem().toString().trim();  // ComboBox selection
+        String keyword = txtSearchKeyword.getText().trim();                   // User input
 
-    if (itemID.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter an Item ID to search.");
-        return;
-    }
-    FileOperations fileOps = new FileOperations();
-    String className = "Item";
-    List<Map<String, String>> items = fileOps.ReadFile(className + ".csv");
-    boolean found = false;
-    DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
-    model.setRowCount(0); // Clear table first
-
-    for (Map<String, String> row : items) {
-        if (row.get("Item ID").equalsIgnoreCase(itemID)) {
-            model.addRow(new Object[]{
-                row.get("Item Name"),
-                row.get("Supplier ID"),
-                row.get("Stock Level"),
-                row.get("Unit Price"),
-                row.get("Reorder Level")
-            });
-            found = true;
-            break;
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
+            return;
         }
-    }
+        
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("Item ID", "Item Code");
+        attributeMap.put("Item Name", "Item Name");
+        attributeMap.put("Supplier ID", "Supplier ID");
+        attributeMap.put("Supplier Name", "Supplier Name");
 
-    if (!found) {
-        JOptionPane.showMessageDialog(this, "Item ID not found.");
-    } else {
-        btnUpdate.setEnabled(true);
-    }
+        String csvKey = attributeMap.getOrDefault(searchBy, "");  // Get corresponding CSV column
+        if (csvKey.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Invalid search attribute.");
+            return;
+        }
+        
+        FileOperations fileOps = new FileOperations();
+        String className = "Item";
+        List<Map<String, String>> items = fileOps.ReadFile(className + ".csv");
+        boolean found = false;
+        DefaultTableModel model = (DefaultTableModel) tblItemEdit.getModel();
+        model.setRowCount(0); // Clear table first
+
+        for (Map<String, String> row : items) {
+            if (keyword.equalsIgnoreCase(row.get(csvKey))) {
+                model.addRow(new Object[]{
+                    row.get("Item Code"),
+                    row.get("Item Name"),
+                    row.get("Supplier ID"),
+                    row.get("Stock Level"),
+                    row.get("Unit Price"),
+                    row.get("Reorder Level")
+                });
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            JOptionPane.showMessageDialog(this, searchBy + " not found.");
+        } else {
+            btnUpdate.setEnabled(true);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
@@ -204,58 +223,77 @@ public class EditItemGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No item data to update.");
             return;
         }
+    
         try {
-            String itemID = txtItemID.getText().trim();
-            String newItemName = model.getValueAt(0, 0).toString();
-            String newSupplierID = model.getValueAt(0, 1).toString();
+            // Get selected search attribute (e.g., "Item ID", "Supplier ID", etc.)
+            String searchBy = comboSearchBy.getSelectedItem().toString().trim();
+            String keyword = txtSearchKeyword.getText().trim();
+        
+            if (keyword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
+                return;
+            }
+        
+            // Map from combo box attribute label to CSV column keys
+            Map<String, String> attributeMap = new HashMap<>();
+            attributeMap.put("Item ID", "Item Code");
+            attributeMap.put("Item Name", "Item Name");
+            attributeMap.put("Supplier ID", "Supplier ID");
+            attributeMap.put("Supplier Name", "Supplier Name");
 
-            int newStockLevel = Integer.parseInt(model.getValueAt(0, 2).toString());
-            double newUnitPrice = Double.parseDouble(model.getValueAt(0, 3).toString());
-            int newReorderLevel = Integer.parseInt(model.getValueAt(0, 4).toString());
-
+            String csvKey = attributeMap.getOrDefault(searchBy, "");
+            if (csvKey.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Invalid search attribute.");
+                return;
+            }
+        
+            // Extract updated values from table (columns: 0=Item Code, 1=Item Name, 2=Supplier ID, 3=Stock Level, 4=Unit Price, 5=Reorder Level)
+            String newItemCode = model.getValueAt(0, 0).toString();
+            String newItemName = model.getValueAt(0, 1).toString();
+            String newSupplierID = model.getValueAt(0, 2).toString();
+            int newStockLevel = Integer.parseInt(model.getValueAt(0, 3).toString());
+            double newUnitPrice = Double.parseDouble(model.getValueAt(0, 4).toString());
+            int newReorderLevel = Integer.parseInt(model.getValueAt(0, 5).toString());
+        
             FileOperations fileOps = new FileOperations();
-            List<Map<String, String>> items = fileOps.ReadFile("Item.csv"); // match your class name
-
-            // Prepare a list of updated Item objects
-            List<Item> updatedItems = new ArrayList<>();
+            List<Map<String, String>> items = fileOps.ReadFile("Item.csv");
+        
             boolean updated = false;
-
+        
+            // Update the matching record based on the selected search attribute and keyword
             for (Map<String, String> row : items) {
-                String currentID = row.get("Item ID");
-
-                if (currentID.equalsIgnoreCase(itemID)) {
-                    // Update this item
-                    Item item = new Item(itemID, newItemName, newSupplierID, newStockLevel, newUnitPrice, newReorderLevel);
-                    updatedItems.add(item);
+                if (row.get(csvKey).equalsIgnoreCase(keyword)) {
+                    row.put("Item Code", newItemCode);
+                    row.put("Item Name", newItemName);
+                    row.put("Supplier ID", newSupplierID);
+                    row.put("Stock Level", String.valueOf(newStockLevel));
+                    row.put("Unit Price", String.valueOf(newUnitPrice));
+                    row.put("Reorder Level", String.valueOf(newReorderLevel));
                     updated = true;
-                } else {
-                    // Keep existing item
+                    break;
+                }
+            }
+        
+            if (updated) {
+                // Clear original file
+                new PrintWriter("Item.csv").close();
+
+                // Rewrite updated list back to file
+                for (Map<String, String> row : items) {
                     Item item = new Item(
-                        row.get("Item ID"),
+                        row.get("Item Code"),
                         row.get("Item Name"),
                         row.get("Supplier ID"),
                         Integer.parseInt(row.get("Stock Level")),
                         Double.parseDouble(row.get("Unit Price")),
                         Integer.parseInt(row.get("Reorder Level"))
                     );
-                    updatedItems.add(item);
+                    fileOps.WriteFile(item);
                 }
-            }
-
-            if (updated) {
-                // Clear original file
-                new PrintWriter("Item.csv").close();
-                
-                // Rewrite all updated items using WriteFile(Object obj)
-                for (Item item : updatedItems) {
-                    fileOps.WriteFile(item); // this uses your existing WriteFile method
-                }
-
                 JOptionPane.showMessageDialog(this, "Item updated successfully.");
             } else {
-                JOptionPane.showMessageDialog(this, "Item ID not found. Cannot update.");
+                JOptionPane.showMessageDialog(this, searchBy + " '" + keyword + "' not found. Cannot update.");
             }
-
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid numeric values. Please enter valid numbers.");
         } catch (Exception e) {
@@ -306,13 +344,13 @@ public class EditItemGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> comboSearchBy;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblItemEdit;
-    private javax.swing.JTextField txtItemID;
+    private javax.swing.JTextField txtSearchKeyword;
     // End of variables declaration//GEN-END:variables
 }

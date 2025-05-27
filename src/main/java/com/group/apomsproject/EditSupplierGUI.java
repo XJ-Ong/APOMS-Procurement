@@ -37,7 +37,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtSupplierID = new javax.swing.JTextField();
+        txtSupplierName = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEditSupplier = new javax.swing.JTable();
@@ -49,7 +49,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Edit Supplier");
 
-        jLabel2.setText("Supplier ID:");
+        jLabel2.setText("Supplier Name:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -102,16 +102,15 @@ public class EditSupplierGUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(67, 67, 67)
-                                        .addComponent(jLabel1))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtSupplierName)
+                                .addGap(18, 18, 18)
                                 .addComponent(btnSearch)))))
                 .addContainerGap(18, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,7 +120,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -151,10 +150,10 @@ public class EditSupplierGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String supplierID = txtSupplierID.getText().trim();
+        String supplierName = txtSupplierName.getText().trim();
     
-        if (supplierID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Supplier ID to search.");
+        if (supplierName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Supplier Name to search.");
             return;
         }
 
@@ -166,7 +165,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         model.setRowCount(0); // Clear table first
 
         for (Map<String, String> row : supplier) {
-            if (row.get("Sales ID").equalsIgnoreCase(supplierID)) {
+            if (row.get("Supplier Name").equalsIgnoreCase(supplierName)) {
                 model.addRow(new Object[]{
                     row.get("Supplier ID"),
                     row.get("Supplier Name"),
@@ -178,7 +177,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         }
 
         if (!found) {
-            JOptionPane.showMessageDialog(this, "Supplier ID not found.");
+            JOptionPane.showMessageDialog(this, "Supplier Name not found.");
         } else {
             btnUpdate.setEnabled(true);
         }
@@ -192,7 +191,7 @@ public class EditSupplierGUI extends javax.swing.JFrame {
         }
 
         try {
-            String supplierID = txtSupplierID.getText().trim(); // from your text field
+            String supplierID = txtSupplierName.getText().trim(); // from your text field
             String newSupplierName = model.getValueAt(0, 0).toString();
             String newSupplierContact = model.getValueAt(0, 1).toString();
 
@@ -291,6 +290,6 @@ public class EditSupplierGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblEditSupplier;
-    private javax.swing.JTextField txtSupplierID;
+    private javax.swing.JTextField txtSupplierName;
     // End of variables declaration//GEN-END:variables
 }

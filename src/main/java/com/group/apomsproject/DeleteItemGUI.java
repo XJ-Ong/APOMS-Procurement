@@ -3,6 +3,8 @@ package com.group.apomsproject;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -46,13 +48,13 @@ public class DeleteItemGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtDeleteItemID = new javax.swing.JTextField();
+        txtSearchKeyword = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDeleteItem = new javax.swing.JTable();
+        comboSearchBy = new javax.swing.JComboBox<>();
 
         jLabel2.setText("Item ID:");
 
@@ -60,8 +62,6 @@ public class DeleteItemGUI extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Delete Item");
-
-        jLabel3.setText("Item ID:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -92,6 +92,13 @@ public class DeleteItemGUI extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblDeleteItem);
 
+        comboSearchBy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item ID", "Item Name", "Supplier ID", "Supplier Name" }));
+        comboSearchBy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSearchByActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -99,28 +106,29 @@ public class DeleteItemGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnDelete)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancel))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnCancel))
+                                .addGap(6, 6, 6)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSearch)))))
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtSearchKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(49, 49, 49))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(87, 87, 87)))
+                                .addComponent(btnSearch)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(163, 163, 163)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,9 +137,9 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtDeleteItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(btnSearch))
+                    .addComponent(txtSearchKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch)
+                    .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -159,21 +167,35 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
-        if (itemID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an Item ID.");
+        String searchBy = comboSearchBy.getSelectedItem().toString().trim();  // ComboBox selection
+        String keyword = txtSearchKeyword.getText().trim();                   // User input
+
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
             return;
         }
-        
+
+        // Map ComboBox label to CSV header key
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("Item ID", "Item Code");
+        attributeMap.put("Item Name", "Item Name");
+        attributeMap.put("Supplier ID", "Supplier ID");
+        attributeMap.put("Supplier Name", "Supplier Name");
+
+        String csvKey = attributeMap.getOrDefault(searchBy, "");  // Get corresponding CSV column
+        if (csvKey.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Invalid search attribute.");
+            return;
+        }
+
         DefaultTableModel model = (DefaultTableModel) tblDeleteItem.getModel();
         model.setRowCount(0); // Clear table
-        
+
         List<Map<String, String>> allItems = fileOps.ReadFile(className + ".csv");
         boolean found = false;
 
-        
         for (Map<String, String> row : allItems) {
-            if (itemID.equalsIgnoreCase(row.get("Item Code"))) {  // assuming CSV header is salesID
+            if (keyword.equalsIgnoreCase(row.get(csvKey))) {
                 model.addRow(new Object[]{
                     row.get("Item Code"),
                     row.get("Item Name"),
@@ -183,46 +205,51 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                     row.get("Reorder Level")
                 });
                 found = true;
-                break;
+                // Do not break here if multiple matches are allowed
             }
         }
 
         if (!found) {
-            JOptionPane.showMessageDialog(this, "Item ID not found.");
+            JOptionPane.showMessageDialog(this, searchBy + " not found.");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String itemID = txtDeleteItemID.getText().trim();
+        String itemID = txtSearchKeyword.getText().trim();
         if (itemID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter an Item ID to delete.");
             return;
         }
-        
+
         int confirm = JOptionPane.showConfirmDialog(this,
             "Are you sure you want to delete Item ID: " + itemID + "?",
             "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
         if (confirm != JOptionPane.YES_OPTION) return;
-        
+
         List<Map<String, String>> allItems = fileOps.ReadFile(className + ".csv");
         boolean deleted = false;
-        
-// Remove the entry with matching salesID
-        for (int i = 0; i < allItems.size(); i++) {
-            Map<String, String> row = allItems.get(i);
+
+        // Remove entry
+        Iterator<Map<String, String>> iterator = allItems.iterator();
+        while (iterator.hasNext()) {
+            Map<String, String> row = iterator.next();
             if (itemID.equalsIgnoreCase(row.get("Item ID"))) {
-                allItems.remove(i);
+                iterator.remove();
                 deleted = true;
                 break;
             }
         }
 
         if (deleted) {
-            // Rewrite CSV without deleted entry
             try {
-                // Create temp file content from allSales
-                // Write headers
+                // Reassign Item IDs in sequence
+                for (int i = 0; i < allItems.size(); i++) {
+                    String newItemID = String.format("IT%03d", i + 1); // Format like IT001, IT002
+                    allItems.get(i).put("Item ID", newItemID);
+                }
+
+                // Write back to file
                 List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
                     bw.write(String.join(",", headers));
@@ -231,7 +258,6 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                         StringBuilder line = new StringBuilder();
                         for (int j = 0; j < headers.size(); j++) {
                             String val = row.getOrDefault(headers.get(j), "");
-                            // Escape commas and quotes
                             if (val.contains(",") || val.contains("\"") || val.contains("\n")) {
                                 val = "\"" + val.replace("\"", "\"\"") + "\"";
                             }
@@ -245,18 +271,22 @@ public class DeleteItemGUI extends javax.swing.JFrame {
 
                 // Clear table and notify user
                 ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+                JOptionPane.showMessageDialog(this, "Item deleted and IDs reindexed.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Error while updating entries: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
+            JOptionPane.showMessageDialog(this, "Item ID not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void comboSearchByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSearchByActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboSearchByActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,12 +325,12 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> comboSearchBy;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDeleteItem;
-    private javax.swing.JTextField txtDeleteItemID;
+    private javax.swing.JTextField txtSearchKeyword;
     // End of variables declaration//GEN-END:variables
 }

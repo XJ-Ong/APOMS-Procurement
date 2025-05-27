@@ -3,6 +3,7 @@ package com.group.apomsproject;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -44,20 +45,18 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtDeleteSalesID = new javax.swing.JTextField();
+        txtSearchKeyword = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDeleteSales = new javax.swing.JTable();
         btnDelete = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        comboSearchBy = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Delete Daily Sales Entry");
-
-        jLabel2.setText("Sales ID:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +86,8 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
         }
     });
 
+    comboSearchBy.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sales ID", "Item ID", "Sales Manager ID" }));
+
     javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
     jPanel1.setLayout(jPanel1Layout);
     jPanel1Layout.setHorizontalGroup(
@@ -103,12 +104,12 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtDeleteSalesID, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtSearchKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
                             .addComponent(btnSearch)))))
-            .addContainerGap(29, Short.MAX_VALUE))
+            .addContainerGap(26, Short.MAX_VALUE))
         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
             .addGap(0, 0, Short.MAX_VALUE)
             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,9 +122,9 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel2)
-                .addComponent(txtDeleteSalesID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(btnSearch))
+                .addComponent(txtSearchKeyword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSearch)
+                .addComponent(comboSearchBy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(12, 12, 12)
@@ -152,11 +153,26 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String salesID = txtDeleteSalesID.getText().trim();
-        if (salesID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Sales ID.");
+        String searchBy = comboSearchBy.getSelectedItem().toString().trim();  // ComboBox selection
+        String keyword = txtSearchKeyword.getText().trim();                   // User input
+
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
             return;
         }
+        
+        // Map ComboBox label to CSV header key
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("Sales ID", "Sales ID");
+        attributeMap.put("Item Code", "Item ID");
+        attributeMap.put("Quantity Sold", "Quantity Sold");
+        attributeMap.put("SMID", "SMID");
+
+        String csvKey = attributeMap.getOrDefault(searchBy, "");  // Get corresponding CSV column
+        if (csvKey.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Invalid search attribute.");
+            return;
+        }        
         
         List<Map<String, String>> allSales = fileOps.ReadFile(className + ".csv");
         boolean found = false;
@@ -165,9 +181,9 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
         model.setRowCount(0); // Clear table
                 
         for (Map<String, String> row : allSales) {
-            if (salesID.equalsIgnoreCase(row.get("Sales ID"))) {  // assuming CSV header is salesID
+            if (keyword.equalsIgnoreCase(row.get(csvKey))) {  // assuming CSV header is salesID
                 model.addRow(new Object[]{
-                    row.get("salesID"),
+                    row.get("Sales ID"),
                     row.get("Item Code"),
                     row.get("Quantity Sold"),
                     row.get("SMID")
@@ -178,12 +194,12 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
         }
 
         if (!found) {
-            JOptionPane.showMessageDialog(this, "Sales ID not found.");
+            JOptionPane.showMessageDialog(this, searchBy + " not found.");
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String salesID = txtDeleteSalesID.getText().trim();
+        String salesID = txtSearchKeyword.getText().trim();
         if (salesID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a Sales ID to delete.");
             return;
@@ -199,10 +215,13 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
         boolean deleted = false; // You must implement this
 
         if (deleted) {
-            // Rewrite CSV without deleted entry
             try {
-                // Create temp file content from allSales
-                // Write headers
+                // Renumber Sales IDs: SAL001, SAL002, etc.
+                for (int i = 0; i < allSales.size(); i++) {
+                    String newSalesID = String.format("SAL%03d", i + 1);
+                    allSales.get(i).put("Sales ID", newSalesID);
+                }
+
                 List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
                     bw.write(String.join(",", headers));
@@ -211,7 +230,6 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
                         StringBuilder line = new StringBuilder();
                         for (int j = 0; j < headers.size(); j++) {
                             String val = row.getOrDefault(headers.get(j), "");
-                            // Escape commas and quotes
                             if (val.contains(",") || val.contains("\"") || val.contains("\n")) {
                                 val = "\"" + val.replace("\"", "\"\"") + "\"";
                             }
@@ -223,9 +241,8 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
                     }
                 }
 
-                // Clear table and notify user
                 ((DefaultTableModel) tblDeleteSales.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+                JOptionPane.showMessageDialog(this, "Sales entry deleted and IDs renumbered successfully.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
             }
@@ -273,11 +290,11 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> comboSearchBy;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDeleteSales;
-    private javax.swing.JTextField txtDeleteSalesID;
+    private javax.swing.JTextField txtSearchKeyword;
     // End of variables declaration//GEN-END:variables
 }

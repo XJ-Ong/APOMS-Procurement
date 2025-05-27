@@ -43,7 +43,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtDeleteSupplierID = new javax.swing.JTextField();
+        txtDeleteSupplierName = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDeleteSupplier = new javax.swing.JTable();
@@ -55,7 +55,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Delete Supplier");
 
-        jLabel2.setText("Supplier ID:");
+        jLabel2.setText("Supplier Name:");
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2)
                             .addGap(18, 18, 18)
-                            .addComponent(txtDeleteSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDeleteSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnSearch))
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -119,7 +119,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtDeleteSupplierID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDeleteSupplierName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -145,9 +145,9 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String supplierID = txtDeleteSupplierID.getText().trim();
-        if (supplierID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter Supplier ID.");
+        String supplierName = txtDeleteSupplierName.getText().trim();
+        if (supplierName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter Supplier Name.");
             return;
         }
         
@@ -158,7 +158,7 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         boolean found = false;
         
         for (Map<String, String> row : allSupplier) {
-            if (supplierID.equalsIgnoreCase(row.get("Supplier ID"))) {  // assuming CSV header is salesID
+            if (supplierName.equalsIgnoreCase(row.get("Supplier Name"))) {  // assuming CSV header is Supplier Name
                 model.addRow(new Object[]{
                     row.get("Supplier ID"),
                     row.get("Supplier Name"),
@@ -170,12 +170,12 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         }
 
         if (!found) {
-            JOptionPane.showMessageDialog(this, "Supplier ID not found.");
+            JOptionPane.showMessageDialog(this, "Supplier Name not found.");
         }        
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String supplierID = txtDeleteSupplierID.getText().trim();
+        String supplierID = txtDeleteSupplierName.getText().trim();
         if (supplierID.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a Supplier ID to delete.");
             return;
@@ -200,10 +200,14 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
         }
 
         if (deleted) {
-            // Rewrite CSV without deleted entry
             try {
-                // Create temp file content from allSales
-                // Write headers
+                // Renumber Supplier IDs: SUP001, SUP002, etc.
+                for (int i = 0; i < allSupplier.size(); i++) {
+                    String newSupplierID = String.format("SUP%03d", i + 1);
+                    allSupplier.get(i).put("Supplier ID", newSupplierID);
+                }
+
+                // Write back updated data with renumbered IDs
                 List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + className));
                 try (BufferedWriter bw = new BufferedWriter(new FileWriter(className + ".csv"))) {
                     bw.write(String.join(",", headers));
@@ -224,14 +228,13 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
                     }
                 }
 
-                // Clear table and notify user
                 ((DefaultTableModel) tblDeleteSupplier.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Sales entry deleted successfully.");
+                JOptionPane.showMessageDialog(this, "Supplier entry deleted and IDs renumbered.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
+            JOptionPane.showMessageDialog(this, "Supplier ID not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
@@ -283,6 +286,6 @@ public class DeleteSupplierGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDeleteSupplier;
-    private javax.swing.JTextField txtDeleteSupplierID;
+    private javax.swing.JTextField txtDeleteSupplierName;
     // End of variables declaration//GEN-END:variables
 }
