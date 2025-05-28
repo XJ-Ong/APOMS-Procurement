@@ -4,6 +4,7 @@ package com.group.apomsproject;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -199,24 +200,49 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String salesID = txtSearchKeyword.getText().trim();
-        if (salesID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter a Sales ID to delete.");
+        String searchBy = comboSearchBy.getSelectedItem().toString().trim();  // ComboBox selection
+        String keyword = txtSearchKeyword.getText().trim();                   // User input
+
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
+            return;
+        }
+        
+        // Map ComboBox label to CSV header key
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("Sales ID", "Sales ID");
+        attributeMap.put("Item Code", "Item ID");
+        attributeMap.put("Quantity Sold", "Quantity Sold");
+        attributeMap.put("SMID", "SMID");
+
+        String csvKey = attributeMap.getOrDefault(searchBy, "");
+        if (csvKey.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Invalid deletion attribute.");
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete Sales ID: " + salesID + "?",
-            "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        
-        if (confirm != JOptionPane.YES_OPTION) return;
-
         List<Map<String, String>> allSales = fileOps.ReadFile(className + ".csv");
-        boolean deleted = false; // You must implement this
+        boolean deleted = false;
+
+        Iterator<Map<String, String>> iterator = allSales.iterator();
+        while (iterator.hasNext()) {
+            Map<String, String> row = iterator.next();
+            if (keyword.equalsIgnoreCase(row.get(csvKey))) {
+                int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete this sales entry?\n" + csvKey + ": " + keyword,
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    iterator.remove();
+                    deleted = true;
+                }
+                break; // Only delete the first matching entry
+            }
+        }
 
         if (deleted) {
             try {
-                // Renumber Sales IDs: SAL001, SAL002, etc.
+                // Renumber Sales IDs
                 for (int i = 0; i < allSales.size(); i++) {
                     String newSalesID = String.format("SAL%03d", i + 1);
                     allSales.get(i).put("Sales ID", newSalesID);
@@ -239,15 +265,15 @@ public class DeleteDailySalesEntryGUI extends javax.swing.JFrame {
                         bw.write(line.toString());
                         bw.newLine();
                     }
-                }
+                }   
 
-                ((DefaultTableModel) tblDeleteSales.getModel()).setRowCount(0);
+                ((DefaultTableModel) tblDeleteSales.getModel()).setRowCount(0); // Clear table
                 JOptionPane.showMessageDialog(this, "Sales entry deleted and IDs renumbered successfully.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error while deleting entry: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Sales ID not found. No entry deleted.");
+            JOptionPane.showMessageDialog(this, searchBy + " not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 

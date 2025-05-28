@@ -215,29 +215,43 @@ public class DeleteItemGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String itemID = txtSearchKeyword.getText().trim();
-        if (itemID.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an Item ID to delete.");
+        String searchBy = comboSearchBy.getSelectedItem().toString().trim();  // ComboBox selection
+        String keyword = txtSearchKeyword.getText().trim();                   // User input
+
+        if (keyword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a search keyword.");
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete Item ID: " + itemID + "?",
-            "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        // Map ComboBox label to CSV header key
+        Map<String, String> attributeMap = new HashMap<>();
+        attributeMap.put("Item ID", "Item Code");
+        attributeMap.put("Item Name", "Item Name");
+        attributeMap.put("Supplier ID", "Supplier ID");
+        attributeMap.put("Supplier Name", "Supplier Name");
 
-        if (confirm != JOptionPane.YES_OPTION) return;
+        String csvKey = attributeMap.getOrDefault(searchBy, "");
+        if (csvKey.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Invalid deletion attribute.");
+            return;
+        }
 
         List<Map<String, String>> allItems = fileOps.ReadFile(className + ".csv");
         boolean deleted = false;
 
-        // Remove entry
         Iterator<Map<String, String>> iterator = allItems.iterator();
         while (iterator.hasNext()) {
             Map<String, String> row = iterator.next();
-            if (itemID.equalsIgnoreCase(row.get("Item ID"))) {
-                iterator.remove();
-                deleted = true;
-                break;
+            if (keyword.equalsIgnoreCase(row.get(csvKey))) {
+                int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete this item?\n" + csvKey + ": " + keyword,
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    iterator.remove();
+                    deleted = true;
+                }
+                break; // Only delete the first match
             }
         }
 
@@ -245,8 +259,8 @@ public class DeleteItemGUI extends javax.swing.JFrame {
             try {
                 // Reassign Item IDs in sequence
                 for (int i = 0; i < allItems.size(); i++) {
-                    String newItemID = String.format("IT%03d", i + 1); // Format like IT001, IT002
-                    allItems.get(i).put("Item ID", newItemID);
+                    String newItemID = String.format("IT%03d", i + 1); // Format: IT001, IT002, etc.
+                    allItems.get(i).put("Item Code", newItemID); // Ensure the key matches your CSV header
                 }
 
                 // Write back to file
@@ -269,14 +283,13 @@ public class DeleteItemGUI extends javax.swing.JFrame {
                     }
                 }
 
-                // Clear table and notify user
-                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0);
-                JOptionPane.showMessageDialog(this, "Item deleted and IDs reindexed.");
+                ((DefaultTableModel) tblDeleteItem.getModel()).setRowCount(0); // Clear table
+                JOptionPane.showMessageDialog(this, "Item deleted and IDs reindexed successfully.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error while updating entries: " + e.getMessage());
             }
         } else {
-            JOptionPane.showMessageDialog(this, "Item ID not found. No entry deleted.");
+            JOptionPane.showMessageDialog(this, searchBy + " not found. No entry deleted.");
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
