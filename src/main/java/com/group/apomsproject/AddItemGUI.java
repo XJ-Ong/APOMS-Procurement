@@ -168,7 +168,7 @@ public class AddItemGUI extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
             String itemFile = "items.csv";
-            String itemID = SalesManagerApp.generateItemID(itemFile);  // ← Your original function
+            String itemID = Item.generateItemID(itemFile);  // ← Your original function
             String itemName = txtItemName.getText().trim();
             String supplierID = txtSupplierID.getText().trim();
             String stockLevelStr = txtStockLevel.getText().trim();

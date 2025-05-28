@@ -1,5 +1,9 @@
 package com.group.apomsproject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class PurchaseRequisition {
    
     private String PRID;
@@ -58,5 +62,19 @@ public class PurchaseRequisition {
     
     public String toCSV() {
         return PRID + "," + quantity + "," + deliveryDate + "," + status + "," + SMID;
+    }
+    
+    public static String generateRequisitionID(String requisitionFile) {
+        int count = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(requisitionFile))) {
+            while (reader.readLine() != null) {
+                count++;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading requisition file: " + e.getMessage());
+        }
+
+        // Format the ID with leading zeros, e.g., R001, R010
+        return String.format("RE%03d", count);
     }
  }

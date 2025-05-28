@@ -1,5 +1,9 @@
 package com.group.apomsproject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Sales {
     
     private String salesID;
@@ -48,5 +52,19 @@ public class Sales {
     
     public String toCSV() {
         return salesID + "," + itemCode + "," + quantitySold + "," + SMID;
+    }
+    
+    public static String generateSalesID(String salesFile) {
+        int count = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(salesFile))) {
+            while (reader.readLine() != null) {
+                count++;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading sales file: " + e.getMessage());
+        }
+
+        // Format the ID with leading zeros, e.g., S001, S010
+        return String.format("SA%03d", count);
     }
 }

@@ -1,5 +1,9 @@
 package com.group.apomsproject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Supplier {
     private String supplierID;
     private String supplierName;
@@ -39,5 +43,19 @@ public class Supplier {
 
     public void setSupplierContact(String supplierContact) {
         this.supplierContact = supplierContact;
+    }
+    
+    public static String generateSupplierID(String supplierFile) {
+        int count = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(supplierFile))) {
+            while (reader.readLine() != null) {
+                count++;
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading sales file: " + e.getMessage());
+        }
+
+        // Format the ID with leading zeros, e.g., S001, S010
+        return String.format("SU%03d", count);
     }
 }

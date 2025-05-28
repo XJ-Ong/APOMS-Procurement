@@ -136,7 +136,7 @@ public class AddPurchaseRequisitionGUI extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
             String requisitionFile = "purchase_requisitions.csv";
-            String requisitionID = SalesManagerApp.generateRequisitionID(requisitionFile);
+            String requisitionID = PurchaseRequisition.generateRequisitionID(requisitionFile);
             String quantity = txtQuantity.getText();
             String deliveryDate = txtDeliveryDate.getText();
             String status = "Pending";
@@ -164,8 +164,6 @@ public class AddPurchaseRequisitionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-        PurchaseRequisitionManagerGUI purchaseRequisitionManagerFrame = new PurchaseRequisitionManagerGUI();
-        purchaseRequisitionManagerFrame.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 

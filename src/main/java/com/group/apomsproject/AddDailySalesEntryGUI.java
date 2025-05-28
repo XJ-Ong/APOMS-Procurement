@@ -133,7 +133,7 @@ public class AddDailySalesEntryGUI extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
             String salesFile = "daily_sales.csv";
-            String salesID = SalesManagerApp.generateSalesID(salesFile);
+            String salesID = Sales.generateSalesID(salesFile);
             String itemCode = txtItemCode.getText();
             String quantity = txtQuantitySold.getText();
             String smID = txtSalesManagerID.getText();

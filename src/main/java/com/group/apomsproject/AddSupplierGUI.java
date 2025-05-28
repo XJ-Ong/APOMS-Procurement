@@ -126,7 +126,7 @@ public class AddSupplierGUI extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try{
             String supplierFile = "suppliers.csv";
-            String supplierID = SalesManagerApp.generateSupplierID(supplierFile);
+            String supplierID = Supplier.generateSupplierID(supplierFile);
             String supplierName = txtSupplierName.getText();
             String supplierContact = txtSupplierContact.getText();
             
