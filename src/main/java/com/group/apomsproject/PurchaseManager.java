@@ -1,25 +1,19 @@
 package com.group.apomsproject;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+public class PurchaseManager extends User{
+    private String PMID;
 
-public class SalesManager extends User{
-    private String SMID;
-
-    public SalesManager(String SMID, String userName, String userPassword, String userAddress, String userContact) {
+    public PurchaseManager(String PMID, String userName, String userPassword, String userAddress, String userContact) {
         super(userName, userPassword, userAddress, userContact);
-        this.SMID = SMID;
+        this.PMID = PMID;
     }
 
-    public String getSMID() {
-        return SMID;
+    public String getPMID() {
+        return PMID;
     }
 
-    public void setSMID(String SMID) {
-        this.SMID = SMID;
+    public void setPMID(String PMID) {
+        this.PMID = PMID;
     }
 
     public String getUserName() {
@@ -54,4 +48,3 @@ public class SalesManager extends User{
         this.userContact = userContact;
     }
 }
-

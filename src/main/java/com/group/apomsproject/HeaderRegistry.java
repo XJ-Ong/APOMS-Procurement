@@ -28,10 +28,5 @@ public class HeaderRegistry {
         (
                 "itemCode", "itemName", "supplierID", "stockLevel", "unitPrice", "reorderLevel"
         );
-        
-        List<String> OrderHeaders = Arrays.asList("orderId", "productName", "quantity", "supplier", "date");
-        registerHeaders(Order.class, OrderHeaders);
-
-        registerHeaders(Item.class, ItemHeaders);
     }
 }
