@@ -14,11 +14,35 @@ public class FileOperations
         Class<?> Object = obj.getClass();
         String fileName = Object.getSimpleName() + ".csv";
         List<String> headers = HeaderRegistry.getHeaders(Object);
+        String pKeyField = HeaderRegistry.getPKeyField(Object);
 
         if(headers.isEmpty())
         {
             JOptionPane.showMessageDialog(null, "no defined headers for this class");
             return;
+        }
+        
+        // Primary Key validation
+        String pKeyValue = null;
+        try
+        {
+            String getterName = "get" + pKeyField.substring(0, 1).toUpperCase() + pKeyField.substring(1);
+            Method getter = Object.getMethod(getterName);
+            pKeyValue = getter.invoke(obj).toString();
+            List<Map<String, String>> existingData = ReadFile(fileName);
+            for(Map<String, String> row : existingData)
+            {
+                // compare existing rows' ID to the passed object's ID
+                if(row.get(pKeyField).equals(pKeyValue))
+                {
+                    JOptionPane.showMessageDialog(null, "Error: Primary Key " + pKeyValue + " already exists in " + fileName);
+                    return;
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showConfirmDialog(null, "Error accessing primary key: " + e.getMessage());
         }
         
         Map<String, Method> getterMap = new HashMap<>();
@@ -42,7 +66,7 @@ public class FileOperations
             File file = new File(fileName);
             boolean isNewFile = !file.exists() || file.length() == 0;
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true)))
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(file, true)))
             {
                 // Write headers if the file is new
                 if (isNewFile)
@@ -241,7 +265,8 @@ public class FileOperations
                                     break;
                                 }
                             }
-                            if(allMatched) {
+                            if(allMatched)
+                            {
                                 bestConstructor = constructor;
                                 break;
                             }
@@ -336,5 +361,86 @@ public class FileOperations
         }
         
         return model;
+    }
+    
+    public void UpdateFile(Object obj, String pKeyValue)
+    {
+        Class<?> Object = obj.getClass();
+        String fileName = Object.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(Object);
+        String pKeyField = HeaderRegistry.getPKeyField(Object);
+        
+        if(headers.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "no defined headers for this class");
+            return;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        boolean found = false;
+        
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        for(Map<String, String> row : existingData)
+        {
+            if(row.get(pKeyField).equals(pKeyValue))
+            {
+                found = true;
+                Map<String, String> updatedRow = new HashMap<>();
+                for(String header : headers)
+                {
+                    try
+                    {
+                        String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
+                        Method getter = Object.getMethod(getterName);
+                        Object value = getter.invoke(obj);
+                        String strValue = (value != null) ? value.toString() : "";
+                        
+                        if(strValue.contains(",") || strValue.contains("\"") || strValue.contains("\n"))
+                        {
+                            strValue = "\"" + strValue.replace("\"", "\"\"") + "\"";
+                        }
+                        updatedRow.put(header, strValue);
+                    }
+                    catch(Exception e)
+                    {
+                        JOptionPane.showMessageDialog(null, "Error accessing getter for header: " + header);
+                        return;
+                    }
+                }
+                updatedData.add(updatedRow);
+            }
+            else
+            {
+                updatedData.add(row);
+            }
+        }
+        
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not foudn in " + fileName);
+            return;
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error updating file: " + e.getMessage());
+        }
     }
 }

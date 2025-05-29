@@ -5,15 +5,15 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Item {
-    private String itemCode;
+    private String itemID;
     private String itemName;
     private String supplierID;
     private int stockLevel;
     private double unitPrice;
     private int reorderLevel;
 
-    public Item(String itemCode, String itemName, String supplierID, int stockLevel, double unitPrice, int reorderLevel) {
-        this.itemCode = itemCode;
+    public Item(String itemID, String itemName, String supplierID, int stockLevel, double unitPrice, int reorderLevel) {
+        this.itemID = itemID;
         this.itemName = itemName;
         this.supplierID = supplierID;
         this.stockLevel = stockLevel;
@@ -21,12 +21,12 @@ public class Item {
         this.reorderLevel = reorderLevel;
     }
 
-    public String getItemCode() {
-        return itemCode;
+    public String getItemID() {
+        return itemID;
     }
 
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
     }
 
     public String getItemName() {
@@ -66,7 +66,7 @@ public class Item {
     }
 
     public String toCSV() {
-        return itemCode + "," + itemName + "," + supplierID + "," + stockLevel + "," + unitPrice + "," + reorderLevel;
+        return itemID + "," + itemName + "," + supplierID + "," + stockLevel + "," + unitPrice + "," + reorderLevel;
     }
     
     public static String generateItemID(String itemFile) {
