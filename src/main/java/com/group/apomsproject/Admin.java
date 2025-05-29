@@ -53,12 +53,6 @@ public class Admin extends User{
     public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
-
-    public DefaultTableModel viewUser(String user)
-    {
-        FileOperations fh = new FileOperations();
-        return fh.getTable(user);
-    }
     
     public void createUser(String id, String name, String pass, String address, String contact)
     {
@@ -95,5 +89,23 @@ public class Admin extends User{
         }
         
         JOptionPane.showMessageDialog(null, "User " + name + " successfully added for " + role);
+    }
+    
+    public DefaultTableModel viewUser(String className)
+    {
+        FileOperations fh = new FileOperations();
+        return fh.getTable(className);
+    }
+    
+    public void updateUser(Object user, String ID)
+    {
+        FileOperations fh = new FileOperations();
+        fh.UpdateFile(user, ID, false);
+    }
+        
+    public void deleteUser(Object user, String ID)
+    {
+        FileOperations fh = new FileOperations();
+        fh.UpdateFile(user, ID, true);
     }
 }

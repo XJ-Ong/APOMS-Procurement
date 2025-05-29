@@ -363,7 +363,7 @@ public class FileOperations
         return model;
     }
     
-    public void UpdateFile(Object obj, String pKeyValue)
+    public void UpdateFile(Object obj, String pKeyValue, boolean delFlag)
     {
         Class<?> Object = obj.getClass();
         String fileName = Object.getSimpleName() + ".csv";
@@ -407,7 +407,10 @@ public class FileOperations
                         return;
                     }
                 }
-                updatedData.add(updatedRow);
+                if(!delFlag)
+                {
+                    updatedData.add(updatedRow);
+                }
             }
             else
             {
