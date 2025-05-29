@@ -19,42 +19,34 @@ public class InventoryManager extends User
         this.IMID = IMID;
     }
 
-    @Override
     public String getUserName() {
         return userName;
     }
-
-    @Override
+    
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-    @Override
+    
     public String getUserAddress() {
         return userAddress;
     }
 
-    @Override
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
     }
 
-    @Override
     public String getUserContact() {
         return userContact;
     }
 
-    @Override
     public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
 
-    @Override
     public String getUserPassword() {
         return userPassword;
     }
 
-    @Override
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }

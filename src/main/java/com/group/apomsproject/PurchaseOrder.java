@@ -1,14 +1,25 @@
 package com.group.apomsproject;
 
 public class PurchaseOrder {
-    protected String POID;
+    private String POID;
     private String PRID;
-    private String itemCode;
-    private int quantity;
+    private String itemID;
+    private int orderQuantity;
     private String supplierID;
-    private String PMID;
     private String status;
-    private boolean isApproved;
+    private String dateCreated;
+    private String PMID;
+
+    public PurchaseOrder(String POID, String PRID, String itemID, int orderQuantity, String supplierID, String status, String dateCreated, String PMID) {
+        this.POID = POID;
+        this.PRID = PRID;
+        this.itemID = itemID;
+        this.orderQuantity = orderQuantity;
+        this.supplierID = supplierID;
+        this.status = status;
+        this.dateCreated = dateCreated;
+        this.PMID = PMID;
+    }
 
     public String getPOID() {
         return POID;
@@ -22,20 +33,32 @@ public class PurchaseOrder {
         return PRID;
     }
 
-    public String getItemCode() {
-        return itemCode;
+    public void setPRID(String PRID) {
+        this.PRID = PRID;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
+    }
+
+    public int getOrderQuantity() {
+        return orderQuantity;
+    }
+
+    public void setOrderQuantity(int orderQuantity) {
+        this.orderQuantity = orderQuantity;
     }
 
     public String getSupplierID() {
         return supplierID;
     }
 
-    public String getPMID() {
-        return PMID;
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
     }
 
     public String getStatus() {
@@ -46,35 +69,19 @@ public class PurchaseOrder {
         this.status = status;
     }
 
-    public boolean isIsApproved() {
-        return isApproved;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public void setIsApproved(boolean isApproved) {
-        this.isApproved = isApproved;
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
-    
-    
 
-    public PurchaseOrder(String POID, String PRID, String itemCode, int quantity, String supplierID, String status, String PMID) {
-        //if (!isPOIDUnique(POID)) {
-        //    throw new IllegalArgumentException("POID must be unique.");
-        //}
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be positive.");
-        }
+    public String getPMID() {
+        return PMID;
+    }
 
-        this.POID = POID;
-        this.PRID = PRID;
-        this.itemCode = itemCode;
-        this.quantity = quantity;
-        this.supplierID = supplierID;
+    public void setPMID(String PMID) {
         this.PMID = PMID;
-        this.status = "Pending";
-        this.isApproved = false;
     }
-
-    //private boolean isPOIDUnique(String POID) {
-    //    throw new UnsupportedOperationException("Not supported yet."); 
-    //}
 }

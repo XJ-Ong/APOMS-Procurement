@@ -7,14 +7,15 @@ import java.io.IOException;
 public class Supplier {
     private String supplierID;
     private String supplierName;
+    private String supplierAddress;
     private String supplierContact;
     
-    public Supplier(String supplierID, String supplierName, String supplierContact)
+    public Supplier(String supplierID, String supplierName, String supplierAddress, String supplierContact)
     {
         this.supplierID = supplierID;
         this.supplierName = supplierName;
+        this.supplierAddress = supplierAddress;
         this.supplierContact = supplierContact;
-
     }
 
     public String getSupplierID() {
@@ -32,9 +33,13 @@ public class Supplier {
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
     }
-    
-    public String toCSV() {
-        return supplierID + "," + supplierName + "," + supplierContact;
+
+    public String getSupplierAddress() {
+        return supplierAddress;
+    }
+
+    public void setSupplierAddress(String supplierAddress) {
+        this.supplierAddress = supplierAddress;
     }
     
     public String getSupplierContact() {
@@ -43,19 +48,5 @@ public class Supplier {
 
     public void setSupplierContact(String supplierContact) {
         this.supplierContact = supplierContact;
-    }
-    
-    public static String generateSupplierID(String supplierFile) {
-        int count = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(supplierFile))) {
-            while (reader.readLine() != null) {
-                count++;
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading sales file: " + e.getMessage());
-        }
-
-        // Format the ID with leading zeros, e.g., S001, S010
-        return String.format("SU%03d", count);
     }
 }

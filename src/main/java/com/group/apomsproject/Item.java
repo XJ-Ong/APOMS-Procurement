@@ -1,24 +1,18 @@
 package com.group.apomsproject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class Item {
     private String itemID;
     private String itemName;
-    private String supplierID;
-    private int stockLevel;
-    private double unitPrice;
-    private int reorderLevel;
+    private double price;
+    private int quantity;
+    private int ROL;
 
-    public Item(String itemID, String itemName, String supplierID, int stockLevel, double unitPrice, int reorderLevel) {
+    public Item(String itemID, String itemName, double price, int quantity, int ROL) {
         this.itemID = itemID;
         this.itemName = itemName;
-        this.supplierID = supplierID;
-        this.stockLevel = stockLevel;
-        this.unitPrice = unitPrice;
-        this.reorderLevel = reorderLevel;
+        this.price = price;
+        this.quantity = quantity;
+        this.ROL = ROL;
     }
 
     public String getItemID() {
@@ -37,49 +31,27 @@ public class Item {
         this.itemName = itemName;
     }
 
-    public String getSupplierID() {
-        return supplierID;
+    public double getPrice() {
+        return price;
     }
 
-    public int getStockLevel() {
-        return stockLevel;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setStockLevel(int stockLevel) {
-        this.stockLevel = stockLevel;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public double getUnitPrice() {
-        return unitPrice;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public void setUnitPrice(double unitPrice) {
-        this.unitPrice = unitPrice;
+    public int getROL() {
+        return ROL;
     }
 
-    public int getReorderLevel() {
-        return reorderLevel;
-    }
-
-    public void setReorderLevel(int reorderLevel) {
-        this.reorderLevel = reorderLevel;
-    }
-
-    public String toCSV() {
-        return itemID + "," + itemName + "," + supplierID + "," + stockLevel + "," + unitPrice + "," + reorderLevel;
-    }
-    
-    public static String generateItemID(String itemFile) {
-        int count = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(itemFile))) {
-            while (reader.readLine() != null) {
-                count++;
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading sales file: " + e.getMessage());
-        }
-
-        // Format the ID with leading zeros, e.g., S001, S010
-        return String.format("I%03d", count);
+    public void setROL(int ROL) {
+        this.ROL = ROL;
     }
 }
