@@ -4,14 +4,16 @@ public class ImportList {
     private String ILID;
     private String POID;
     private String itemID;
+    private String supplierID;
     private int receivedQuantity;
     private String status;
     private String dateCreated;
 
-    public ImportList(String ILID, String POID, String itemID, int receivedQuantity, String status, String dateCreated) {
+    public ImportList(String ILID, String POID, String itemID, String supplierID, int receivedQuantity, String status, String dateCreated) {
         this.ILID = ILID;
         this.POID = POID;
         this.itemID = itemID;
+        this.supplierID = supplierID;
         this.receivedQuantity = receivedQuantity;
         this.status = status;
         this.dateCreated = dateCreated;
@@ -39,6 +41,14 @@ public class ImportList {
 
     public void setItemID(String itemID) {
         this.itemID = itemID;
+    }
+
+    public String getSupplierID() {
+        return supplierID;
+    }
+
+    public void setSupplierID(String supplierID) {
+        this.supplierID = supplierID;
     }
 
     public int getReceivedQuantity() {

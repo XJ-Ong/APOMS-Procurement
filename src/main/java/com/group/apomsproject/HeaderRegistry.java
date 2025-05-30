@@ -39,42 +39,108 @@ public class HeaderRegistry
     
     public static void init()
     {
+        // Admin
         List<String> AMHeaders = Arrays.asList
-        (
+        (   // Define headers' order
             "AMID", "userName", "userPassword", "userAddress", "userContact"
         );
         registerHeaders(Admin.class, AMHeaders, "AMID", "AM", Collections.emptyMap());
         
+        // SalesManager
         List<String> SMHeaders = Arrays.asList
         (
             "SMID", "userName", "userPassword", "userAddress", "userContact"
         );
+        // Foreign Key Mapping (used for record deletion)
         Map<String, List<String>> SMDpd = new HashMap<>();
         SMDpd.put("Sales.csv", Arrays.asList("SMID"));
         SMDpd.put("PurchaseRequisition.csv", Arrays.asList("SMID"));
         registerHeaders(SalesManager.class, SMHeaders, "SMID", "SM", Collections.emptyMap());
         
+        // PurchaseManager
+        List<String> PMHeaders = Arrays.asList
+        (
+            "PMID", "userName", "userPassword", "userAddress", "userContact"
+        );
+        Map<String, List<String>> PMDpd = new HashMap<>();
+        PMDpd.put("PurchaseOrder.csv", Arrays.asList("PMID"));
+        registerHeaders(PurchaseManager.class, PMHeaders, "PMID", "PM", Collections.emptyMap());
+        
+        
+        // FinanceManager
+        List<String> FMHeaders = Arrays.asList
+        (
+            "FMID", "userName", "userPassword", "userAddress", "userContact"
+        );
+        registerHeaders(FinanceManager.class, FMHeaders, "FMID", "FM", Collections.emptyMap());
+        
+        // InventoryManager
         List<String> IMHeaders = Arrays.asList
         (
             "IMID", "userName", "userPassword", "userAddress", "userContact"
         );
         registerHeaders(InventoryManager.class, IMHeaders, "IMID", "IM", Collections.emptyMap());
         
+        // Supplier
+        List<String> SupplierHeaders = Arrays.asList
+        (
+            "supplierID", "supplierName", "supplierAddress", "supplierContact"
+        );
+        Map<String, List<String>> SPDpd = new HashMap<>();
+        SPDpd.put("ItemSupplierMap.csv", Arrays.asList("SPID"));
+        SPDpd.put("PurchaseOrder.csv", Arrays.asList("SPID"));
+        SPDpd.put("ImportList.csv", Arrays.asList("SPID"));
+        registerHeaders(Supplier.class, SupplierHeaders, "SPID", "SP", SPDpd);
+        
+        // Item
         List<String> ItemHeaders = Arrays.asList
         (
             "itemID", "itemName", "supplierID", "stockLevel", "unitPrice", "reorderLevel"
         );
-        Map<String, List<String>> itemDpd = new HashMap<>();
-        itemDpd.put("ItemSupplierMap.csv", Arrays.asList("itemID"));
-        itemDpd.put("PurchaseRequisition.csv", Arrays.asList("itemID"));
-        itemDpd.put("POrder.csv", Arrays.asList("itemID"));
-        itemDpd.put("ImportList.csv", Arrays.asList("itemID"));
-        registerHeaders(Item.class, ItemHeaders, "itemID", "ITM", itemDpd);
+        Map<String, List<String>> ITMDpd = new HashMap<>();
+        ITMDpd.put("ItemSupplierMap.csv", Arrays.asList("itemID"));
+        ITMDpd.put("PurchaseRequisition.csv", Arrays.asList("itemID"));
+        ITMDpd.put("POrder.csv", Arrays.asList("itemID"));
+        ITMDpd.put("ImportList.csv", Arrays.asList("itemID"));
+        registerHeaders(Item.class, ItemHeaders, "itemID", "ITM", ITMDpd);
         
+        // ItemSupplierMap
         List<String> ItemSupplierMapHeaders = Arrays.asList
         (
             "itemID", "supplierID"
         );
         registerHeaders(ItemSupplierMap.class, ItemSupplierMapHeaders, "itemCode", "", Collections.emptyMap());
+        
+        // Sales
+        List<String> SalesHeaders = Arrays.asList
+        (
+            "salesID", "itemID", "quantitySold", "dateCreated", "SMID"
+        );
+        registerHeaders(Sales.class, SalesHeaders, "salesID", "SL", Collections.emptyMap());
+        
+        // PurchaseRequisition
+        List<String> PRHeaders = Arrays.asList
+        (
+            "PRID", "itemID", "requiredQuantity", "status", "dateCreated", "SMID"
+        );
+        Map<String, List<String>> PRDpd = new HashMap<>();
+        PRDpd.put("PurchaseOrder.csv", Arrays.asList("PRID"));
+        registerHeaders(PurchaseRequisition.class, PRHeaders, "PRID", "PR", PRDpd);
+        
+        // PurchaseOrder
+        List<String> POHeaders = Arrays.asList
+        (
+            "POID", "PRID", "itemID", "orderQuantity", "supplierID", "status", "dateCreated", "PMID"
+        );
+        Map<String, List<String>> PODpd = new HashMap<>();
+        PODpd.put("ImportList.csv", Arrays.asList("POID"));
+        registerHeaders(PurchaseOrder.class, POHeaders, "POID", "PO", PODpd);
+        
+        // ImportList
+        List<String> ILHeaders = Arrays.asList
+        (
+            "ILID", "POID", "itemID", "supplierID", "receivedQuantity", "status", "dateCreated"
+        );
+        registerHeaders(ImportList.class, ILHeaders, "ILID", "IL", Collections.emptyMap());
     }
 }

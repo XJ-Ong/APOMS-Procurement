@@ -446,4 +446,119 @@ public class FileOperations
             JOptionPane.showMessageDialog(null, "Error updating file: " + e.getMessage());
         }
     }
+    
+    public void rearrangePrimaryKeys(String className)
+    {
+        String fileName = className + ".csv";
+        Class<?> Object;
+        try
+        {
+            Object = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return;
+        }
+        
+        String pKeyField = HeaderRegistry.getPKeyField(Object);
+        String pKeyPrefix = HeaderRegistry.getPKeyField(Object);
+        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(Object);
+        
+        if(pKeyField.isEmpty() || pKeyPrefix.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Primary key field or prefix not defined for " + className);
+            return;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        if(existingData.isEmpty())
+        {
+            return;
+        }
+        
+        // Rearrange Primary Keys
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        Map<String, String> idMap = new HashMap<>();
+        for(int i = 0; i < existingData.size(); i++)
+        {
+            Map<String, String> row = new HashMap<>(existingData.get(i));
+            String oldID = row.get(pKeyField);
+            String newID = pKeyPrefix + String.format("%02d", i);
+            row.put(pKeyField, newID);
+            idMap.put(oldID, newID);
+            updatedData.add(row);
+        }
+        
+        // Update the file with new Primary Keys
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            List<String> headers = HeaderRegistry.getHeaders(Object);
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error rewriting " + fileName);
+            return;
+        }
+        
+        // Update Foreign Keys
+        for(Map.Entry<String, List<String>> dependency : dependencies.entrySet())
+        {
+            String relatedFile = dependency.getKey();
+            List<String> fKeyFields = dependency.getValue();
+            List<Map<String, String>> relatedData = ReadFile(relatedFile);
+            List<Map<String, String>> newRelatedData = new ArrayList<>();
+            
+            for(Map<String, String> row : relatedData)
+            {
+                Map<String, String> updatedRow = new HashMap<>(row);
+                
+                for(String fKeyField : fKeyFields) // read key fields in the row
+                {
+                    String oldID = row.get(fKeyField); // get the old ID
+                    if(idMap.containsKey(oldID))
+                    {
+                        updatedRow.put(fKeyField, idMap.get(oldID)); // replace old ID with new ID
+                    }
+                }
+                newRelatedData.add(updatedRow);
+            }
+            
+            // Update related file with updated foreign keys
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+            {
+                // get the class headers of related file
+                List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + relatedFile.replace(".csv", "")));
+                bw.write(String.join(",", headers));
+                bw.newLine();
+                for(Map<String, String> row : newRelatedData)
+                {
+                    List<String> rowData = new ArrayList<>();
+                    for(String header : headers)
+                    {
+                        rowData.add(row.getOrDefault(header, ""));
+                    }
+                    bw.write(String.join(",", rowData));
+                    bw.newLine();
+                }
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, "Error updating " + relatedFile);
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Primary keys rearranged successfully for " + className);
+    }
 }
