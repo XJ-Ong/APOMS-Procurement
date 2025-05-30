@@ -96,7 +96,7 @@ public class FileOperations
         }
         catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage() + ". Creating the file now");
         }
     }
     
@@ -206,8 +206,8 @@ public class FileOperations
     public <T> List<T> recreateObj(String className)
     {
         List<T> objects = new ArrayList<>();
-        String filename = className + ".csv";
-        List<Map<String, String>> data = ReadFile(filename);
+        String fileName = className + ".csv";
+        List<Map<String, String>> data = ReadFile(fileName);
         
         try
         {

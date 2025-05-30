@@ -103,6 +103,8 @@ public class Admin extends User{
         
     public void deleteUser(Object user, String ID)
     {
-        
+        Class<?> userObj = user.getClass();
+        String className = userObj.getSimpleName();
+        fh.DeleteRecord(className, ID);
     }
 }
