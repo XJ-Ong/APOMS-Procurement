@@ -462,7 +462,7 @@ public class FileOperations
         }
         
         String pKeyField = HeaderRegistry.getPKeyField(Object);
-        String pKeyPrefix = HeaderRegistry.getPKeyField(Object);
+        String pKeyPrefix = HeaderRegistry.getPKeyPrefix(Object);
         Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(Object);
         
         if(pKeyField.isEmpty() || pKeyPrefix.isEmpty())
@@ -484,7 +484,7 @@ public class FileOperations
         {
             Map<String, String> row = new HashMap<>(existingData.get(i));
             String oldID = row.get(pKeyField);
-            String newID = pKeyPrefix + String.format("%02d", i);
+            String newID = pKeyPrefix + String.format("%02d", i + 1);
             row.put(pKeyField, newID);
             idMap.put(oldID, newID);
             updatedData.add(row);
@@ -537,7 +537,7 @@ public class FileOperations
             }
             
             // Update related file with updated foreign keys
-            try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(relatedFile)))
             {
                 // get the class headers of related file
                 List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + relatedFile.replace(".csv", "")));
@@ -560,5 +560,13 @@ public class FileOperations
             }
         }
         JOptionPane.showMessageDialog(null, "Primary keys rearranged successfully for " + className);
+    }
+    
+    // Used to automate mapping process
+    public String generateISMID()
+    {
+        List<Map<String, String>> data = ReadFile("ItemSupplierMap.csv");
+        int id = data.size() + 1;
+        return "ISM" + String.format("%02d", id);
     }
 }

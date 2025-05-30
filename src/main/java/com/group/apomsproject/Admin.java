@@ -8,6 +8,7 @@ import javax.swing.table.*;
 
 public class Admin extends User{
     private String AMID;
+    private FileOperations fh = new FileOperations();
 
     public Admin(String AMID, String userName, String userPassword, String userAddress, String userContact) {
         super(userName, userPassword, userAddress, userContact);
@@ -57,7 +58,6 @@ public class Admin extends User{
     public void createUser(String id, String name, String pass, String address, String contact)
     {
         String role;
-        FileOperations fh = new FileOperations();
         if(id.startsWith("S"))
         {
             SalesManager sm = new SalesManager(id, name, pass, address, contact);
@@ -93,19 +93,16 @@ public class Admin extends User{
     
     public DefaultTableModel viewUser(String className)
     {
-        FileOperations fh = new FileOperations();
         return fh.getTable(className);
     }
     
     public void updateUser(Object user, String ID)
     {
-        FileOperations fh = new FileOperations();
         fh.UpdateFile(user, ID, false);
     }
         
     public void deleteUser(Object user, String ID)
     {
-        FileOperations fh = new FileOperations();
         fh.UpdateFile(user, ID, true);
     }
 }
