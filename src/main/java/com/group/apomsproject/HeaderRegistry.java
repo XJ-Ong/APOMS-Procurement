@@ -95,10 +95,11 @@ public class HeaderRegistry
         // Item
         List<String> ItemHeaders = Arrays.asList
         (
-            "itemID", "itemName", "supplierID", "stockLevel", "unitPrice", "reorderLevel"
+            "itemID", "itemName", "stockLevel", "unitPrice", "reorderLevel"
         );
         Map<String, List<String>> ITMDpd = new HashMap<>();
         ITMDpd.put("ItemSupplierMap.csv", Arrays.asList("itemID"));
+        ITMDpd.put("Sales.csv", Arrays.asList("itemID"));
         ITMDpd.put("PurchaseRequisition.csv", Arrays.asList("itemID"));
         ITMDpd.put("PurchaseOrder.csv", Arrays.asList("itemID"));
         ITMDpd.put("ImportList.csv", Arrays.asList("itemID"));
