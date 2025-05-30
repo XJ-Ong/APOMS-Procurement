@@ -11,10 +11,10 @@ public class FileOperations
 
     public void WriteFile(Object obj)
     {
-        Class<?> Object = obj.getClass();
-        String fileName = Object.getSimpleName() + ".csv";
-        List<String> headers = HeaderRegistry.getHeaders(Object);
-        String pKeyField = HeaderRegistry.getPKeyField(Object);
+        Class<?> classObj = obj.getClass();
+        String fileName = classObj.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(classObj);
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
 
         if(headers.isEmpty())
         {
@@ -27,7 +27,7 @@ public class FileOperations
         try
         {
             String getterName = "get" + pKeyField.substring(0, 1).toUpperCase() + pKeyField.substring(1);
-            Method getter = Object.getMethod(getterName);
+            Method getter = classObj.getMethod(getterName);
             pKeyValue = getter.invoke(obj).toString();
             List<Map<String, String>> existingData = ReadFile(fileName);
             for(Map<String, String> row : existingData)
@@ -42,7 +42,7 @@ public class FileOperations
         }
         catch(Exception e)
         {
-            JOptionPane.showConfirmDialog(null, "Error accessing primary key: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error accessing primary key: " + e.getMessage());
         }
         
         Map<String, Method> getterMap = new HashMap<>();
@@ -51,7 +51,7 @@ public class FileOperations
             String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
             try
             {
-                Method getter = Object.getMethod(getterName);
+                Method getter = classObj.getMethod(getterName);
                 getterMap.put(header, getter);
             }
             catch(NoSuchMethodException e)
@@ -100,11 +100,11 @@ public class FileOperations
         }
     }
     
-    public List<Map<String, String>> ReadFile(String filename)
+    public List<Map<String, String>> ReadFile(String fileName)
     {
         List<Map<String, String>> data = new ArrayList<>();
         
-        try(BufferedReader br = new BufferedReader(new FileReader(filename)))
+        try(BufferedReader br = new BufferedReader(new FileReader(fileName)))
         {
             String headerLine = br.readLine();
             
@@ -211,8 +211,8 @@ public class FileOperations
         
         try
         {
-            Class<T> Object = (Class<T>) Class.forName("com.group.apomsproject." + className);
-            List<String> headers  = HeaderRegistry.getHeaders(Object);
+            Class<T> classObj = (Class<T>) Class.forName("com.group.apomsproject." + className);
+            List<String> headers  = HeaderRegistry.getHeaders(classObj);
             if(headers.isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "No headers defined for class: " + className);
@@ -226,7 +226,7 @@ public class FileOperations
                 String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
                 try
                 {
-                    Method getter = Object.getMethod(getterName);
+                    Method getter = classObj.getMethod(getterName);
                     getterMap.put(header, getter);
                     typeMap.put(header, getter.getReturnType());
                 }
@@ -240,7 +240,7 @@ public class FileOperations
             {
                 try
                 {
-                    Constructor<?>[] constructors = Object.getConstructors();
+                    Constructor<?>[] constructors = classObj.getConstructors();
                     Constructor<?> bestConstructor = null;
                     Object[] args = null;
                     
@@ -280,8 +280,8 @@ public class FileOperations
                     }
                     else
                     {
-                        instance = Object.getDeclaredConstructor().newInstance();
-                        for (Map.Entry<String, String> entry : row.entrySet())
+                        instance = classObj.getDeclaredConstructor().newInstance();
+                        for(Map.Entry<String, String> entry : row.entrySet())
                         {
                             String header = entry.getKey();
                             String value = entry.getValue();
@@ -289,7 +289,7 @@ public class FileOperations
                             try
                             {
                                 Class<?> paramType = typeMap.getOrDefault(header, String.class);
-                                Method setter = Object.getMethod(setterName, paramType);
+                                Method setter = classObj.getMethod(setterName, paramType);
                                 Object convertedValue = StringToType(value, paramType);
                                 setter.invoke(instance, convertedValue);
                             }
@@ -314,13 +314,13 @@ public class FileOperations
     
     public DefaultTableModel getTable(String className)
     {
-        String filename = className + ".csv";
+        String fileName = className + ".csv";
         DefaultTableModel model = new DefaultTableModel();
         
         try
         {
-            Class<?> Object = Class.forName("com.group.apomsproject." + className);
-            List<String> headerList = HeaderRegistry.getHeaders(Object);
+            Class<?> classObj = Class.forName("com.group.apomsproject." + className);
+            List<String> headerList = HeaderRegistry.getHeaders(classObj);
             
             if(headerList.isEmpty())
             {
@@ -334,7 +334,7 @@ public class FileOperations
                 model.addColumn(header);
             }
                     
-            List<Map<String, String>> data = ReadFile(filename);
+            List<Map<String, String>> data = ReadFile(fileName);
             
             if(data.isEmpty())
             {
@@ -363,12 +363,12 @@ public class FileOperations
         return model;
     }
     
-    public void UpdateFile(Object obj, String pKeyValue, boolean delFlag)
+    public void UpdateFile(Object obj, String pKeyValue)
     {
-        Class<?> Object = obj.getClass();
-        String fileName = Object.getSimpleName() + ".csv";
-        List<String> headers = HeaderRegistry.getHeaders(Object);
-        String pKeyField = HeaderRegistry.getPKeyField(Object);
+        Class<?> classObj = obj.getClass();
+        String fileName = classObj.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(classObj);
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
         
         if(headers.isEmpty())
         {
@@ -391,7 +391,7 @@ public class FileOperations
                     try
                     {
                         String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
-                        Method getter = Object.getMethod(getterName);
+                        Method getter = classObj.getMethod(getterName);
                         Object value = getter.invoke(obj);
                         String strValue = (value != null) ? value.toString() : "";
                         
@@ -407,10 +407,7 @@ public class FileOperations
                         return;
                     }
                 }
-                if(!delFlag)
-                {
-                    updatedData.add(updatedRow);
-                }
+                updatedData.add(updatedRow);
             }
             else
             {
@@ -420,7 +417,7 @@ public class FileOperations
         
         if(!found)
         {
-            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not foudn in " + fileName);
+            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not found in " + fileName);
             return;
         }
         
@@ -450,10 +447,10 @@ public class FileOperations
     public void rearrangePrimaryKeys(String className)
     {
         String fileName = className + ".csv";
-        Class<?> Object;
+        Class<?> classObj;
         try
         {
-            Object = Class.forName("com.group.apomsproject." + className);
+            classObj = Class.forName("com.group.apomsproject." + className);
         }
         catch(ClassNotFoundException e)
         {
@@ -461,9 +458,9 @@ public class FileOperations
             return;
         }
         
-        String pKeyField = HeaderRegistry.getPKeyField(Object);
-        String pKeyPrefix = HeaderRegistry.getPKeyPrefix(Object);
-        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(Object);
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
+        String pKeyPrefix = HeaderRegistry.getPKeyPrefix(classObj);
+        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(classObj);
         
         if(pKeyField.isEmpty() || pKeyPrefix.isEmpty())
         {
@@ -493,7 +490,7 @@ public class FileOperations
         // Update the file with new Primary Keys
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
         {
-            List<String> headers = HeaderRegistry.getHeaders(Object);
+            List<String> headers = HeaderRegistry.getHeaders(classObj);
             bw.write(String.join(",", headers));
             bw.newLine();
             for(Map<String, String> row : updatedData)
@@ -568,5 +565,108 @@ public class FileOperations
         List<Map<String, String>> data = ReadFile("ItemSupplierMap.csv");
         int id = data.size() + 1;
         return "ISM" + String.format("%02d", id);
+    }
+    
+    public void DeleteRecord(String className, String pKeyValue)
+    {
+        String fileName = className + ".csv";
+        Class<?> classObj;
+        
+        try
+        {
+            classObj = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return;
+        }
+        
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
+        if(hasDependencies(className, pKeyValue))
+        {
+            JOptionPane.showMessageDialog(null, "Error deleting record: " + pKeyValue + " is referenced in other files");
+            return;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        boolean found = false;
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        
+        for(Map<String, String> row : existingData)
+        {
+            if(!row.get(pKeyField).equals(pKeyValue))
+            {
+                updatedData.add(row);
+            }
+            else
+            {
+                found = true;
+            }
+        }
+        
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not found in " + fileName);
+            return;
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            List<String> headers = HeaderRegistry.getHeaders(classObj);
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error deleting from " + fileName);
+            return;
+        }
+        rearrangePrimaryKeys(className);
+    }
+    
+    private boolean hasDependencies(String className, String pKeyValue)
+    {
+        Class<?> classObj;
+        try
+        {
+            classObj = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return false;
+        }
+        
+        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(classObj);
+        
+        for(Map.Entry<String, List<String>> dependency : dependencies.entrySet())
+        {
+            String relatedFile = dependency.getKey();
+            List<String> fKeyFields = dependency.getValue();
+            List<Map<String, String>> relatedData = ReadFile(relatedFile);
+            for(Map<String, String> row : relatedData)
+            {
+                for(String fKeyField : fKeyFields)
+                {
+                    if(row.get(fKeyField).equals(pKeyValue))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

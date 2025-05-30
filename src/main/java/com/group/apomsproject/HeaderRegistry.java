@@ -4,14 +4,14 @@ import java.util.*;
 
 public class HeaderRegistry
 {
-    private static final Map<Class<?>, List<String>> headermap = new HashMap<>();
+    private static final Map<Class<?>, List<String>> headerMap = new HashMap<>();
     private static final Map<Class<?>, String> pKeyFieldMap = new HashMap<>();
     private static final Map<Class<?>, String> pKeyPrefixMap = new HashMap<>();
     private static final Map<Class<?>, Map<String, List<String>>> dependencyMap = new HashMap<>();
     
     public static void registerHeaders(Class<?> Object, List<String> headers, String pKeyField, String pKeyPrefix, Map<String, List<String>> dependencies)
     {
-        headermap.put(Object, headers);
+        headerMap.put(Object, headers);
         pKeyFieldMap.put(Object, pKeyField);
         pKeyPrefixMap.put(Object, pKeyPrefix);
         dependencyMap.put(Object, dependencies);
@@ -19,7 +19,7 @@ public class HeaderRegistry
     
     public static List<String> getHeaders(Class<?> Object)
     {
-        return headermap.getOrDefault(Object, Collections.emptyList());
+        return headerMap.getOrDefault(Object, Collections.emptyList());
     }
     
     public static String getPKeyField(Class<?> Object)

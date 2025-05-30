@@ -98,11 +98,11 @@ public class Admin extends User{
     
     public void updateUser(Object user, String ID)
     {
-        fh.UpdateFile(user, ID, false);
+        fh.UpdateFile(user, ID);
     }
         
     public void deleteUser(Object user, String ID)
     {
-        fh.UpdateFile(user, ID, true);
+        
     }
 }
