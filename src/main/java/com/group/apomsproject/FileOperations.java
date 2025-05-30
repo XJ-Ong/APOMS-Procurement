@@ -23,7 +23,7 @@ public class FileOperations
         }
         
         // Primary Key validation
-        String pKeyValue = null;
+        String pKeyValue;
         try
         {
             String getterName = "get" + pKeyField.substring(0, 1).toUpperCase() + pKeyField.substring(1);

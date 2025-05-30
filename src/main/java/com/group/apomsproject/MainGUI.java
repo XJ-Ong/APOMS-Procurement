@@ -17,15 +17,24 @@ public class MainGUI extends javax.swing.JFrame {
                 Method getPassword = obj.getClass().getMethod("getUserPassword");
                 String userPassword = (String) getPassword.invoke(obj);
                 
-                if(userID.equals(enteredID) && userPassword.equals(enteredPassword))
+                if(userID.equals(enteredID))
                 {
-                    return obj;
+                    if(userPassword.equals(enteredPassword))
+                    {
+                        return obj;
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(this, "Incorrect password for UserID: " + enteredID);
+                        return null;
+                    }
                 }
             }
-        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "UserID not found: " + enteredID);
+            return null;
+        } catch (IllegalAccessException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
             throw new RuntimeException("Error validating credentials: " + e.getMessage());
         }
-        return null;
     }
 
     /**+
@@ -204,7 +213,18 @@ public class MainGUI extends javax.swing.JFrame {
         }
         else
         {
-            if(id.startsWith("I"))
+            if(id.startsWith("A"))
+            {
+                List<Admin> admins = fh.recreateObj("Admin");
+                Admin admin = Login(admins, id, pass, "getAMID");
+                if(admin != null)
+                {
+                    AMGUI gui = new AMGUI(admin);
+                    gui.setVisible(true);
+                    dispose();
+                }
+            }
+            else if(id.startsWith("I"))
             {
                 List<InventoryManager> managers = fh.recreateObj("InventoryManager");
                 InventoryManager manager = Login(managers, id, pass, "getIMID");
