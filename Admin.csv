@@ -1,2 +1,3 @@
 AMID,userName,userPassword,userAddress,userContact
-A01,Admin1,Admin1pass,Admin1Address,Admin1Contact
+AM01,FirstAdmin,Admin1pass,Admin1Add,Admin1Con
+AM02,Admin2,Admin2pass,Admin2Add,Admin2Con

@@ -6,6 +6,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class MainGUI extends javax.swing.JFrame {
+    Admin DefaultAdmin = new Admin("A00", "DefaultAdmin", "1234", "1", "1");
     
     private <T> T Login(List<T> objs, String enteredID, String enteredPassword, String idGetterName) {
         try {
@@ -213,31 +214,41 @@ public class MainGUI extends javax.swing.JFrame {
         }
         else
         {
-            if(id.startsWith("A"))
+            // Default Admin Login
+            if(id.equals(DefaultAdmin.getAMID()) && pass.equals(DefaultAdmin.getUserPassword()))
             {
-                List<Admin> admins = fh.recreateObj("Admin");
-                Admin admin = Login(admins, id, pass, "getAMID");
-                if(admin != null)
-                {
-                    AMGUI gui = new AMGUI(admin);
-                    gui.setVisible(true);
-                    dispose();
-                }
-            }
-            else if(id.startsWith("I"))
-            {
-                List<InventoryManager> managers = fh.recreateObj("InventoryManager");
-                InventoryManager manager = Login(managers, id, pass, "getIMID");
-                if(manager != null)
-                {
-                    IMGUI gui = new IMGUI(manager);
-                    gui.setVisible(true);
-                    dispose();
-                }
+                AMGUI gui = new AMGUI(DefaultAdmin);
+                gui.setVisible(true);
+                dispose();
             }
             else
             {
-                JOptionPane.showMessageDialog(this, "Error UserID or Password");
+                if(id.startsWith("A"))
+                {
+                    List<Admin> admins = fh.recreateObj("Admin");
+                    Admin admin = Login(admins, id, pass, "getAMID");
+                    if(admin != null)
+                    {
+                        AMGUI gui = new AMGUI(admin);
+                        gui.setVisible(true);
+                        dispose();
+                    }
+                }
+                else if(id.startsWith("I"))
+                {
+                    List<InventoryManager> managers = fh.recreateObj("InventoryManager");
+                    InventoryManager manager = Login(managers, id, pass, "getIMID");
+                    if(manager != null)
+                    {
+                        IMGUI gui = new IMGUI(manager);
+                        gui.setVisible(true);
+                        dispose();
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Error UserID or Password");
+                }
             }
         }
     }//GEN-LAST:event_btnOKActionPerformed

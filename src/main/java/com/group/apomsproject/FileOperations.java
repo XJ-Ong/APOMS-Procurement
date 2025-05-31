@@ -39,6 +39,7 @@ public class FileOperations
                     return;
                 }
             }
+            JOptionPane.showMessageDialog(null, "Object successfully added");
         }
         catch(Exception e)
         {
@@ -668,5 +669,26 @@ public class FileOperations
             }
         }
         return false;
+    }
+    
+    public <T> T getIDFromList(List<T> objects, String enteredID, String idGetter)
+    {
+        try
+        {
+            for(T obj : objects)
+            {
+                Method getID = obj.getClass().getMethod(idGetter);
+                String objID = (String) getID.invoke(obj);
+                if(objID.equals(enteredID))
+                {
+                    return obj;
+                }
+            }
+            return null;
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException("Error searching user: " + e.getMessage());
+        }
     }
 }

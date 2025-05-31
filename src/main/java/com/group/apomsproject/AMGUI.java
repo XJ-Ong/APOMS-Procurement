@@ -4,7 +4,12 @@
  */
 package com.group.apomsproject;
 
+import java.lang.reflect.Method;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -12,7 +17,55 @@ import javax.swing.table.DefaultTableModel;
  */
 public class AMGUI extends javax.swing.JFrame {
     private final Admin admin;
-
+    private TableRowSorter<DefaultTableModel> tableSorter;
+    private FileOperations fh = new FileOperations();
+    private String userType;
+    
+    private void viewUser(String user)
+    {
+        DefaultTableModel model = admin.viewUserTable(user);
+        jTableViewUser.setModel(model);
+        tableSorter = new TableRowSorter<>((DefaultTableModel) jTableViewUser.getModel());
+        jTableViewUser.setRowSorter(tableSorter);  
+    }
+    
+    private Object searchUser()
+    {
+        String id = txtUpdateID.getText().trim();
+        if(id.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Please enter a UserID");
+            return null;
+        }
+        
+        String[] Users = {"Admin", "SalesManager", "PurchaseManager", "FinanceManager", "InventoryManager"};
+        String[] idGetters = {"getAMID", "getSMID", "getPMID", "getIMID"};
+        
+        for(int i = 0; i < Users.length; i++)
+        {
+            List<Object> users = fh.recreateObj(Users[i]);
+            Object user = admin.getUserIDFromList(users, id, idGetters[i]);
+            
+            if(user != null)
+            {
+                userType = Users[i];
+                return user;                
+            }
+        }
+        JOptionPane.showMessageDialog(this, "UserID not found: " + id);
+        return null;
+    }
+    
+    private void toggleUpdateEditable(boolean toggle)
+    {
+        txtUpdateName.setEditable(toggle);
+        txtUpdatePass.setEditable(toggle);
+        txtUpdateAddress.setEditable(toggle);
+        txtUpdateCon.setEditable(toggle);
+        btnUpdate.setEnabled(toggle);
+        txtUpdateID.setEditable(!toggle);
+    }
+    
     /**
      * Creates new form AMGUI
      * @param admin
@@ -21,6 +74,7 @@ public class AMGUI extends javax.swing.JFrame {
         this.admin = admin;
         initComponents();
         lblName.setText("Username: " + admin.getUserName());
+        toggleUpdateEditable(false);
     }
 
     /**
@@ -37,8 +91,8 @@ public class AMGUI extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         lblName = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
         tabbedpane = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -46,7 +100,12 @@ public class AMGUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtUserID = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JTextField();
+        txtAddress = new javax.swing.JTextField();
+        txtContact = new javax.swing.JTextField();
+        btnSearch1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableViewUser = new javax.swing.JTable();
@@ -55,8 +114,23 @@ public class AMGUI extends javax.swing.JFrame {
         btnViewPM = new javax.swing.JButton();
         btnViewFM = new javax.swing.JButton();
         btnViewIM = new javax.swing.JButton();
+        txtSearchField = new javax.swing.JTextField();
+        btnSearch = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        txtUpdateID = new javax.swing.JTextField();
+        btnUpdateID = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txtUpdateName = new javax.swing.JTextField();
+        txtUpdatePass = new javax.swing.JTextField();
+        txtUpdateAddress = new javax.swing.JTextField();
+        txtUpdateCon = new javax.swing.JTextField();
+        btnUpdate = new javax.swing.JButton();
+        btnClearUpdateID = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -96,18 +170,18 @@ public class AMGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton4.setBackground(new java.awt.Color(0, 0, 0));
-        jButton4.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 255, 255));
-        jButton4.setText("Delete User");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
         lblName.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         lblName.setText("AdminName");
+
+        btnLogout.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogout.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -123,7 +197,7 @@ public class AMGUI extends javax.swing.JFrame {
                                 .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -138,10 +212,10 @@ public class AMGUI extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(38, 38, 38)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblName)
                 .addContainerGap())
@@ -162,9 +236,41 @@ public class AMGUI extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Contact No.");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtUserID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtUserIDActionPerformed(evt);
+            }
+        });
+
+        txtUserName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserNameActionPerformed(evt);
+            }
+        });
+
+        txtPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPasswordActionPerformed(evt);
+            }
+        });
+
+        txtAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAddressActionPerformed(evt);
+            }
+        });
+
+        txtContact.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtContactActionPerformed(evt);
+            }
+        });
+
+        btnSearch1.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnSearch1.setText("Add");
+        btnSearch1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearch1ActionPerformed(evt);
             }
         });
 
@@ -175,14 +281,22 @@ public class AMGUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(92, Short.MAX_VALUE))
+                    .addComponent(btnSearch1)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUserID, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(140, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,16 +304,26 @@ public class AMGUI extends javax.swing.JFrame {
                 .addGap(77, 77, 77)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUserID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
-                .addComponent(jLabel3)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel4)
-                .addGap(31, 31, 31)
-                .addComponent(jLabel5)
-                .addGap(30, 30, 30)
-                .addComponent(jLabel6)
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(txtContact, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(50, 50, 50)
+                .addComponent(btnSearch1)
+                .addContainerGap(125, Short.MAX_VALUE))
         );
 
         tabbedpane.addTab("tab1", jPanel2);
@@ -257,70 +381,206 @@ public class AMGUI extends javax.swing.JFrame {
             }
         });
 
+        txtSearchField.setToolTipText("Enter keyword to search...");
+
+        btnSearch.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(btnViewPM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnViewFM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnViewIM))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
-                        .addComponent(btnShowAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnViewSM)))
-                .addGap(0, 89, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(btnShowAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewSM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewPM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewFM)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnViewIM, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSearch)
+                .addGap(28, 28, 28))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addGap(15, 15, 15)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnShowAdmin)
-                    .addComponent(btnViewSM))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnViewSM)
                     .addComponent(btnViewPM)
                     .addComponent(btnViewFM)
                     .addComponent(btnViewIM))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE))
         );
 
         tabbedpane.addTab("tab2", jPanel3);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setText("UserID");
+
+        txtUpdateID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUpdateIDActionPerformed(evt);
+            }
+        });
+
+        btnUpdateID.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnUpdateID.setText("Search");
+        btnUpdateID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateIDActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel8.setText("Username");
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel9.setText("Password");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel10.setText("Address");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel11.setText("Contact No.");
+
+        txtUpdateName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUpdateNameActionPerformed(evt);
+            }
+        });
+
+        txtUpdatePass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUpdatePassActionPerformed(evt);
+            }
+        });
+
+        txtUpdateAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUpdateAddressActionPerformed(evt);
+            }
+        });
+
+        txtUpdateCon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUpdateConActionPerformed(evt);
+            }
+        });
+
+        btnUpdate.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        btnClearUpdateID.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnClearUpdateID.setText("Clear");
+        btnClearUpdateID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearUpdateIDActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel7)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtUpdateID, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdateID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnClearUpdateID))
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel4Layout.createSequentialGroup()
+                            .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(btnUpdate)
+                            .addGap(32, 32, 32)
+                            .addComponent(btnDelete))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                            .addGap(62, 62, 62)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel9)
+                                .addComponent(jLabel8))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtUpdateName, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUpdatePass, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUpdateAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtUpdateCon, javax.swing.GroupLayout.PREFERRED_SIZE, 432, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtUpdateID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdateID)
+                    .addComponent(btnClearUpdateID))
+                .addGap(83, 83, 83)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtUpdateName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtUpdatePass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtUpdateAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtUpdateCon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
 
         tabbedpane.addTab("tab3", jPanel4);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 524, Short.MAX_VALUE)
-        );
-
-        tabbedpane.addTab("tab4", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -348,43 +608,234 @@ public class AMGUI extends javax.swing.JFrame {
         tabbedpane.setSelectedIndex(1);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        tabbedpane.setSelectedIndex(3);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         tabbedpane.setSelectedIndex(0);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btnShowAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowAdminActionPerformed
-        DefaultTableModel model = admin.viewUser("Admin");
-        jTableViewUser.setModel(model);
-        
-    }//GEN-LAST:event_btnShowAdminActionPerformed
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        MainGUI gui = new MainGUI();
+        gui.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnViewSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewSMActionPerformed
-        DefaultTableModel model = admin.viewUser("SalesManager");
-        jTableViewUser.setModel(model);
-    }//GEN-LAST:event_btnViewSMActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(userType.equals("Admin"))
+        {
+            Admin user = new Admin(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.deleteUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("SalesManager"))
+        {
+            SalesManager user = new SalesManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.deleteUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("PurchaseManager"))
+        {
+            PurchaseManager user = new PurchaseManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.deleteUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("FinanceManager"))
+        {
+            FinanceManager user = new FinanceManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.deleteUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("InventoryManager"))
+        {
+            InventoryManager user = new InventoryManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.deleteUser(user, txtUpdateID.getText());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Invalid userType");
+        }
 
-    private void btnViewPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPMActionPerformed
-        DefaultTableModel model = admin.viewUser("PurchaseManager");
-        jTableViewUser.setModel(model);
-    }//GEN-LAST:event_btnViewPMActionPerformed
+        JOptionPane.showMessageDialog(this, "User deleted");
+        txtUpdateID.setText("");
+        txtUpdateName.setText("");
+        txtUpdatePass.setText("");
+        txtUpdateAddress.setText("");
+        txtUpdateCon.setText("");
+        toggleUpdateEditable(false);
+        userType = null;
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnViewFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewFMActionPerformed
-        DefaultTableModel model = admin.viewUser("FinanceManager");
-        jTableViewUser.setModel(model);
-    }//GEN-LAST:event_btnViewFMActionPerformed
+    private void btnClearUpdateIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearUpdateIDActionPerformed
+        txtUpdateID.setText("");
+        txtUpdateName.setText("");
+        txtUpdatePass.setText("");
+        txtUpdateAddress.setText("");
+        txtUpdateCon.setText("");
+        toggleUpdateEditable(false);
+        userType = null;
+    }//GEN-LAST:event_btnClearUpdateIDActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        if(userType.equals("Admin"))
+        {
+            Admin user = new Admin(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.updateUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("SalesManager"))
+        {
+            SalesManager user = new SalesManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.updateUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("PurchaseManager"))
+        {
+            PurchaseManager user = new PurchaseManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.updateUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("FinanceManager"))
+        {
+            FinanceManager user = new FinanceManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.updateUser(user, txtUpdateID.getText());
+        }
+        else if(userType.equals("InventoryManager"))
+        {
+            InventoryManager user = new InventoryManager(txtUpdateID.getText(), txtUpdateName.getText().trim(), txtUpdatePass.getText().trim(), txtUpdateAddress.getText().trim(), txtUpdateCon.getText().trim());
+            admin.updateUser(user, txtUpdateID.getText());
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Invalid userType");
+        }
+
+        JOptionPane.showMessageDialog(this, "Credentials Updated");
+        txtUpdateID.setText("");
+        txtUpdateName.setText("");
+        txtUpdatePass.setText("");
+        txtUpdateAddress.setText("");
+        txtUpdateCon.setText("");
+        toggleUpdateEditable(false);
+        userType = null;
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void txtUpdateConActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateConActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUpdateConActionPerformed
+
+    private void txtUpdateAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUpdateAddressActionPerformed
+
+    private void txtUpdatePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdatePassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUpdatePassActionPerformed
+
+    private void txtUpdateNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUpdateNameActionPerformed
+
+    private void btnUpdateIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateIDActionPerformed
+        Object user = searchUser();
+        if(user != null)
+        {
+            try
+            {
+                Method getName = user.getClass().getMethod("getUserName");
+                Method getPass = user.getClass().getMethod("getUserPassword");
+                Method getAdd = user.getClass().getMethod("getUserAddress");
+                Method getCon = user.getClass().getMethod("getUserContact");
+                toggleUpdateEditable(true);
+                txtUpdateName.setText((String) getName.invoke(user));
+                txtUpdatePass.setText((String) getPass.invoke(user));
+                txtUpdateAddress.setText((String) getAdd.invoke(user));
+                txtUpdateCon.setText((String) getCon.invoke(user));
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(this, "Error loading user data: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnUpdateIDActionPerformed
+
+    private void txtUpdateIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUpdateIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUpdateIDActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String keyword = txtSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(jTableViewUser.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnViewIMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewIMActionPerformed
-        DefaultTableModel model = admin.viewUser("InventoryManager");
-        jTableViewUser.setModel(model);
+        viewUser("InventoryManager");
     }//GEN-LAST:event_btnViewIMActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void btnViewFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewFMActionPerformed
+        viewUser("FinanceManager");
+    }//GEN-LAST:event_btnViewFMActionPerformed
+
+    private void btnViewPMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewPMActionPerformed
+        viewUser("PurchaseManager");
+    }//GEN-LAST:event_btnViewPMActionPerformed
+
+    private void btnViewSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewSMActionPerformed
+        viewUser("SalesManager");
+    }//GEN-LAST:event_btnViewSMActionPerformed
+
+    private void btnShowAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowAdminActionPerformed
+        viewUser("Admin");
+    }//GEN-LAST:event_btnShowAdminActionPerformed
+
+    private void btnSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch1ActionPerformed
+        admin.createUser
+        (
+            txtUserID.getText().trim(),
+            txtUserName.getText().trim(),
+            txtPassword.getText().trim(),
+            txtAddress.getText().trim(),
+            txtContact.getText().trim()
+        );
+
+        txtUserID.setText("");
+        txtUserName.setText("");
+        txtPassword.setText("");
+        txtAddress.setText("");
+        txtContact.setText("");
+    }//GEN-LAST:event_btnSearch1ActionPerformed
+
+    private void txtContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContactActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtContactActionPerformed
+
+    private void txtAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAddressActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAddressActionPerformed
+
+    private void txtPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPasswordActionPerformed
+
+    private void txtUserNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserNameActionPerformed
+
+    private void txtUserIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUserIDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -422,7 +873,14 @@ public class AMGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearUpdateID;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnSearch1;
     private javax.swing.JButton btnShowAdmin;
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnUpdateID;
     private javax.swing.JButton btnViewFM;
     private javax.swing.JButton btnViewIM;
     private javax.swing.JButton btnViewPM;
@@ -430,22 +888,35 @@ public class AMGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableViewUser;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblName;
     private javax.swing.JTabbedPane tabbedpane;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtContact;
+    private javax.swing.JTextField txtPassword;
+    private javax.swing.JTextField txtSearchField;
+    private javax.swing.JTextField txtUpdateAddress;
+    private javax.swing.JTextField txtUpdateCon;
+    private javax.swing.JTextField txtUpdateID;
+    private javax.swing.JTextField txtUpdateName;
+    private javax.swing.JTextField txtUpdatePass;
+    private javax.swing.JTextField txtUserID;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }

@@ -57,41 +57,38 @@ public class Admin extends User{
     
     public void createUser(String id, String name, String pass, String address, String contact)
     {
-        String role;
-        if(id.startsWith("S"))
+        if(id.startsWith("A"))
+        {
+            Admin am = new Admin(id, name, pass, address, contact);
+            fh.WriteFile(am);
+        }
+        else if(id.startsWith("S"))
         {
             SalesManager sm = new SalesManager(id, name, pass, address, contact);
             fh.WriteFile(sm);
-            role = "Sales Manager";
         }
         else if(id.startsWith("P"))
         {
             PurchaseManager pm = new PurchaseManager(id, name, pass, address, contact);
             fh.WriteFile(pm);
-            role = "Purchase Manager";
         }
         else if(id.startsWith("F"))
         {
             FinanceManager fm = new FinanceManager(id, name, pass, address, contact);
             fh.WriteFile(fm);
-            role = "Finance Manager";
         }
         else if(id.startsWith("I"))
         {
             InventoryManager im = new InventoryManager(id, name, pass, address, contact);
             fh.WriteFile(im);
-            role = "Inventory Manager";
         }
         else
         {
             JOptionPane.showMessageDialog(null, "Error ID Entered");
-            return;
         }
-        
-        JOptionPane.showMessageDialog(null, "User " + name + " successfully added for " + role);
     }
     
-    public DefaultTableModel viewUser(String className)
+    public DefaultTableModel viewUserTable(String className)
     {
         return fh.getTable(className);
     }
@@ -106,5 +103,11 @@ public class Admin extends User{
         Class<?> userObj = user.getClass();
         String className = userObj.getSimpleName();
         fh.DeleteRecord(className, ID);
+    }
+    
+    public Object getUserIDFromList(List<Object> users, String enteredID, String idGetter)
+    {
+        Object user = fh.getIDFromList(users, enteredID, idGetter);
+        return user;
     }
 }
