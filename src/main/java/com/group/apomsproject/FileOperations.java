@@ -568,7 +568,7 @@ public class FileOperations
         return "ISM" + String.format("%02d", id);
     }
     
-    public void DeleteRecord(String className, String pKeyValue)
+    public boolean DeleteRecord(String className, String pKeyValue)
     {
         String fileName = className + ".csv";
         Class<?> classObj;
@@ -580,14 +580,14 @@ public class FileOperations
         catch(ClassNotFoundException e)
         {
             JOptionPane.showMessageDialog(null, "Class not found: " + className);
-            return;
+            return false;
         }
         
         String pKeyField = HeaderRegistry.getPKeyField(classObj);
         if(hasDependencies(className, pKeyValue))
         {
             JOptionPane.showMessageDialog(null, "Error deleting record: " + pKeyValue + " is referenced in other files");
-            return;
+            return false;
         }
         
         List<Map<String, String>> existingData = ReadFile(fileName);
@@ -609,7 +609,7 @@ public class FileOperations
         if(!found)
         {
             JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not found in " + fileName);
-            return;
+            return false;
         }
         
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
@@ -632,9 +632,10 @@ public class FileOperations
         catch(Exception e)
         {
             JOptionPane.showMessageDialog(null, "Error deleting from " + fileName);
-            return;
+            return false;
         }
         rearrangePrimaryKeys(className);
+        return true;
     }
     
     private boolean hasDependencies(String className, String pKeyValue)

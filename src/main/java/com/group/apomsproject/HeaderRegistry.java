@@ -44,7 +44,7 @@ public class HeaderRegistry
         (   // Define headers' order
             "AMID", "userName", "userPassword", "userAddress", "userContact"
         );
-        registerHeaders(Admin.class, AMHeaders, "AMID", "AM", Collections.emptyMap());
+        registerHeaders(Admin.class, AMHeaders, "AMID", "A", Collections.emptyMap());
         
         // SalesManager
         List<String> SMHeaders = Arrays.asList
@@ -55,7 +55,7 @@ public class HeaderRegistry
         Map<String, List<String>> SMDpd = new HashMap<>();
         SMDpd.put("Sales.csv", Arrays.asList("SMID"));
         SMDpd.put("PurchaseRequisition.csv", Arrays.asList("SMID"));
-        registerHeaders(SalesManager.class, SMHeaders, "SMID", "SM", SMDpd);
+        registerHeaders(SalesManager.class, SMHeaders, "SMID", "S", SMDpd);
         
         // PurchaseManager
         List<String> PMHeaders = Arrays.asList
@@ -64,7 +64,7 @@ public class HeaderRegistry
         );
         Map<String, List<String>> PMDpd = new HashMap<>();
         PMDpd.put("PurchaseOrder.csv", Arrays.asList("PMID"));
-        registerHeaders(PurchaseManager.class, PMHeaders, "PMID", "PM", PMDpd);
+        registerHeaders(PurchaseManager.class, PMHeaders, "PMID", "P", PMDpd);
         
         
         // FinanceManager
@@ -72,14 +72,14 @@ public class HeaderRegistry
         (
             "FMID", "userName", "userPassword", "userAddress", "userContact"
         );
-        registerHeaders(FinanceManager.class, FMHeaders, "FMID", "FM", Collections.emptyMap());
+        registerHeaders(FinanceManager.class, FMHeaders, "FMID", "F", Collections.emptyMap());
         
         // InventoryManager
         List<String> IMHeaders = Arrays.asList
         (
             "IMID", "userName", "userPassword", "userAddress", "userContact"
         );
-        registerHeaders(InventoryManager.class, IMHeaders, "IMID", "IM", Collections.emptyMap());
+        registerHeaders(InventoryManager.class, IMHeaders, "IMID", "I", Collections.emptyMap());
         
         // Supplier
         List<String> SupplierHeaders = Arrays.asList
@@ -95,7 +95,7 @@ public class HeaderRegistry
         // Item
         List<String> ItemHeaders = Arrays.asList
         (
-            "itemID", "itemName", "stockLevel", "unitPrice", "reorderLevel"
+            "itemID", "itemName", "price", "quantity", "ROL"
         );
         Map<String, List<String>> ITMDpd = new HashMap<>();
         ITMDpd.put("ItemSupplierMap.csv", Arrays.asList("itemID"));
@@ -108,7 +108,7 @@ public class HeaderRegistry
         // ItemSupplierMap
         List<String> ItemSupplierMapHeaders = Arrays.asList
         (
-            "ISMID", "itemID", "supplierID"
+            "ISMID", "itemID", "supplierID", "importPrice"
         );
         registerHeaders(ItemSupplierMap.class, ItemSupplierMapHeaders, "ISMID", "ISM", Collections.emptyMap());
         

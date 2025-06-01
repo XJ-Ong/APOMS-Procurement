@@ -8,6 +8,7 @@ import javax.swing.table.*;
 
 public class Admin extends User{
     private String AMID;
+    
     private FileOperations fh = new FileOperations();
 
     public Admin(String AMID, String userName, String userPassword, String userAddress, String userContact) {
@@ -98,16 +99,21 @@ public class Admin extends User{
         fh.UpdateFile(user, ID);
     }
         
-    public void deleteUser(Object user, String ID)
+    public boolean deleteUser(Object user, String ID)
     {
         Class<?> userObj = user.getClass();
         String className = userObj.getSimpleName();
-        fh.DeleteRecord(className, ID);
+        return fh.DeleteRecord(className, ID);
     }
     
     public Object getUserIDFromList(List<Object> users, String enteredID, String idGetter)
     {
         Object user = fh.getIDFromList(users, enteredID, idGetter);
         return user;
+    }
+    
+    public <T> List<T> recreateUsers(String userType)
+    {
+        return fh.recreateObj(userName);
     }
 }

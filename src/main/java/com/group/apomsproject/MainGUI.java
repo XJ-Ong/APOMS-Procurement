@@ -234,6 +234,17 @@ public class MainGUI extends javax.swing.JFrame {
                         dispose();
                     }
                 }
+                else if(id.startsWith("S"))
+                {
+                    List<SalesManager> managers = fh.recreateObj("SalesManager");
+                    SalesManager manager = Login(managers, id, pass, "getSMID");
+                    if(manager != null)
+                    {
+                        SMGUI gui = new SMGUI(manager);
+                        gui.setVisible(true);
+                        dispose();
+                    }
+                }
                 else if(id.startsWith("I"))
                 {
                     List<InventoryManager> managers = fh.recreateObj("InventoryManager");

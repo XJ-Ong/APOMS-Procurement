@@ -4,11 +4,13 @@ public class ItemSupplierMap {
     private String ISMID;
     private String itemID;
     private String supplierID;
+    private double importPrice;
 
-    public ItemSupplierMap(String ISMID, String itemID, String supplierID) {
+    public ItemSupplierMap(String ISMID, String itemID, String supplierID, double importPrice) {
         this.ISMID = ISMID;
         this.itemID = itemID;
         this.supplierID = supplierID;
+        this.importPrice = importPrice;
     }
 
     public String getISMID() {
@@ -33,5 +35,13 @@ public class ItemSupplierMap {
 
     public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
+    }
+
+    public double getImportPrice() {
+        return importPrice;
+    }
+
+    public void setImportPrice(double importPrice) {
+        this.importPrice = importPrice;
     }
 }
