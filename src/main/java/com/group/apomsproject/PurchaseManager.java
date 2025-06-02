@@ -62,4 +62,15 @@ public class PurchaseManager extends User{
     {
         return fh.recreateObj("PurchaseRequisition");
     }
+    
+    public void updateObject(Object obj, String ID)
+    {
+        fh.UpdateFile(obj, ID);
+    }
+    
+    public void addPO(String poid, String prid, String itemid, int quantity, String spid, String date, String pmid)
+    {
+        PurchaseOrder po = new PurchaseOrder(poid, prid, itemid, quantity, spid, "pending", date, pmid);
+        fh.WriteFile(po);
+    }
 }
