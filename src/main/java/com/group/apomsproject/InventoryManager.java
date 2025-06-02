@@ -1,10 +1,14 @@
 package com.group.apomsproject;
 
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class InventoryManager extends User
 {
     private String IMID;
+    
+    private FileOperations fh = new FileOperations();
 
     public InventoryManager(String IMID, String userName, String userPassword, String userAddress, String userContact)
     {
@@ -58,8 +62,33 @@ public class InventoryManager extends User
         return model;
     }
     
-    public void ClearTable(DefaultTableModel model)
+    public DefaultTableModel viewTable(String className)
     {
-        model.setRowCount(0);
+        return fh.getTable(className);
+    }
+    
+    public List<ImportList> recreateILs()
+    {
+        return fh.recreateObj("ImportList");
+    }
+    
+    public void updateObject(Object obj, String ID)
+    {
+        fh.UpdateFile(obj, ID);
+    }
+    
+    public Item recreateItem(String id)
+    {
+        List<Item> items = fh.recreateObj("Item");
+        for(Item itm : items)
+        {
+            if(id.equals(itm.getItemID()))
+            {
+                return itm;
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Item not found for " + id);
+        return null;
     }
 }

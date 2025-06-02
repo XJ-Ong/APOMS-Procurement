@@ -1,9 +1,5 @@
 package com.group.apomsproject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class Supplier {
     private String supplierID;
     private String supplierName;

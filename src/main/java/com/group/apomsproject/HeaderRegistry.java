@@ -1,6 +1,10 @@
 package com.group.apomsproject;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HeaderRegistry
 {
@@ -142,7 +146,7 @@ public class HeaderRegistry
         // ImportList
         List<String> ILHeaders = Arrays.asList
         (
-            "ILID", "POID", "itemID", "supplierID", "receivedQuantity", "status", "dateCreated"
+            "ILID", "POID", "itemID", "supplierID", "receivedQuantity", "status", "dateCreated", "FMID"
         );
         registerHeaders(ImportList.class, ILHeaders, "ILID", "IL", Collections.emptyMap());
     }
