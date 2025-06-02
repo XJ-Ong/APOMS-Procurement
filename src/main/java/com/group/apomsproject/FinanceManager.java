@@ -1,10 +1,15 @@
 package com.group.apomsproject;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 public class FinanceManager extends User{
     
     private String FMID;
 
-     public FinanceManager(String FMID, String userName, String userPassword, String userAddress, String userContact)
+    private FileOperations fh = new FileOperations();
+    
+    public FinanceManager(String FMID, String userName, String userPassword, String userAddress, String userContact)
     {
         super(userName, userPassword, userAddress, userContact);
         this.FMID = FMID;
@@ -48,5 +53,20 @@ public class FinanceManager extends User{
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+    
+    public DefaultTableModel viewTable(String className)
+    {
+        return fh.getTable(className);
+    }
+    
+    public List<PurchaseRequisition> recreatePOs()
+    {
+        return fh.recreateObj("PurchaseOrder");
+    }
+    
+    public void updateObject(Object obj, String ID)
+    {
+        fh.UpdateFile(obj, ID);
     }
 }
