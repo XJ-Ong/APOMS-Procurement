@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.group.apomsproject;
 
 import java.lang.reflect.Method;
@@ -11,10 +7,6 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-/**
- *
- * @author prawn
- */
 public class AMGUI extends javax.swing.JFrame {
     private final Admin admin;
     private TableRowSorter<DefaultTableModel> tableSorter;
