@@ -8,8 +8,9 @@ public class ImportList {
     private int receivedQuantity;
     private String status;
     private String dateCreated;
+    private String FMID;
 
-    public ImportList(String ILID, String POID, String itemID, String supplierID, int receivedQuantity, String status, String dateCreated) {
+    public ImportList(String ILID, String POID, String itemID, String supplierID, int receivedQuantity, String status, String dateCreated, String FMID) {
         this.ILID = ILID;
         this.POID = POID;
         this.itemID = itemID;
@@ -17,6 +18,7 @@ public class ImportList {
         this.receivedQuantity = receivedQuantity;
         this.status = status;
         this.dateCreated = dateCreated;
+        this.FMID = FMID;
     }
 
     public String getILID() {
@@ -73,5 +75,13 @@ public class ImportList {
 
     public void setDateCreated(String dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public String getFMID() {
+        return FMID;
+    }
+
+    public void setFMID(String FMID) {
+        this.FMID = FMID;
     }
 }

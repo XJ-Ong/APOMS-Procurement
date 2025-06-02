@@ -1,2 +1,2 @@
 POID,PRID,itemID,orderQuantity,supplierID,status,dateCreated,PMID
-PO01,PR01,ITM01,25,SP01,pending,2/6/25,P01
+PO01,PR01,ITM01,25,SP02,approved,2/6/25,P01

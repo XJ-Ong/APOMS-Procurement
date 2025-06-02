@@ -4,6 +4,7 @@
  */
 package com.group.apomsproject;
 
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -16,6 +17,13 @@ import javax.swing.table.TableRowSorter;
 public class FMGUI extends javax.swing.JFrame {
     private final FinanceManager manager;
     private TableRowSorter<DefaultTableModel> tableSorter;
+    private PurchaseOrder currentPO = null;
+    
+    private void POMODEditable(boolean toggle)
+    {
+        txtPOIDMod.setEditable(!toggle);
+        btnNext.setEnabled(toggle); 
+    }
 
     /**
      * Creates new form FMGUI
@@ -25,6 +33,8 @@ public class FMGUI extends javax.swing.JFrame {
         this.manager = manager;
         initComponents();
         lblName.setText(manager.getUserName());
+        POMODEditable(false);
+        txtPOStatusMod.setEditable(false);
     }
 
     /**
@@ -42,27 +52,49 @@ public class FMGUI extends javax.swing.JFrame {
         btnLogout = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         tab = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        POTab = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
         txtPOSearchField = new javax.swing.JTextField();
         txtPOStatusMod = new javax.swing.JTextField();
         btnSearchPO = new javax.swing.JButton();
         jLabel45 = new javax.swing.JLabel();
         btnShowPO = new javax.swing.JButton();
-        btnApprove = new javax.swing.JButton();
+        btnNext = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPO = new javax.swing.JTable();
-        btnReject = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         btnPOUpdateClear = new javax.swing.JButton();
         txtPOIDMod = new javax.swing.JTextField();
         btnPOUpdateSearchID = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblISM = new javax.swing.JTable();
+        jLabel43 = new javax.swing.JLabel();
+        lblItemID = new javax.swing.JLabel();
+        txtPOSp = new javax.swing.JTextField();
+        jLabel46 = new javax.swing.JLabel();
+        btnChooseSp = new javax.swing.JButton();
+        btnChange = new javax.swing.JButton();
+        btnReject = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel44 = new javax.swing.JLabel();
+        btnAddIL = new javax.swing.JButton();
+        txtILDate = new javax.swing.JTextField();
+        txtILID = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        txtILSearchField = new javax.swing.JTextField();
+        btnSearchIL = new javax.swing.JButton();
+        btnShowIL = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblIL = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -95,6 +127,16 @@ public class FMGUI extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Stencil", 1, 48)); // NOI18N
         jLabel1.setText("Manager");
 
+        jButton2.setBackground(new java.awt.Color(0, 0, 0));
+        jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("View Import");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -104,8 +146,9 @@ public class FMGUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(53, 53, 53)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                            .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -126,6 +169,8 @@ public class FMGUI extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(35, 35, 35)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
@@ -165,11 +210,11 @@ public class FMGUI extends javax.swing.JFrame {
             }
         });
 
-        btnApprove.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        btnApprove.setText("Approve PO");
-        btnApprove.addActionListener(new java.awt.event.ActionListener() {
+        btnNext.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnNext.setText("Next");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnApproveActionPerformed(evt);
+                btnNextActionPerformed(evt);
             }
         });
 
@@ -185,14 +230,6 @@ public class FMGUI extends javax.swing.JFrame {
             }
         ));
         jScrollPane1.setViewportView(tblPO);
-
-        btnReject.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
-        btnReject.setText("Reject PO");
-        btnReject.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRejectActionPerformed(evt);
-            }
-        });
 
         jLabel42.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel42.setText("PO ID");
@@ -225,14 +262,17 @@ public class FMGUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnShowPO)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtPOSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearchPO))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(btnShowPO)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtPOSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSearchPO)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -248,11 +288,9 @@ public class FMGUI extends javax.swing.JFrame {
                                 .addComponent(btnPOUpdateSearchID)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnPOUpdateClear)))
-                        .addGap(65, 65, 65)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnApprove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnReject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(12, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,57 +307,283 @@ public class FMGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnPOUpdateSearchID)
-                        .addComponent(btnPOUpdateClear)
-                        .addComponent(btnApprove))
+                        .addComponent(btnPOUpdateClear))
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel42)
                         .addComponent(txtPOIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnReject)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel45)
-                        .addComponent(txtPOStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPOStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnNext))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("View PO", jPanel4);
+        POTab.addTab("View Purchase Order", jPanel4);
+
+        tblISM.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tblISM);
+
+        jLabel43.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel43.setText("Suppliers for");
+
+        lblItemID.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblItemID.setText("Item ID");
+
+        txtPOSp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOSpActionPerformed(evt);
+            }
+        });
+
+        jLabel46.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel46.setText("Enter Desired Supplier ID");
+
+        btnChooseSp.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnChooseSp.setText("Continue");
+        btnChooseSp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChooseSpActionPerformed(evt);
+            }
+        });
+
+        btnChange.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnChange.setText("Change");
+        btnChange.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChangeActionPerformed(evt);
+            }
+        });
+
+        btnReject.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnReject.setText("Reject PO");
+        btnReject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRejectActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 675, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel43)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblItemID))))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel46)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPOSp, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnChange)
+                        .addGap(44, 44, 44)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnReject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnChooseSp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel43)
+                    .addComponent(lblItemID))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel46)
+                    .addComponent(txtPOSp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnChange)
+                    .addComponent(btnChooseSp))
+                .addGap(18, 18, 18)
+                .addComponent(btnReject)
+                .addContainerGap(57, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 536, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("tab2", jPanel5);
+        POTab.addTab("Confirm Supplier", jPanel5);
+
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel41.setText("Date Created");
+
+        jLabel44.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel44.setText("Import List ID");
+
+        btnAddIL.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnAddIL.setText("Add");
+        btnAddIL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddILActionPerformed(evt);
+            }
+        });
+
+        txtILDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILDateActionPerformed(evt);
+            }
+        });
+
+        txtILID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILIDActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnAddIL)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel41)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtILDate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel44)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtILID, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel44)
+                    .addComponent(txtILID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel41)
+                    .addComponent(txtILDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addComponent(btnAddIL)
+                .addContainerGap(248, Short.MAX_VALUE))
+        );
+
+        POTab.addTab("Create Import List", jPanel7);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(POTab, javax.swing.GroupLayout.PREFERRED_SIZE, 687, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(POTab, javax.swing.GroupLayout.PREFERRED_SIZE, 571, Short.MAX_VALUE)
         );
 
         tab.addTab("tab1", jPanel2);
+
+        txtILSearchField.setToolTipText("Enter keyword to search...");
+        txtILSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchIL.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchIL.setText("Search");
+        btnSearchIL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchILActionPerformed(evt);
+            }
+        });
+
+        btnShowIL.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowIL.setText("Load Import List");
+        btnShowIL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowILActionPerformed(evt);
+            }
+        });
+
+        tblIL.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblIL);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 687, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnShowIL)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearchIL)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 571, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchIL))
+                    .addComponent(btnShowIL))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         tab.addTab("tab2", jPanel3);
@@ -335,15 +599,15 @@ public class FMGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(tab)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        tab.setSelectedIndex(0);
+       tab.setSelectedIndex(0); 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
@@ -394,17 +658,18 @@ public class FMGUI extends javax.swing.JFrame {
         tblPO.setRowSorter(tableSorter);
     }//GEN-LAST:event_btnShowPOActionPerformed
 
-    private void btnApproveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApproveActionPerformed
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         if(txtPOStatusMod.getText().trim().equals("pending"))
         {
             POTab.setSelectedIndex(1);
-            lblItemID.setText(currentPR.getItemID());
+            lblItemID.setText(currentPO.getItemID());
             DefaultTableModel model = manager.viewTable("ItemSupplierMap");
             tblISM.setModel(model);
             tableSorter = new TableRowSorter((DefaultTableModel) tblISM.getModel());
             tblISM.setRowSorter(tableSorter);
-            RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + currentPR.getItemID());
+            RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + currentPO.getItemID());
             tableSorter.setRowFilter(filter);
+            txtPOSp.setText(currentPO.getSupplierID());
         }
         else if(txtPOStatusMod.getText().trim().equals("approved"))
         {
@@ -414,33 +679,26 @@ public class FMGUI extends javax.swing.JFrame {
         {
             JOptionPane.showMessageDialog(this, "PR is previously rejected");
         }
-    }//GEN-LAST:event_btnApproveActionPerformed
+    }//GEN-LAST:event_btnNextActionPerformed
 
     private void btnRejectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRejectActionPerformed
         String id = txtPOIDMod.getText().trim();
-        String status = txtPOStatusMod.getText().trim();
-
-        if(!status.equals("pending"))
-        {
-            JOptionPane.showMessageDialog(this, "PR is not in pending state");
-        }
-        else
-        {
-            currentPR.setStatus("rejected");
-            manager.updateObject(currentPR, currentPR.getPRID());
-            txtPOIDMod.setText("");
-            txtPOStatusMod.setText("");
-            PRMODEditable(false);
-            currentPR = null;
-            JOptionPane.showMessageDialog(this, "PurchaseRequisition" + id + " rejected" );
-        }
+        
+        currentPO.setStatus("rejected");
+        manager.updateObject(currentPO, currentPO.getPOID());
+        txtPOIDMod.setText("");
+        txtPOStatusMod.setText("");
+        POMODEditable(false);
+        currentPO = null;
+        JOptionPane.showMessageDialog(this, "Purchase Order " + id + " rejected" );
+        POTab.setSelectedIndex(0);
     }//GEN-LAST:event_btnRejectActionPerformed
 
     private void btnPOUpdateClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOUpdateClearActionPerformed
         txtPOIDMod.setText("");
         txtPOStatusMod.setText("");
-        PRMODEditable(false);
-        currentPR = null;
+        POMODEditable(false);
+        currentPO = null;
     }//GEN-LAST:event_btnPOUpdateClearActionPerformed
 
     private void txtPOIDModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOIDModActionPerformed
@@ -451,12 +709,12 @@ public class FMGUI extends javax.swing.JFrame {
         String id = txtPOIDMod.getText().trim();
         boolean found = false;
 
-        List<PurchaseRequisition> prs = manager.recreatePRs();
-        for(PurchaseRequisition pr : prs)
+        List<PurchaseOrder> pos = manager.recreatePOs();
+        for(PurchaseOrder po : pos)
         {
-            if(id.equals(pr.getPRID()))
+            if(id.equals(po.getPOID()))
             {
-                currentPR = pr;
+                currentPO = po;
                 found = true;
                 break;
             }
@@ -464,14 +722,102 @@ public class FMGUI extends javax.swing.JFrame {
 
         if(!found)
         {
-            JOptionPane.showMessageDialog(this, "Purchase Requisition " + id + " not found");
+            JOptionPane.showMessageDialog(this, "Purchase Order " + id + " not found");
         }
         else
         {
-            txtPOStatusMod.setText(currentPR.getStatus());
-            PRMODEditable(true);
+            txtPOStatusMod.setText(currentPO.getStatus());
+            POMODEditable(true);
         }
     }//GEN-LAST:event_btnPOUpdateSearchIDActionPerformed
+
+    private void txtPOSpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOSpActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOSpActionPerformed
+
+    private void btnChooseSpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseSpActionPerformed
+        POTab.setSelectedIndex(2);
+    }//GEN-LAST:event_btnChooseSpActionPerformed
+
+    private void btnChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChangeActionPerformed
+        currentPO.setSupplierID(txtPOSp.getText().trim());
+        JOptionPane.showMessageDialog(this, "Supplier for item " + currentPO.getItemID() + " changed");
+    }//GEN-LAST:event_btnChangeActionPerformed
+
+    private void btnAddILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddILActionPerformed
+        manager.addIL
+        (
+            txtILID.getText().trim(),
+            currentPO.getPOID(),
+            currentPO.getItemID(),
+            currentPO.getSupplierID(),
+            currentPO.getOrderQuantity(),
+            txtILDate.getText().trim(),
+            manager.getFMID()
+        );
+        
+        currentPO.setStatus("approved");
+        manager.updateObject(currentPO, currentPO.getPOID());
+        txtILID.setText("");
+        txtILDate.setText("");
+        txtPOIDMod.setText("");
+        txtPOStatusMod.setText("");
+        txtPOSp.setText("");
+        POMODEditable(false);
+        DefaultTableModel model = (DefaultTableModel) tblISM.getModel();
+        model.setRowCount(0);
+        currentPO = null;
+    }//GEN-LAST:event_btnAddILActionPerformed
+
+    private void txtILDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILDateActionPerformed
+
+    private void txtILIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILIDActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tab.setSelectedIndex(1);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtILSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILSearchFieldActionPerformed
+
+    private void btnSearchILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchILActionPerformed
+        String keyword = txtILSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblIL.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchILActionPerformed
+
+    private void btnShowILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowILActionPerformed
+        DefaultTableModel model = manager.viewTable("ImportList");
+        tblIL.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblIL.getModel());
+        tblIL.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowILActionPerformed
 
     /**
      * @param args the command line arguments
@@ -509,30 +855,51 @@ public class FMGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnApprove;
+    private javax.swing.JTabbedPane POTab;
+    private javax.swing.JButton btnAddIL;
+    private javax.swing.JButton btnChange;
+    private javax.swing.JButton btnChooseSp;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPOUpdateClear;
     private javax.swing.JButton btnPOUpdateSearchID;
     private javax.swing.JButton btnReject;
+    private javax.swing.JButton btnSearchIL;
     private javax.swing.JButton btnSearchPO;
+    private javax.swing.JButton btnShowIL;
     private javax.swing.JButton btnShowPO;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
+    private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
+    private javax.swing.JLabel jLabel46;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblItemID;
     private javax.swing.JLabel lblName;
     private javax.swing.JTabbedPane tab;
+    private javax.swing.JTable tblIL;
+    private javax.swing.JTable tblISM;
     private javax.swing.JTable tblPO;
+    private javax.swing.JTextField txtILDate;
+    private javax.swing.JTextField txtILID;
+    private javax.swing.JTextField txtILSearchField;
     private javax.swing.JTextField txtPOIDMod;
     private javax.swing.JTextField txtPOSearchField;
+    private javax.swing.JTextField txtPOSp;
     private javax.swing.JTextField txtPOStatusMod;
     // End of variables declaration//GEN-END:variables
 }

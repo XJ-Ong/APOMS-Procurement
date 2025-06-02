@@ -60,7 +60,7 @@ public class FinanceManager extends User{
         return fh.getTable(className);
     }
     
-    public List<PurchaseRequisition> recreatePOs()
+    public List<PurchaseOrder> recreatePOs()
     {
         return fh.recreateObj("PurchaseOrder");
     }
@@ -68,5 +68,11 @@ public class FinanceManager extends User{
     public void updateObject(Object obj, String ID)
     {
         fh.UpdateFile(obj, ID);
+    }
+    
+    public void addIL(String ilid, String poid, String itemid, String spid, int quantity, String date, String fmid)
+    {
+        ImportList il = new ImportList(ilid, poid, itemid, spid, quantity, "pending", date, fmid);
+        fh.WriteFile(il);
     }
 }

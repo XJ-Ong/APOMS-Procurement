@@ -72,7 +72,9 @@ public class HeaderRegistry
         (
             "FMID", "userName", "userPassword", "userAddress", "userContact"
         );
-        registerHeaders(FinanceManager.class, FMHeaders, "FMID", "F", Collections.emptyMap());
+        Map<String, List<String>> FMDpd = new HashMap<>();
+        FMDpd.put("ImportList.csv", Arrays.asList("FMID"));
+        registerHeaders(FinanceManager.class, FMHeaders, "FMID", "F", FMDpd);
         
         // InventoryManager
         List<String> IMHeaders = Arrays.asList

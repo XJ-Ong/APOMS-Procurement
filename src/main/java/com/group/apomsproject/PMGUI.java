@@ -921,6 +921,8 @@ public class PMGUI extends javax.swing.JFrame {
         txtPOSp.setText("");
         txtPRIDMod.setText("");
         txtPRStatusMod.setText("");
+        DefaultTableModel model = (DefaultTableModel) tblISM.getModel();
+        model.setRowCount(0);
         PRMODEditable(false);
     }//GEN-LAST:event_btnAddPRActionPerformed
 
