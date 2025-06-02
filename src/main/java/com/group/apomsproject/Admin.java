@@ -1,10 +1,8 @@
 package com.group.apomsproject;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Admin extends User{
     private String AMID;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.group.apomsproject;
 
 import java.util.List;
@@ -10,10 +6,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 
-/**
- *
- * @author prawn
- */
 public class SMGUI extends javax.swing.JFrame {
     private final SalesManager manager;
     private TableRowSorter<DefaultTableModel> tableSorter;
