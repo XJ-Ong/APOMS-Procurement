@@ -245,6 +245,28 @@ public class MainGUI extends javax.swing.JFrame {
                         dispose();
                     }
                 }
+                else if(id.startsWith("P"))
+                {
+                    List<PurchaseManager> managers = fh.recreateObj("PurchaseManager");
+                    PurchaseManager manager = Login(managers, id, pass, "getPMID");
+                    if(manager != null)
+                    {
+                        PMGUI gui = new PMGUI(manager);
+                        gui.setVisible(true);
+                        dispose();
+                    }
+                }
+                else if(id.startsWith("F"))
+                {
+                    List<FinanceManager> managers = fh.recreateObj("FinanceManager");
+                    FinanceManager manager = Login(managers, id, pass, "getFMID");
+                    if(manager != null)
+                    {
+                        FMGUI gui = new FMGUI(manager);
+                        gui.setVisible(true);
+                        dispose();
+                    }
+                }
                 else if(id.startsWith("I"))
                 {
                     List<InventoryManager> managers = fh.recreateObj("InventoryManager");

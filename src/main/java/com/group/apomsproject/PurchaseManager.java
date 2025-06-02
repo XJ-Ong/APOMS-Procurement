@@ -1,7 +1,12 @@
 package com.group.apomsproject;
 
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 public class PurchaseManager extends User{
     private String PMID;
+    
+    private FileOperations fh = new FileOperations();
 
     public PurchaseManager(String PMID, String userName, String userPassword, String userAddress, String userContact) {
         super(userName, userPassword, userAddress, userContact);
@@ -46,5 +51,15 @@ public class PurchaseManager extends User{
 
     public void setUserContact(String userContact) {
         this.userContact = userContact;
+    }
+    
+    public DefaultTableModel viewTable(String className)
+    {
+        return fh.getTable(className);
+    }
+    
+    public List<PurchaseRequisition> recreatePRs()
+    {
+        return fh.recreateObj("PurchaseRequisition");
     }
 }
