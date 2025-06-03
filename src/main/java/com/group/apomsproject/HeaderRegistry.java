@@ -96,6 +96,7 @@ public class HeaderRegistry
         SPDpd.put("ItemSupplierMap.csv", Arrays.asList("supplierID"));
         SPDpd.put("PurchaseOrder.csv", Arrays.asList("supplierID"));
         SPDpd.put("ImportList.csv", Arrays.asList("supplierID"));
+        SPDpd.put("FinancialReport.csv", Arrays.asList("supplierID"));
         registerHeaders(Supplier.class, SupplierHeaders, "supplierID", "SP", SPDpd);
         
         // Item
@@ -109,6 +110,7 @@ public class HeaderRegistry
         ITMDpd.put("PurchaseRequisition.csv", Arrays.asList("itemID"));
         ITMDpd.put("PurchaseOrder.csv", Arrays.asList("itemID"));
         ITMDpd.put("ImportList.csv", Arrays.asList("itemID"));
+        ITMDpd.put("FinancialReport.csv", Arrays.asList("itemID"));
         registerHeaders(Item.class, ItemHeaders, "itemID", "ITM", ITMDpd);
         
         // ItemSupplierMap
@@ -148,6 +150,15 @@ public class HeaderRegistry
         (
             "ILID", "POID", "itemID", "supplierID", "receivedQuantity", "status", "dateCreated", "FMID"
         );
-        registerHeaders(ImportList.class, ILHeaders, "ILID", "IL", Collections.emptyMap());
+        Map<String, List<String>> ILDpd = new HashMap<>();
+        ILDpd.put("FinancialReport.csv", Arrays.asList("ILID"));
+        registerHeaders(ImportList.class, ILHeaders, "ILID", "IL", ILDpd);
+        
+        // FinancialReport
+        List<String> FRHeaders = Arrays.asList
+        (
+            "FRID", "ILID", "itemID", "supplierID", "payAmount", "dateCreated", "FMID"
+        );
+        registerHeaders(FinancialReport.class, FRHeaders, "FRID", "FR", Collections.emptyMap());
     }
 }
