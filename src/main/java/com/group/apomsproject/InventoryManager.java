@@ -1,10 +1,14 @@
 package com.group.apomsproject;
 
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class InventoryManager extends User
 {
     private String IMID;
+    
+    private FileOperations fh = new FileOperations();
 
     public InventoryManager(String IMID, String userName, String userPassword, String userAddress, String userContact)
     {
@@ -19,42 +23,34 @@ public class InventoryManager extends User
         this.IMID = IMID;
     }
 
-    @Override
     public String getUserName() {
         return userName;
     }
-
-    @Override
+    
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
-    @Override
+    
     public String getUserAddress() {
         return userAddress;
     }
 
-    @Override
     public void setUserAddress(String userAddress) {
         this.userAddress = userAddress;
     }
 
-    @Override
     public String getUserContact() {
         return userContact;
     }
 
-    @Override
     public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
 
-    @Override
     public String getUserPassword() {
         return userPassword;
     }
 
-    @Override
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
@@ -66,8 +62,33 @@ public class InventoryManager extends User
         return model;
     }
     
-    public void ClearTable(DefaultTableModel model)
+    public DefaultTableModel viewTable(String className)
     {
-        model.setRowCount(0);
+        return fh.getTable(className);
+    }
+    
+    public List<ImportList> recreateILs()
+    {
+        return fh.recreateObj("ImportList");
+    }
+    
+    public void updateObject(Object obj, String ID)
+    {
+        fh.UpdateFile(obj, ID);
+    }
+    
+    public Item recreateItem(String id)
+    {
+        List<Item> items = fh.recreateObj("Item");
+        for(Item itm : items)
+        {
+            if(id.equals(itm.getItemID()))
+            {
+                return itm;
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Item not found for " + id);
+        return null;
     }
 }

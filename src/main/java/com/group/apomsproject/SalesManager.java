@@ -1,156 +1,264 @@
 package com.group.apomsproject;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.lang.reflect.Method;
 import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-public class SalesManager {
-    private final String file = "daily_sales.csv";
+public class SalesManager extends User{
+    private String SMID;
+    
+    private FileOperations fh = new FileOperations();
 
-    public void addDailySalesEntry(Sales sale) {
-        if (sale == null
-                || sale.getSalesID() == null
-                || sale.getItemCode() == null
-                || sale.getQuantitySold() <= 0
-                || sale.getSMID() == null) {
-
-            System.out.println("Invalid sales entry. Please provide all details correctly.");
-            return;
-        };
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(sale.toCSV());
-            writer.newLine();
-            System.out.println("Sales recorded for item ID: " + sale.getItemCode());
-        } catch (IOException e) {
-            System.out.println("Error saving sales entry: " + e.getMessage());
-        }
+    public SalesManager(String SMID, String userName, String userPassword, String userAddress, String userContact) {
+        super(userName, userPassword, userAddress, userContact);
+        this.SMID = SMID;
     }
 
-    // Add delete or edit methods if needed
-    public boolean deleteDailySalesEntry(String salesID) {
-        List<String> lines = new ArrayList<>();
-        boolean salesDeleted = false;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith(salesID + ",")) {
-                    salesDeleted = true; // Mark item for deletion
-                    continue; // Skip this line
-                }
-                lines.add(line); // Keep other lines
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return false;
-        }
-
-    // Rewrite the file without the deleted item
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (String l : lines) {
-                writer.write(l);
-                writer.newLine();
-            }
-            System.out.println("Sales deleted.");
-        } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
-            return false;
-        }
-
-        return salesDeleted;
+    public String getSMID() {
+        return SMID;
     }
 
-    public void editDailySalesEntry(String salesID, String itemCode, int newQty, String newSMID) {
-        List<String> lines = new ArrayList<>();
-        boolean found = false;
+    public void setSMID(String SMID) {
+        this.SMID = SMID;
+    }
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.startsWith(salesID + ",")) {
-                    lines.add(line);
-                } else {
-                    String[] parts = line.split(",");
-                    if (parts.length >= 4 && parts[0].equals(salesID) && parts[1].equals(itemCode)) {
-                        String updatedLine = salesID + "," + itemCode + "," + newQty + "," + newSMID;
-                        lines.add(updatedLine);
-                        found = true;
-                    } else {
-                        lines.add(line);
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public String getUserContact() {
+        return userContact;
+    }
+
+    public void setUserContact(String userContact) {
+        this.userContact = userContact;
+    }
+    
+    public void addSupplier(String id, String name, String address, String contact)
+    {
+        Supplier sp = new Supplier(id, name, address, contact);
+        fh.WriteFile(sp);
+    }
+    
+    public DefaultTableModel viewTable(String className)
+    {
+        return fh.getTable(className);
+    }
+    
+    public List<Supplier> recreateSuppliers()
+    {
+        return fh.recreateObj("Supplier");
+    }
+    
+    public void updateObject(Object obj, String ID)
+    {
+        // Change quantity of item when updating sales record
+        if(obj.getClass().getSimpleName().equals("Sales"))
+        {
+            try
+            {
+                List<Sales> salesList = fh.recreateObj("Sales");
+                Sales originalSales = null;
+                for(Sales sales : salesList)
+                {
+                    Method getSalesIDMethod = sales.getClass().getMethod("getSalesID");
+                    String currentSalesID = (String) getSalesIDMethod.invoke(sales);
+                    
+                    if(currentSalesID.equals(ID))
+                    {
+                        originalSales = sales;
+                        break;
                     }
                 }
+                
+                if(originalSales == null)
+                {
+                    JOptionPane.showMessageDialog(null, "Sales not found: " + ID);
+                    return;
+                }
+                
+                Method getSalesQuantityOG = originalSales.getClass().getMethod("getQuantitySold");
+                int originalQuantity = (Integer) getSalesQuantityOG.invoke(originalSales);
+                
+                fh.UpdateFile(obj, ID);
+                
+                Method getSalesQuantityNew = obj.getClass().getMethod("getQuantitySold");
+                int newQuantity = (Integer) getSalesQuantityNew.invoke(obj);
+                
+                int quantityChange = originalQuantity - newQuantity;
+                updateItemQuantityForSales(ID, quantityChange);
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return;
-        }
-
-        if (!found) {
-            System.out.println("Sales entry not found.");
-            return;
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            for (String l : lines) {
-                writer.write(l);
-                writer.newLine();
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, "Error adjusting item quantity: " + e.getMessage());
             }
-            System.out.println("Sales entry updated.");
-        } catch (IOException e) {
-            System.out.println("Error writing file: " + e.getMessage());
+        }
+        else
+        {
+            // for other record updates
+            fh.UpdateFile(obj, ID);
         }
     }
     
-    public Sales findSalesByID(String salesID) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine();
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length != 4) continue; // Skip invalid lines
-
-            // Extract values from CSV
-                String id = parts[0].trim();
-                String code = parts[1].trim();
-                int quantity = Integer.parseInt(parts[2].trim());
-                String smID = parts[3].trim();
+    public boolean deleteObject(String className, String ID)
+    {
+        if(className.equals("Sales"))
+        {
+            try
+            {
+                List<Sales> salesList = fh.recreateObj("Sales");
+                Sales targetSales = null;
+                for(Sales sales : salesList)
+                {
+                    Method getSalesIDMethod = sales.getClass().getMethod("getSalesID");
+                    String currentSalesID = (String) getSalesIDMethod.invoke(sales);
+                    
+                    if(currentSalesID.equals(ID))
+                    {
+                        targetSales = sales;
+                        break;
+                    }
+                }
                 
-            // Compare with user input
-                if (id.equalsIgnoreCase(salesID)) {
-                    return new Sales(id, code, quantity, smID);
+                if(targetSales == null)
+                {
+                    JOptionPane.showMessageDialog(null, "Sales not found: " + ID);
+                    return false;
+                }
+                
+                Method getItemID = targetSales.getClass().getMethod("getItemID");
+                Method getSalesQuantity = targetSales.getClass().getMethod("getQuantitySold");
+                String itemID = (String) getItemID.invoke(targetSales);
+                int quantityChange = 0 - (Integer) getSalesQuantity.invoke(targetSales);
+                
+                updateItemQuantityForSales(itemID, quantityChange);
+                
+                return fh.DeleteRecord(className, ID);
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, "Error adjusting item quantity: " + e.getMessage());
+                return false;
+            }
+        }
+        else
+        {
+            return fh.DeleteRecord(className, ID);
+        }
+    }
+    
+    public void addItem(String id, String name, double price, int quantity, int rol)
+    {
+        Item itm = new Item(id, name, price, quantity, rol);
+        fh.WriteFile(itm);
+    }
+    
+    public List<Item> recreateItems()
+    {
+        return fh.recreateObj("Item");
+    }
+    
+    public String generateISMID()
+    {
+        return fh.generateISMID();
+    }
+    
+    public void addISM(String id, String itemid, String spid, double importprice)
+    {
+        ItemSupplierMap ism = new ItemSupplierMap(id, itemid, spid, importprice);
+        fh.WriteFile(ism);
+    }
+    
+    public List<ItemSupplierMap> recreateISMs()
+    {
+        return fh.recreateObj("ItemSupplierMap");
+    }
+    
+    public void addSales(String id, String itemid, int quantity, String date, String smid)
+    {
+        Sales sl = new Sales(id, itemid, quantity, date, smid);
+        fh.WriteFile(sl);
+        updateItemQuantityForSales(itemid, quantity);
+    }
+    
+    private void updateItemQuantityForSales(String id, int quantity)
+    {
+        try
+        {
+            List<Item> items = fh.recreateObj("Item");
+            Item targetItem = null;
+            for(Item item : items)
+            {
+                Method getItemIDMethod = item.getClass().getMethod("getItemID");
+                String currentItemID = (String) getItemIDMethod.invoke(item);
+                if(currentItemID.equals(id))
+                {
+                    targetItem = item;
+                    break;
                 }
             }
-        } catch (IOException | NumberFormatException e) {
-            System.out.println("Error reading item file: " + e.getMessage());
+            
+            if(targetItem == null)
+            {
+                JOptionPane.showMessageDialog(null, "ItemID not found: " + id);
+                return;
+            }
+            
+            int currentQuantity = targetItem.getQuantity();
+            int newQuantity = currentQuantity - quantity;
+            
+            if(newQuantity < 0)
+            {
+                JOptionPane.showMessageDialog(null, "Error: Not enough items for " +id);
+                return;
+            }
+            
+            targetItem.setQuantity(newQuantity);
+            
+            fh.UpdateFile(targetItem, id);
         }
-
-        return null; // Not found
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error updating item quantity: " + e.getMessage());
+        }
     }
     
-    public List<Sales> getAllSales() {
-        List<Sales> sale = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line = reader.readLine(); // Skip header
-
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length != 6) continue; // Skip invalid lines
-
-                String salesID = parts[0].trim();
-                String itemCode = parts[1].trim();
-                int quantitySold = Integer.parseInt(parts[2].trim());
-                String smID = parts[3].trim();
-
-                Sales sales = new Sales(salesID, itemCode, quantitySold, smID);
-                sale.add(sales);
-            }
-
-        } catch (IOException | NumberFormatException e) {
-        System.out.println("Error loading items from CSV: " + e.getMessage());
-        }
-
-        return sale;
+    public List<Sales> recreateSales()
+    {
+        return fh.recreateObj("Sales");
+    }
+    
+    public void addPR(String id, String itemid, int quantity, String date, String smid)
+    {
+        PurchaseRequisition pr = new PurchaseRequisition(id, itemid, quantity, "pending", date, smid);
+        fh.WriteFile(pr);
+    }
+    
+    public List<PurchaseRequisition> recreatePRs()
+    {
+        return fh.recreateObj("PurchaseRequisition");
     }
 }
+
 

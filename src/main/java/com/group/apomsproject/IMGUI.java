@@ -1,13 +1,14 @@
 package com.group.apomsproject;
 
-import java.io.*;
-import java.lang.reflect.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
 public class IMGUI extends javax.swing.JFrame {
     private final InventoryManager manager;
+    private TableRowSorter<DefaultTableModel> tableSorter;
+    private ImportList currentIL = null;
+    
     /**
      * Creates new form IMGUI
      * @param manager
@@ -15,7 +16,9 @@ public class IMGUI extends javax.swing.JFrame {
     public IMGUI(InventoryManager manager) {
         this.manager = manager;
         initComponents();
-        lblIMName.setText(manager.getUserName());
+        lblName.setText(manager.getUserName());
+        txtILStatusMod.setEditable(false);
+        btnUpdateItem.setEnabled(false);
     }
 
     /**
@@ -32,18 +35,40 @@ public class IMGUI extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        btnViewInventory = new javax.swing.JButton();
-        btnTab2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        lblIMName = new javax.swing.JLabel();
-        jTabbedPane5 = new javax.swing.JTabbedPane();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        btnLogout = new javax.swing.JButton();
+        lblName = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        tab = new javax.swing.JTabbedPane();
         tab1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        invTable = new javax.swing.JTable();
-        btnLoadInventory = new javax.swing.JButton();
-        btnClearTable = new javax.swing.JButton();
+        btnShowItem = new javax.swing.JButton();
+        btnShowItemBR = new javax.swing.JButton();
+        txtItemSearchField = new javax.swing.JTextField();
+        btnSearchItem = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblItem = new javax.swing.JTable();
         tab2 = new javax.swing.JPanel();
+        txtILStatusMod = new javax.swing.JTextField();
+        btnILUpdateSearchID = new javax.swing.JButton();
+        jLabel45 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        btnILUpdateClear = new javax.swing.JButton();
+        txtILIDMod = new javax.swing.JTextField();
+        btnUpdateItem = new javax.swing.JButton();
+        txtILSearchField = new javax.swing.JTextField();
+        btnSearchIL = new javax.swing.JButton();
+        btnShowIL = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblIL = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        txtPOSearchField = new javax.swing.JTextField();
+        btnSearchPO = new javax.swing.JButton();
+        btnShowPO = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblPO = new javax.swing.JTable();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -71,87 +96,135 @@ public class IMGUI extends javax.swing.JFrame {
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setBackground(new java.awt.Color(153, 153, 153));
-        jLabel1.setFont(new java.awt.Font("Snap ITC", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Stencil", 1, 48)); // NOI18N
+        jLabel2.setText("inventory");
+
+        jLabel1.setFont(new java.awt.Font("Stencil", 1, 48)); // NOI18N
         jLabel1.setText("Manager");
 
-        btnViewInventory.setBackground(new java.awt.Color(0, 0, 0));
-        btnViewInventory.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        btnViewInventory.setForeground(new java.awt.Color(255, 255, 255));
-        btnViewInventory.setText("View Inventory");
-        btnViewInventory.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setBackground(new java.awt.Color(0, 0, 0));
+        jButton1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("View Item");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnViewInventoryActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
-        btnTab2.setBackground(new java.awt.Color(0, 0, 0));
-        btnTab2.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
-        btnTab2.setForeground(new java.awt.Color(255, 255, 255));
-        btnTab2.setText("tab2");
-        btnTab2.addActionListener(new java.awt.event.ActionListener() {
+        btnLogout.setBackground(new java.awt.Color(0, 0, 0));
+        btnLogout.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTab2ActionPerformed(evt);
+                btnLogoutActionPerformed(evt);
             }
         });
 
-        jLabel2.setBackground(new java.awt.Color(153, 153, 153));
-        jLabel2.setFont(new java.awt.Font("Snap ITC", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Inventory");
+        lblName.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        lblName.setText("IMName");
 
-        lblIMName.setForeground(new java.awt.Color(255, 255, 255));
-        lblIMName.setText("managername");
+        jButton2.setBackground(new java.awt.Color(0, 0, 0));
+        jButton2.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Update Stock");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(0, 0, 0));
+        jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("View PO");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)))
+                .addGap(38, 38, 38))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addComponent(btnTab2))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(btnViewInventory)))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblIMName)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addComponent(btnViewInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnTab2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
-                .addComponent(lblIMName)
-                .addGap(19, 19, 19))
+                .addGap(33, 33, 33)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(lblName)
+                .addContainerGap())
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 620));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 320, 610));
 
-        invTable.setModel(new javax.swing.table.DefaultTableModel(
+        btnShowItem.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowItem.setText("Load Items");
+        btnShowItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowItemActionPerformed(evt);
+            }
+        });
+
+        btnShowItemBR.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowItemBR.setText("Low Stock Filter");
+        btnShowItemBR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowItemBRActionPerformed(evt);
+            }
+        });
+
+        txtItemSearchField.setToolTipText("Enter keyword to search...");
+        txtItemSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtItemSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchItem.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchItem.setText("Search");
+        btnSearchItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchItemActionPerformed(evt);
+            }
+        });
+
+        tblItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -162,81 +235,497 @@ public class IMGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(invTable);
-
-        btnLoadInventory.setText("Load Inventory");
-        btnLoadInventory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLoadInventoryActionPerformed(evt);
-            }
-        });
-
-        btnClearTable.setText("Clear Table");
-        btnClearTable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearTableActionPerformed(evt);
-            }
-        });
+        jScrollPane3.setViewportView(tblItem);
 
         javax.swing.GroupLayout tab1Layout = new javax.swing.GroupLayout(tab1);
         tab1.setLayout(tab1Layout);
         tab1Layout.setHorizontalGroup(
             tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tab1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(btnLoadInventory)
-                .addGap(18, 18, 18)
-                .addComponent(btnClearTable)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 880, Short.MAX_VALUE)
+                .addGap(36, 36, 36)
+                .addGroup(tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(tab1Layout.createSequentialGroup()
+                        .addComponent(btnShowItem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnShowItemBR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtItemSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearchItem))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 664, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         tab1Layout.setVerticalGroup(
             tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+            .addGroup(tab1Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
                 .addGroup(tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLoadInventory)
-                    .addComponent(btnClearTable))
+                    .addComponent(txtItemSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearchItem)
+                    .addGroup(tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnShowItem)
+                        .addComponent(btnShowItemBR)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
-        jTabbedPane5.addTab("tab1", tab1);
+        tab.addTab("tab1", tab1);
+
+        txtILStatusMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILStatusModActionPerformed(evt);
+            }
+        });
+
+        btnILUpdateSearchID.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnILUpdateSearchID.setText("Search");
+        btnILUpdateSearchID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnILUpdateSearchIDActionPerformed(evt);
+            }
+        });
+
+        jLabel45.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel45.setText("Status");
+
+        jLabel42.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel42.setText("Import ID");
+
+        btnILUpdateClear.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnILUpdateClear.setText("Clear");
+        btnILUpdateClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnILUpdateClearActionPerformed(evt);
+            }
+        });
+
+        txtILIDMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILIDModActionPerformed(evt);
+            }
+        });
+
+        btnUpdateItem.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnUpdateItem.setText("Update");
+        btnUpdateItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateItemActionPerformed(evt);
+            }
+        });
+
+        txtILSearchField.setToolTipText("Enter keyword to search...");
+        txtILSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchIL.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchIL.setText("Search");
+        btnSearchIL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchILActionPerformed(evt);
+            }
+        });
+
+        btnShowIL.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowIL.setText("Load Import List");
+        btnShowIL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowILActionPerformed(evt);
+            }
+        });
+
+        tblIL.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tblIL);
 
         javax.swing.GroupLayout tab2Layout = new javax.swing.GroupLayout(tab2);
         tab2.setLayout(tab2Layout);
         tab2Layout.setHorizontalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
+            .addGroup(tab2Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
+                        .addComponent(btnShowIL)
+                        .addGap(152, 152, 152)
+                        .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearchIL))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
+                        .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(tab2Layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(jLabel45)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtILStatusMod, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
+                            .addGroup(tab2Layout.createSequentialGroup()
+                                .addComponent(jLabel42)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtILIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnILUpdateSearchID)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnILUpdateClear)))
+                        .addGap(60, 60, 60)
+                        .addComponent(btnUpdateItem, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         tab2Layout.setVerticalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 575, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchIL))
+                    .addComponent(btnShowIL))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(tab2Layout.createSequentialGroup()
+                        .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnILUpdateSearchID)
+                            .addComponent(btnILUpdateClear)
+                            .addComponent(jLabel42)
+                            .addComponent(txtILIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel45)
+                            .addComponent(txtILStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(tab2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(btnUpdateItem, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(31, 31, 31))
         );
 
-        jTabbedPane5.addTab("tab2", tab2);
+        tab.addTab("tab2", tab2);
 
-        getContentPane().add(jTabbedPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 880, 610));
+        txtPOSearchField.setToolTipText("Enter keyword to search...");
+        txtPOSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchPO.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchPO.setText("Search");
+        btnSearchPO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchPOActionPerformed(evt);
+            }
+        });
+
+        btnShowPO.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowPO.setText("Load Purchase Order");
+        btnShowPO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowPOActionPerformed(evt);
+            }
+        });
+
+        tblPO.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblPO);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnShowPO)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtPOSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearchPO)))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(54, 54, 54)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPOSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchPO))
+                    .addComponent(btnShowPO))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+
+        tab.addTab("tab3", jPanel1);
+
+        getContentPane().add(tab, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 0, 740, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnViewInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewInventoryActionPerformed
-        jTabbedPane5.setSelectedIndex(0);
-    }//GEN-LAST:event_btnViewInventoryActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        tab.setSelectedIndex(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void btnLoadInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadInventoryActionPerformed
-        DefaultTableModel model = manager.LoadInventory();
-        invTable.setModel(model);
-    }//GEN-LAST:event_btnLoadInventoryActionPerformed
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        MainGUI gui = new MainGUI();
+        gui.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_btnLogoutActionPerformed
 
-    private void btnTab2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTab2ActionPerformed
-        jTabbedPane5.setSelectedIndex(1);
-    }//GEN-LAST:event_btnTab2ActionPerformed
+    private void txtILStatusModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILStatusModActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILStatusModActionPerformed
 
-    private void btnClearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearTableActionPerformed
-        manager.ClearTable((DefaultTableModel) invTable.getModel());
-    }//GEN-LAST:event_btnClearTableActionPerformed
+    private void btnILUpdateSearchIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnILUpdateSearchIDActionPerformed
+        String id = txtILIDMod.getText().trim();
+        boolean found = false;
+
+        List<ImportList> ils = manager.recreateILs();
+        for(ImportList il : ils)
+        {
+            if(id.equals(il.getILID()))
+            {
+                currentIL = il;
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(this, "Import List " + id + " not found");
+        }
+        else
+        {
+            txtILStatusMod.setText(currentIL.getStatus());
+            btnUpdateItem.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnILUpdateSearchIDActionPerformed
+
+    private void btnILUpdateClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnILUpdateClearActionPerformed
+        txtILIDMod.setText("");
+        txtILStatusMod.setText("");
+        btnUpdateItem.setEnabled(false);
+        currentIL = null;
+    }//GEN-LAST:event_btnILUpdateClearActionPerformed
+
+    private void txtILIDModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILIDModActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILIDModActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        tab.setSelectedIndex(1);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtILSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILSearchFieldActionPerformed
+
+    private void btnSearchILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchILActionPerformed
+        String keyword = txtILSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblIL.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchILActionPerformed
+
+    private void btnShowILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowILActionPerformed
+        DefaultTableModel model = manager.viewTable("ImportList");
+        tblIL.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblIL.getModel());
+        tblIL.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowILActionPerformed
+
+    private void btnUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateItemActionPerformed
+        if(txtILStatusMod.getText().trim().equals("pending"))
+        {
+            Item itm = manager.recreateItem(currentIL.getItemID());
+            int oldQuantity = itm.getQuantity();
+            int changeQuantity = currentIL.getReceivedQuantity();
+            itm.setQuantity(oldQuantity + changeQuantity);
+            manager.updateObject(itm, itm.getItemID());
+            currentIL.setStatus("imported");
+            manager.updateObject(currentIL, currentIL.getILID());
+            JOptionPane.showMessageDialog(this, "Item " + itm.getItemID() + " updated");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "List of items are already imported");
+        }
+        txtILIDMod.setText("");
+        txtILStatusMod.setText("");
+        btnUpdateItem.setEnabled(false);
+        currentIL = null;
+    }//GEN-LAST:event_btnUpdateItemActionPerformed
+
+    private void btnShowItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowItemActionPerformed
+        DefaultTableModel model = manager.viewTable("Item");
+        tblItem.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblItem.getModel());
+        tblItem.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowItemActionPerformed
+
+    private void btnShowItemBRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowItemBRActionPerformed
+        try
+        {
+            int quantityColumnIndex = 3;
+            int rolColumnIndex = 4;
+
+            RowFilter<DefaultTableModel, Object> filter = new RowFilter<DefaultTableModel, Object>()
+            {
+                @Override
+                public boolean include(Entry<? extends DefaultTableModel, ? extends Object> entry)
+                {
+                    Object quantityObj = entry.getValue(quantityColumnIndex);
+                    Object rolObj = entry.getValue(rolColumnIndex);
+
+                    if(quantityObj == null || rolObj == null)
+                    {
+                        return false;
+                    }
+
+                    try
+                    {
+                        int quantity = Integer.parseInt(quantityObj.toString());
+                        int rol = Integer.parseInt(rolObj.toString());
+                        return quantity < rol;
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        return false;
+                    }
+                }
+            };
+            tableSorter.setRowFilter(filter);
+
+            if(tblItem.getRowCount() == 0)
+            {
+                JOptionPane.showMessageDialog(this, "No items with low stock");
+            }
+        }
+        catch(Exception e)
+        {
+            tableSorter.setRowFilter(null);
+            JOptionPane.showMessageDialog(this, "Error filtering low stock: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnShowItemBRActionPerformed
+
+    private void txtItemSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtItemSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtItemSearchFieldActionPerformed
+
+    private void btnSearchItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchItemActionPerformed
+        String keyword = txtItemSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblItem.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchItemActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        tab.setSelectedIndex(2);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void txtPOSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOSearchFieldActionPerformed
+
+    private void btnSearchPOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPOActionPerformed
+        String keyword = txtPOSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblPO.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchPOActionPerformed
+
+    private void btnShowPOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowPOActionPerformed
+        DefaultTableModel model = manager.viewTable("PurchaseOrder");
+        tblPO.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblPO.getModel());
+        tblPO.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowPOActionPerformed
 
     /**
      * @param args the command line arguments
@@ -274,22 +763,44 @@ public class IMGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnClearTable;
-    private javax.swing.JButton btnLoadInventory;
-    private javax.swing.JButton btnTab2;
-    private javax.swing.JButton btnViewInventory;
-    private javax.swing.JTable invTable;
+    private javax.swing.JButton btnILUpdateClear;
+    private javax.swing.JButton btnILUpdateSearchID;
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnSearchIL;
+    private javax.swing.JButton btnSearchItem;
+    private javax.swing.JButton btnSearchPO;
+    private javax.swing.JButton btnShowIL;
+    private javax.swing.JButton btnShowItem;
+    private javax.swing.JButton btnShowItemBR;
+    private javax.swing.JButton btnShowPO;
+    private javax.swing.JButton btnUpdateItem;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel45;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTabbedPane jTabbedPane5;
-    private javax.swing.JLabel lblIMName;
+    private javax.swing.JLabel lblName;
+    private javax.swing.JTabbedPane tab;
     private javax.swing.JPanel tab1;
     private javax.swing.JPanel tab2;
+    private javax.swing.JTable tblIL;
+    private javax.swing.JTable tblItem;
+    private javax.swing.JTable tblPO;
+    private javax.swing.JTextField txtILIDMod;
+    private javax.swing.JTextField txtILSearchField;
+    private javax.swing.JTextField txtILStatusMod;
+    private javax.swing.JTextField txtItemSearchField;
+    private javax.swing.JTextField txtPOSearchField;
     // End of variables declaration//GEN-END:variables
 }

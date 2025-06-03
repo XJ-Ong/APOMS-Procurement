@@ -3,32 +3,38 @@ package com.group.apomsproject;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class FinanceManager extends User{
+public class PurchaseManager extends User{
+    private String PMID;
     
-    private String FMID;
-
     private FileOperations fh = new FileOperations();
-    
-    public FinanceManager(String FMID, String userName, String userPassword, String userAddress, String userContact)
-    {
+
+    public PurchaseManager(String PMID, String userName, String userPassword, String userAddress, String userContact) {
         super(userName, userPassword, userAddress, userContact);
-        this.FMID = FMID;
+        this.PMID = PMID;
     }
 
-    public String getFMID() {
-        return FMID;
+    public String getPMID() {
+        return PMID;
     }
 
-    public void setFMID(String FMID) {
-        this.FMID = FMID;
+    public void setPMID(String PMID) {
+        this.PMID = PMID;
     }
-    
+
     public String getUserName() {
         return userName;
     }
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public String getUserAddress() {
@@ -46,23 +52,15 @@ public class FinanceManager extends User{
     public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
-
-    public String getUserPassword() {
-        return userPassword;
-    }
-
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
     
     public DefaultTableModel viewTable(String className)
     {
         return fh.getTable(className);
     }
     
-    public List<PurchaseOrder> recreatePOs()
+    public List<PurchaseRequisition> recreatePRs()
     {
-        return fh.recreateObj("PurchaseOrder");
+        return fh.recreateObj("PurchaseRequisition");
     }
     
     public void updateObject(Object obj, String ID)
@@ -70,9 +68,9 @@ public class FinanceManager extends User{
         fh.UpdateFile(obj, ID);
     }
     
-    public void addIL(String ilid, String poid, String itemid, String spid, int quantity, String date, String fmid)
+    public void addPO(String poid, String prid, String itemid, int quantity, String spid, String date, String pmid)
     {
-        ImportList il = new ImportList(ilid, poid, itemid, spid, quantity, "pending", date, fmid);
-        fh.WriteFile(il);
+        PurchaseOrder po = new PurchaseOrder(poid, prid, itemid, quantity, spid, "pending", date, pmid);
+        fh.WriteFile(po);
     }
 }

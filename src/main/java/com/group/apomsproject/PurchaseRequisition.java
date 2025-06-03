@@ -1,16 +1,21 @@
 package com.group.apomsproject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class PurchaseRequisition {
-   
     private String PRID;
-    private int quantity;
-    private String deliveryDate;
+    private String itemID;
+    private int requiredQuantity;
     private String status;
-    private String SMID;  
+    private String dateCreated;
+    private String SMID;
+
+    public PurchaseRequisition(String PRID, String itemID, int requiredQuantity, String status, String dateCreated, String SMID) {
+        this.PRID = PRID;
+        this.itemID = itemID;
+        this.requiredQuantity = requiredQuantity;
+        this.status = status;
+        this.dateCreated = dateCreated;
+        this.SMID = SMID;
+    }
 
     public String getPRID() {
         return PRID;
@@ -20,20 +25,20 @@ public class PurchaseRequisition {
         this.PRID = PRID;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getItemID() {
+        return itemID;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setItemID(String itemID) {
+        this.itemID = itemID;
     }
 
-    public String getDeliveryDate() {
-        return deliveryDate;
+    public int getRequiredQuantity() {
+        return requiredQuantity;
     }
 
-    public void setDeliveryDate(String deliveryDate) {
-        this.deliveryDate = deliveryDate;
+    public void setRequiredQuantity(int requiredQuantity) {
+        this.requiredQuantity = requiredQuantity;
     }
 
     public String getStatus() {
@@ -44,6 +49,14 @@ public class PurchaseRequisition {
         this.status = status;
     }
 
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public String getSMID() {
         return SMID;
     }
@@ -51,30 +64,4 @@ public class PurchaseRequisition {
     public void setSMID(String SMID) {
         this.SMID = SMID;
     }
-    
-    public PurchaseRequisition(String PRID, int quantity, String deliveryDate, String status, String SMID) {
-        this.PRID = PRID;
-        this.quantity = quantity;
-        this.deliveryDate = deliveryDate;
-        this.status = status;
-        this.SMID = SMID;
-    }
-    
-    public String toCSV() {
-        return PRID + "," + quantity + "," + deliveryDate + "," + status + "," + SMID;
-    }
-    
-    public static String generateRequisitionID(String requisitionFile) {
-        int count = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(requisitionFile))) {
-            while (reader.readLine() != null) {
-                count++;
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading requisition file: " + e.getMessage());
-        }
-
-        // Format the ID with leading zeros, e.g., R001, R010
-        return String.format("RE%03d", count);
-    }
- }
+}

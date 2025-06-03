@@ -1,49 +1,32 @@
 package com.group.apomsproject;
 
-public class User
+public abstract class User
 {
     protected String userName;
     protected String userPassword;
     protected String userAddress;
     protected String userContact;
 
-    public User(String userName, String userPassword, String userAddress, String userContact)
-    {
+    public User(String userName, String userPassword, String userAddress, String userContact) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userAddress = userAddress;
         this.userContact = userContact;
     }
 
-    public String getUserName() {
-        return userName;
-    }
+    public abstract String getUserName();
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public abstract void setUserName(String userName);
 
-    public String getUserAddress() {
-        return userAddress;
-    }
+    public abstract String getUserAddress();
 
-    public void setUserAddress(String userAddress) {
-        this.userAddress = userAddress;
-    }
+    public abstract void setUserAddress(String userAddress);
 
-    public String getUserContact() {
-        return userContact;
-    }
+    public abstract String getUserContact();
 
-    public void setUserContact(String userContact) {
-        this.userContact = userContact;
-    }
+    public abstract void setUserContact(String userContact);
 
-    public String getUserPassword() {
-        return userPassword;
-    }
+    public abstract String getUserPassword();
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
-    }
+    public abstract void setUserPassword(String userPassword);
 }

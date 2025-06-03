@@ -1,24 +1,32 @@
 package com.group.apomsproject;
 
-public class PurchaseOrder {
+public class ImportList {
+    private String ILID;
     private String POID;
-    private String PRID;
     private String itemID;
-    private int orderQuantity;
     private String supplierID;
+    private int receivedQuantity;
     private String status;
     private String dateCreated;
-    private String PMID;
+    private String FMID;
 
-    public PurchaseOrder(String POID, String PRID, String itemID, int orderQuantity, String supplierID, String status, String dateCreated, String PMID) {
+    public ImportList(String ILID, String POID, String itemID, String supplierID, int receivedQuantity, String status, String dateCreated, String FMID) {
+        this.ILID = ILID;
         this.POID = POID;
-        this.PRID = PRID;
         this.itemID = itemID;
-        this.orderQuantity = orderQuantity;
         this.supplierID = supplierID;
+        this.receivedQuantity = receivedQuantity;
         this.status = status;
         this.dateCreated = dateCreated;
-        this.PMID = PMID;
+        this.FMID = FMID;
+    }
+
+    public String getILID() {
+        return ILID;
+    }
+
+    public void setILID(String ILID) {
+        this.ILID = ILID;
     }
 
     public String getPOID() {
@@ -29,14 +37,6 @@ public class PurchaseOrder {
         this.POID = POID;
     }
 
-    public String getPRID() {
-        return PRID;
-    }
-
-    public void setPRID(String PRID) {
-        this.PRID = PRID;
-    }
-
     public String getItemID() {
         return itemID;
     }
@@ -45,20 +45,20 @@ public class PurchaseOrder {
         this.itemID = itemID;
     }
 
-    public int getOrderQuantity() {
-        return orderQuantity;
-    }
-
-    public void setOrderQuantity(int orderQuantity) {
-        this.orderQuantity = orderQuantity;
-    }
-
     public String getSupplierID() {
         return supplierID;
     }
 
     public void setSupplierID(String supplierID) {
         this.supplierID = supplierID;
+    }
+
+    public int getReceivedQuantity() {
+        return receivedQuantity;
+    }
+
+    public void setReceivedQuantity(int receivedQuantity) {
+        this.receivedQuantity = receivedQuantity;
     }
 
     public String getStatus() {
@@ -77,11 +77,11 @@ public class PurchaseOrder {
         this.dateCreated = dateCreated;
     }
 
-    public String getPMID() {
-        return PMID;
+    public String getFMID() {
+        return FMID;
     }
 
-    public void setPMID(String PMID) {
-        this.PMID = PMID;
+    public void setFMID(String FMID) {
+        this.FMID = FMID;
     }
 }

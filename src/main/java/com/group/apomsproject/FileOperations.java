@@ -1,24 +1,58 @@
 package com.group.apomsproject;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class FileOperations
 {
 
     public void WriteFile(Object obj)
     {
-        Class<?> Object = obj.getClass();
-        String fileName = Object.getSimpleName() + ".csv";
-        List<String> headers = HeaderRegistry.getHeaders(Object);
+        Class<?> classObj = obj.getClass();
+        String fileName = classObj.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(classObj);
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
 
         if(headers.isEmpty())
         {
             JOptionPane.showMessageDialog(null, "no defined headers for this class");
             return;
+        }
+        
+        // Primary Key validation
+        String pKeyValue;
+        try
+        {
+            String getterName = "get" + pKeyField.substring(0, 1).toUpperCase() + pKeyField.substring(1);
+            Method getter = classObj.getMethod(getterName);
+            pKeyValue = getter.invoke(obj).toString();
+            List<Map<String, String>> existingData = ReadFile(fileName);
+            for(Map<String, String> row : existingData)
+            {
+                // compare existing rows' ID to the passed object's ID
+                if(row.get(pKeyField).equals(pKeyValue))
+                {
+                    JOptionPane.showMessageDialog(null, "Error: Primary Key " + pKeyValue + " already exists in " + fileName);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Object successfully added");
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error accessing primary key: " + e.getMessage());
         }
         
         Map<String, Method> getterMap = new HashMap<>();
@@ -27,7 +61,7 @@ public class FileOperations
             String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
             try
             {
-                Method getter = Object.getMethod(getterName);
+                Method getter = classObj.getMethod(getterName);
                 getterMap.put(header, getter);
             }
             catch(NoSuchMethodException e)
@@ -42,7 +76,7 @@ public class FileOperations
             File file = new File(fileName);
             boolean isNewFile = !file.exists() || file.length() == 0;
 
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, true)))
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(file, true)))
             {
                 // Write headers if the file is new
                 if (isNewFile)
@@ -72,15 +106,15 @@ public class FileOperations
         }
         catch (Exception e)
         {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage() + ". Creating the file now");
         }
     }
     
-    public List<Map<String, String>> ReadFile(String filename)
+    public List<Map<String, String>> ReadFile(String fileName)
     {
         List<Map<String, String>> data = new ArrayList<>();
         
-        try(BufferedReader br = new BufferedReader(new FileReader(filename)))
+        try(BufferedReader br = new BufferedReader(new FileReader(fileName)))
         {
             String headerLine = br.readLine();
             
@@ -182,13 +216,13 @@ public class FileOperations
     public <T> List<T> recreateObj(String className)
     {
         List<T> objects = new ArrayList<>();
-        String filename = className + ".csv";
-        List<Map<String, String>> data = ReadFile(filename);
+        String fileName = className + ".csv";
+        List<Map<String, String>> data = ReadFile(fileName);
         
         try
         {
-            Class<T> Object = (Class<T>) Class.forName("com.group.apomsproject." + className);
-            List<String> headers  = HeaderRegistry.getHeaders(Object);
+            Class<T> classObj = (Class<T>) Class.forName("com.group.apomsproject." + className);
+            List<String> headers  = HeaderRegistry.getHeaders(classObj);
             if(headers.isEmpty())
             {
                 JOptionPane.showMessageDialog(null, "No headers defined for class: " + className);
@@ -202,7 +236,7 @@ public class FileOperations
                 String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
                 try
                 {
-                    Method getter = Object.getMethod(getterName);
+                    Method getter = classObj.getMethod(getterName);
                     getterMap.put(header, getter);
                     typeMap.put(header, getter.getReturnType());
                 }
@@ -216,7 +250,7 @@ public class FileOperations
             {
                 try
                 {
-                    Constructor<?>[] constructors = Object.getConstructors();
+                    Constructor<?>[] constructors = classObj.getConstructors();
                     Constructor<?> bestConstructor = null;
                     Object[] args = null;
                     
@@ -241,7 +275,8 @@ public class FileOperations
                                     break;
                                 }
                             }
-                            if(allMatched) {
+                            if(allMatched)
+                            {
                                 bestConstructor = constructor;
                                 break;
                             }
@@ -255,8 +290,8 @@ public class FileOperations
                     }
                     else
                     {
-                        instance = Object.getDeclaredConstructor().newInstance();
-                        for (Map.Entry<String, String> entry : row.entrySet())
+                        instance = classObj.getDeclaredConstructor().newInstance();
+                        for(Map.Entry<String, String> entry : row.entrySet())
                         {
                             String header = entry.getKey();
                             String value = entry.getValue();
@@ -264,7 +299,7 @@ public class FileOperations
                             try
                             {
                                 Class<?> paramType = typeMap.getOrDefault(header, String.class);
-                                Method setter = Object.getMethod(setterName, paramType);
+                                Method setter = classObj.getMethod(setterName, paramType);
                                 Object convertedValue = StringToType(value, paramType);
                                 setter.invoke(instance, convertedValue);
                             }
@@ -289,13 +324,13 @@ public class FileOperations
     
     public DefaultTableModel getTable(String className)
     {
-        String filename = className + ".csv";
+        String fileName = className + ".csv";
         DefaultTableModel model = new DefaultTableModel();
         
         try
         {
-            Class<?> Object = Class.forName("com.group.apomsproject." + className);
-            List<String> headerList = HeaderRegistry.getHeaders(Object);
+            Class<?> classObj = Class.forName("com.group.apomsproject." + className);
+            List<String> headerList = HeaderRegistry.getHeaders(classObj);
             
             if(headerList.isEmpty())
             {
@@ -309,7 +344,7 @@ public class FileOperations
                 model.addColumn(header);
             }
                     
-            List<Map<String, String>> data = ReadFile(filename);
+            List<Map<String, String>> data = ReadFile(fileName);
             
             if(data.isEmpty())
             {
@@ -336,5 +371,334 @@ public class FileOperations
         }
         
         return model;
+    }
+    
+    public void UpdateFile(Object obj, String pKeyValue)
+    {
+        Class<?> classObj = obj.getClass();
+        String fileName = classObj.getSimpleName() + ".csv";
+        List<String> headers = HeaderRegistry.getHeaders(classObj);
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
+        
+        if(headers.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "no defined headers for this class");
+            return;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        boolean found = false;
+        
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        for(Map<String, String> row : existingData)
+        {
+            if(row.get(pKeyField).equals(pKeyValue))
+            {
+                found = true;
+                Map<String, String> updatedRow = new HashMap<>();
+                for(String header : headers)
+                {
+                    try
+                    {
+                        String getterName = "get" + header.substring(0, 1).toUpperCase() + header.substring(1);
+                        Method getter = classObj.getMethod(getterName);
+                        Object value = getter.invoke(obj);
+                        String strValue = (value != null) ? value.toString() : "";
+                        
+                        if(strValue.contains(",") || strValue.contains("\"") || strValue.contains("\n"))
+                        {
+                            strValue = "\"" + strValue.replace("\"", "\"\"") + "\"";
+                        }
+                        updatedRow.put(header, strValue);
+                    }
+                    catch(Exception e)
+                    {
+                        JOptionPane.showMessageDialog(null, "Error accessing getter for header: " + header);
+                        return;
+                    }
+                }
+                updatedData.add(updatedRow);
+            }
+            else
+            {
+                updatedData.add(row);
+            }
+        }
+        
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not found in " + fileName);
+            return;
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error updating file: " + e.getMessage());
+        }
+    }
+    
+    public void rearrangePrimaryKeys(String className)
+    {
+        String fileName = className + ".csv";
+        Class<?> classObj;
+        try
+        {
+            classObj = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return;
+        }
+        
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
+        String pKeyPrefix = HeaderRegistry.getPKeyPrefix(classObj);
+        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(classObj);
+        
+        if(pKeyField.isEmpty() || pKeyPrefix.isEmpty())
+        {
+            JOptionPane.showMessageDialog(null, "Primary key field or prefix not defined for " + className);
+            return;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        if(existingData.isEmpty())
+        {
+            return;
+        }
+        
+        // Rearrange Primary Keys
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        Map<String, String> idMap = new HashMap<>();
+        for(int i = 0; i < existingData.size(); i++)
+        {
+            Map<String, String> row = new HashMap<>(existingData.get(i));
+            String oldID = row.get(pKeyField);
+            String newID = pKeyPrefix + String.format("%02d", i + 1);
+            row.put(pKeyField, newID);
+            idMap.put(oldID, newID);
+            updatedData.add(row);
+        }
+        
+        // Update the file with new Primary Keys
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            List<String> headers = HeaderRegistry.getHeaders(classObj);
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error rewriting " + fileName);
+            return;
+        }
+        
+        // Update Foreign Keys
+        for(Map.Entry<String, List<String>> dependency : dependencies.entrySet())
+        {
+            String relatedFile = dependency.getKey();
+            List<String> fKeyFields = dependency.getValue();
+            List<Map<String, String>> relatedData = ReadFile(relatedFile);
+            List<Map<String, String>> newRelatedData = new ArrayList<>();
+            
+            for(Map<String, String> row : relatedData)
+            {
+                Map<String, String> updatedRow = new HashMap<>(row);
+                
+                for(String fKeyField : fKeyFields) // read key fields in the row
+                {
+                    String oldID = row.get(fKeyField); // get the old ID
+                    if(idMap.containsKey(oldID))
+                    {
+                        updatedRow.put(fKeyField, idMap.get(oldID)); // replace old ID with new ID
+                    }
+                }
+                newRelatedData.add(updatedRow);
+            }
+            
+            // Update related file with updated foreign keys
+            try(BufferedWriter bw = new BufferedWriter(new FileWriter(relatedFile)))
+            {
+                // get the class headers of related file
+                List<String> headers = HeaderRegistry.getHeaders(Class.forName("com.group.apomsproject." + relatedFile.replace(".csv", "")));
+                bw.write(String.join(",", headers));
+                bw.newLine();
+                for(Map<String, String> row : newRelatedData)
+                {
+                    List<String> rowData = new ArrayList<>();
+                    for(String header : headers)
+                    {
+                        rowData.add(row.getOrDefault(header, ""));
+                    }
+                    bw.write(String.join(",", rowData));
+                    bw.newLine();
+                }
+            }
+            catch(Exception e)
+            {
+                JOptionPane.showMessageDialog(null, "Error updating " + relatedFile);
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Primary keys rearranged successfully for " + className);
+    }
+    
+    // Used to automate mapping process
+    public String generateISMID()
+    {
+        List<Map<String, String>> data = ReadFile("ItemSupplierMap.csv");
+        int id = data.size() + 1;
+        return "ISM" + String.format("%02d", id);
+    }
+    
+    public boolean DeleteRecord(String className, String pKeyValue)
+    {
+        String fileName = className + ".csv";
+        Class<?> classObj;
+        
+        try
+        {
+            classObj = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return false;
+        }
+        
+        String pKeyField = HeaderRegistry.getPKeyField(classObj);
+        if(hasDependencies(className, pKeyValue))
+        {
+            JOptionPane.showMessageDialog(null, "Error deleting record: " + pKeyValue + " is referenced in other files");
+            return false;
+        }
+        
+        List<Map<String, String>> existingData = ReadFile(fileName);
+        boolean found = false;
+        List<Map<String, String>> updatedData = new ArrayList<>();
+        
+        for(Map<String, String> row : existingData)
+        {
+            if(!row.get(pKeyField).equals(pKeyValue))
+            {
+                updatedData.add(row);
+            }
+            else
+            {
+                found = true;
+            }
+        }
+        
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(null, "Error: " + pKeyValue + " not found in " + fileName);
+            return false;
+        }
+        
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            List<String> headers = HeaderRegistry.getHeaders(classObj);
+            bw.write(String.join(",", headers));
+            bw.newLine();
+            
+            for(Map<String, String> row : updatedData)
+            {
+                List<String> rowData = new ArrayList<>();
+                for(String header : headers)
+                {
+                    rowData.add(row.getOrDefault(header, ""));
+                }
+                bw.write(String.join(",", rowData));
+                bw.newLine();
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Error deleting from " + fileName);
+            return false;
+        }
+        rearrangePrimaryKeys(className);
+        return true;
+    }
+    
+    private boolean hasDependencies(String className, String pKeyValue)
+    {
+        Class<?> classObj;
+        try
+        {
+            classObj = Class.forName("com.group.apomsproject." + className);
+        }
+        catch(ClassNotFoundException e)
+        {
+            JOptionPane.showMessageDialog(null, "Class not found: " + className);
+            return false;
+        }
+        
+        Map<String, List<String>> dependencies = HeaderRegistry.getDependencies(classObj);
+        
+        for(Map.Entry<String, List<String>> dependency : dependencies.entrySet())
+        {
+            String relatedFile = dependency.getKey();
+            List<String> fKeyFields = dependency.getValue();
+            List<Map<String, String>> relatedData = ReadFile(relatedFile);
+            for(Map<String, String> row : relatedData)
+            {
+                for(String fKeyField : fKeyFields)
+                {
+                    if(row.get(fKeyField).equals(pKeyValue))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    
+    public <T> T getIDFromList(List<T> objects, String enteredID, String idGetter)
+    {
+        try
+        {
+            for(T obj : objects)
+            {
+                Method getID = obj.getClass().getMethod(idGetter);
+                String objID = (String) getID.invoke(obj);
+                if(objID.equals(enteredID))
+                {
+                    return obj;
+                }
+            }
+            return null;
+        }
+        catch(Exception e)
+        {
+            throw new RuntimeException("Error searching user: " + e.getMessage());
+        }
     }
 }
