@@ -73,4 +73,14 @@ public class PurchaseManager extends User{
         PurchaseOrder po = new PurchaseOrder(poid, prid, itemid, quantity, spid, "pending", date, pmid);
         fh.WriteFile(po);
     }
+    
+    public List<PurchaseOrder> recreatePOs()
+    {
+        return fh.recreateObj("PurchaseOrder");
+    }
+    
+    public boolean deleteObject(String className, String ID)
+    {
+        return fh.DeleteRecord(className, ID);
+    }
 }

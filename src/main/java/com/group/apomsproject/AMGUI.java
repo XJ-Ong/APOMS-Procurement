@@ -30,7 +30,7 @@ public class AMGUI extends javax.swing.JFrame {
         }
         
         String[] Users = {"Admin", "SalesManager", "PurchaseManager", "FinanceManager", "InventoryManager"};
-        String[] idGetters = {"getAMID", "getSMID", "getPMID", "getIMID"};
+        String[] idGetters = {"getAMID", "getSMID", "getPMID", "getFMID", "getIMID"};
         
         for(int i = 0; i < Users.length; i++)
         {

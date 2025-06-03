@@ -10,11 +10,18 @@ public class FMGUI extends javax.swing.JFrame {
     private final FinanceManager manager;
     private TableRowSorter<DefaultTableModel> tableSorter;
     private PurchaseOrder currentPO = null;
+    private ImportList currentIL = null;
     
     private void POMODEditable(boolean toggle)
     {
         txtPOIDMod.setEditable(!toggle);
         btnNext.setEnabled(toggle); 
+    }
+    
+    private void ILMODEditable(boolean toggle)
+    {
+        txtILIDMod.setEditable(!toggle);
+        btnPay.setEnabled(toggle); 
     }
 
     /**
@@ -27,6 +34,9 @@ public class FMGUI extends javax.swing.JFrame {
         lblName.setText(manager.getUserName());
         POMODEditable(false);
         txtPOStatusMod.setEditable(false);
+        txtILStatusMod.setEditable(false);
+        ILMODEditable(false);
+        txtFRPay.setEditable(false);
     }
 
     /**
@@ -45,6 +55,7 @@ public class FMGUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         tab = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         POTab = new javax.swing.JTabbedPane();
@@ -79,11 +90,40 @@ public class FMGUI extends javax.swing.JFrame {
         txtILDate = new javax.swing.JTextField();
         txtILID = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        FRTab = new javax.swing.JTabbedPane();
+        jPanel9 = new javax.swing.JPanel();
         txtILSearchField = new javax.swing.JTextField();
         btnSearchIL = new javax.swing.JButton();
         btnShowIL = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblIL = new javax.swing.JTable();
+        jLabel47 = new javax.swing.JLabel();
+        btnILUpdateClear = new javax.swing.JButton();
+        txtILIDMod = new javax.swing.JTextField();
+        btnILUpdateSearchID = new javax.swing.JButton();
+        txtILStatusMod = new javax.swing.JTextField();
+        jLabel48 = new javax.swing.JLabel();
+        btnPay = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel50 = new javax.swing.JLabel();
+        btnPayConfirm = new javax.swing.JButton();
+        txtFRDate = new javax.swing.JTextField();
+        txtFRID = new javax.swing.JTextField();
+        jLabel51 = new javax.swing.JLabel();
+        txtFRPay = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        txtFRSearchField = new javax.swing.JTextField();
+        btnSearchFR = new javax.swing.JButton();
+        btnShowFR = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblFR = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblPR = new javax.swing.JTable();
+        btnShowPR = new javax.swing.JButton();
+        txtPRSearchField = new javax.swing.JTextField();
+        btnSearchPR = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -129,6 +169,16 @@ public class FMGUI extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(0, 0, 0));
+        jButton3.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setText("PR Entry");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -140,7 +190,8 @@ public class FMGUI extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnLogout, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblName, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -163,6 +214,8 @@ public class FMGUI extends javax.swing.JFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(41, 41, 41)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
@@ -264,22 +317,22 @@ public class FMGUI extends javax.swing.JFrame {
                                 .addComponent(txtPOSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSearchPO)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(12, Short.MAX_VALUE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel45)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtPOStatusMod))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel42)
-                                .addGap(18, 18, 18)
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel45))
+                            .addComponent(jLabel42, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(txtPOIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
+                                .addGap(41, 41, 41)
                                 .addComponent(btnPOUpdateSearchID)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnPOUpdateClear)))
+                                .addComponent(btnPOUpdateClear))
+                            .addComponent(txtPOStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(68, 68, 68))))
@@ -295,21 +348,19 @@ public class FMGUI extends javax.swing.JFrame {
                     .addComponent(btnShowPO))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnPOUpdateSearchID)
-                        .addComponent(btnPOUpdateClear))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel42)
-                        .addComponent(txtPOIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPOUpdateSearchID)
+                    .addComponent(btnPOUpdateClear)
+                    .addComponent(txtPOIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel42))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel45)
                         .addComponent(txtPOStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnNext))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         POTab.addTab("View Purchase Order", jPanel4);
@@ -548,37 +599,339 @@ public class FMGUI extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(tblIL);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+        jLabel47.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel47.setText("Import ID");
+
+        btnILUpdateClear.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnILUpdateClear.setText("Clear");
+        btnILUpdateClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnILUpdateClearActionPerformed(evt);
+            }
+        });
+
+        txtILIDMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILIDModActionPerformed(evt);
+            }
+        });
+
+        btnILUpdateSearchID.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnILUpdateSearchID.setText("Search");
+        btnILUpdateSearchID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnILUpdateSearchIDActionPerformed(evt);
+            }
+        });
+
+        txtILStatusMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtILStatusModActionPerformed(evt);
+            }
+        });
+
+        jLabel48.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel48.setText("Status");
+
+        btnPay.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnPay.setText("Make Payment");
+        btnPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
                         .addComponent(btnShowIL)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(152, 152, 152)
                         .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnSearchIL)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(14, 14, 14))
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel47)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtILIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnILUpdateSearchID)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnILUpdateClear))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel48)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtILStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(39, 39, 39)
+                .addComponent(btnPay)
+                .addGap(57, 57, 57))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtILSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnSearchIL))
                     .addComponent(btnShowIL))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnILUpdateSearchID)
+                        .addComponent(btnILUpdateClear))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel47)
+                        .addComponent(txtILIDMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel48)
+                    .addComponent(txtILStatusMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPay))
+                .addContainerGap(47, Short.MAX_VALUE))
+        );
+
+        FRTab.addTab("View Import Lists", jPanel9);
+
+        jLabel49.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel49.setText("Date Created");
+
+        jLabel50.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel50.setText("Financial Report ID");
+
+        btnPayConfirm.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnPayConfirm.setText("Confirm Payment");
+        btnPayConfirm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPayConfirmActionPerformed(evt);
+            }
+        });
+
+        txtFRDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFRDateActionPerformed(evt);
+            }
+        });
+
+        txtFRID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFRIDActionPerformed(evt);
+            }
+        });
+
+        jLabel51.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel51.setText("Total Payment");
+
+        txtFRPay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFRPayActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnPayConfirm)
+                    .addGroup(jPanel10Layout.createSequentialGroup()
+                        .addComponent(jLabel50)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFRID, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel10Layout.createSequentialGroup()
+                            .addComponent(jLabel51)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtFRPay, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                            .addComponent(jLabel49)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtFRDate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel50)
+                    .addComponent(txtFRID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel49)
+                    .addComponent(txtFRDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel51)
+                    .addComponent(txtFRPay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(41, 41, 41)
+                .addComponent(btnPayConfirm)
+                .addContainerGap(184, Short.MAX_VALUE))
+        );
+
+        FRTab.addTab("Make Payment", jPanel10);
+
+        txtFRSearchField.setToolTipText("Enter keyword to search...");
+        txtFRSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFRSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchFR.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchFR.setText("Search");
+        btnSearchFR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchFRActionPerformed(evt);
+            }
+        });
+
+        btnShowFR.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowFR.setText("Load Financial Report");
+        btnShowFR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowFRActionPerformed(evt);
+            }
+        });
+
+        tblFR.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(tblFR);
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel11Layout.createSequentialGroup()
+                        .addComponent(btnShowFR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtFRSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearchFR)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtFRSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchFR))
+                    .addComponent(btnShowFR))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(92, Short.MAX_VALUE))
+        );
+
+        FRTab.addTab("View Financial Report", jPanel11);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(FRTab)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(FRTab)
         );
 
         tab.addTab("tab2", jPanel3);
+
+        tblPR.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tblPR);
+
+        btnShowPR.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnShowPR.setText("Load Purchase Requisition");
+        btnShowPR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowPRActionPerformed(evt);
+            }
+        });
+
+        txtPRSearchField.setToolTipText("Enter keyword to search...");
+        txtPRSearchField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPRSearchFieldActionPerformed(evt);
+            }
+        });
+
+        btnSearchPR.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnSearchPR.setText("Search");
+        btnSearchPR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchPRActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 609, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(btnShowPR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtPRSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearchPR)))
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPRSearchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearchPR))
+                    .addComponent(btnShowPR))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        tab.addTab("tab3", jPanel8);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -773,6 +1126,48 @@ public class FMGUI extends javax.swing.JFrame {
         tab.setSelectedIndex(1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        tab.setSelectedIndex(2);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnShowPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowPRActionPerformed
+        DefaultTableModel model = manager.viewTable("PurchaseRequisition");
+        tblPR.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblPR.getModel());
+        tblPR.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowPRActionPerformed
+
+    private void txtPRSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPRSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPRSearchFieldActionPerformed
+
+    private void btnSearchPRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPRActionPerformed
+        String keyword = txtPRSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblPR.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchPRActionPerformed
+
     private void txtILSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILSearchFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtILSearchFieldActionPerformed
@@ -811,6 +1206,143 @@ public class FMGUI extends javax.swing.JFrame {
         tblIL.setRowSorter(tableSorter);
     }//GEN-LAST:event_btnShowILActionPerformed
 
+    private void btnILUpdateClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnILUpdateClearActionPerformed
+        txtILIDMod.setText("");
+        txtILStatusMod.setText("");
+        ILMODEditable(false);
+        currentIL = null;
+    }//GEN-LAST:event_btnILUpdateClearActionPerformed
+
+    private void txtILIDModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILIDModActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILIDModActionPerformed
+
+    private void btnILUpdateSearchIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnILUpdateSearchIDActionPerformed
+        String id = txtILIDMod.getText().trim();
+        boolean found = false;
+
+        List<ImportList> ils = manager.recreateILs();
+        for(ImportList il : ils)
+        {
+            if(id.equals(il.getILID()))
+            {
+                currentIL = il;
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(this, "Import " + id + " not found");
+        }
+        else
+        {
+            txtILStatusMod.setText(currentIL.getStatus());
+            ILMODEditable(true);
+        }
+    }//GEN-LAST:event_btnILUpdateSearchIDActionPerformed
+
+    private void txtILStatusModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtILStatusModActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtILStatusModActionPerformed
+
+    private void btnPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayActionPerformed
+        if(txtILStatusMod.getText().trim().equals("imported"))
+        {
+            FRTab.setSelectedIndex(1);
+            ItemSupplierMap targetMap = new ItemSupplierMap("1", "1", "1", 1.1);
+            List<ItemSupplierMap> maps = manager.recreateISMs();
+            for(ItemSupplierMap map : maps)
+            {
+                if(map.getItemID().equals(currentIL.getItemID()) && map.getSupplierID().equals(currentIL.getSupplierID()))
+                {
+                    targetMap = map;
+                }
+            }
+            
+            double payAmount = currentIL.getReceivedQuantity() * targetMap.getImportPrice();
+            txtFRPay.setText(String.valueOf(payAmount));
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Items have not yet been imported");
+        }
+    }//GEN-LAST:event_btnPayActionPerformed
+
+    private void btnPayConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPayConfirmActionPerformed
+        manager.addFR
+        (
+                txtFRID.getText().trim(),
+                currentIL.getILID().trim(),
+                currentIL.getItemID().trim(),
+                currentIL.getSupplierID().trim(),
+                Double.parseDouble(txtFRPay.getText().trim()),
+                txtFRDate.getText().trim(),
+                manager.getFMID()
+        );
+        
+        txtFRID.setText("");
+        txtFRDate.setText("");
+        txtFRPay.setText("");
+        txtILIDMod.setText("");
+        txtILStatusMod.setText("");
+        ILMODEditable(false);
+        currentIL.setStatus("paid");
+        manager.updateObject(currentIL, currentIL.getILID());
+        currentIL = null;
+    }//GEN-LAST:event_btnPayConfirmActionPerformed
+
+    private void txtFRDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFRDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFRDateActionPerformed
+
+    private void txtFRIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFRIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFRIDActionPerformed
+
+    private void txtFRPayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFRPayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFRPayActionPerformed
+
+    private void txtFRSearchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFRSearchFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFRSearchFieldActionPerformed
+
+    private void btnSearchFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchFRActionPerformed
+        String keyword = txtFRSearchField.getText().trim();
+
+        if(keyword.isEmpty())
+        {
+            tableSorter.setRowFilter(null);
+        }
+        else
+        {
+            try
+            {
+                RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + keyword);
+                tableSorter.setRowFilter(filter);
+
+                if(tblFR.getRowCount() == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "No matches found for: " + keyword);
+                }
+            }
+            catch(Exception e)
+            {
+                tableSorter.setRowFilter(null);
+                JOptionPane.showMessageDialog(this, "Invalid search keyword: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnSearchFRActionPerformed
+
+    private void btnShowFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowFRActionPerformed
+        DefaultTableModel model = manager.viewTable("FinancialReport");
+        tblFR.setModel(model);
+        tableSorter = new TableRowSorter((DefaultTableModel) tblFR.getModel());
+        tblFR.setRowSorter(tableSorter);
+    }//GEN-LAST:event_btnShowFRActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -847,21 +1379,31 @@ public class FMGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane FRTab;
     private javax.swing.JTabbedPane POTab;
     private javax.swing.JButton btnAddIL;
     private javax.swing.JButton btnChange;
     private javax.swing.JButton btnChooseSp;
+    private javax.swing.JButton btnILUpdateClear;
+    private javax.swing.JButton btnILUpdateSearchID;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnNext;
     private javax.swing.JButton btnPOUpdateClear;
     private javax.swing.JButton btnPOUpdateSearchID;
+    private javax.swing.JButton btnPay;
+    private javax.swing.JButton btnPayConfirm;
     private javax.swing.JButton btnReject;
+    private javax.swing.JButton btnSearchFR;
     private javax.swing.JButton btnSearchIL;
     private javax.swing.JButton btnSearchPO;
+    private javax.swing.JButton btnSearchPR;
+    private javax.swing.JButton btnShowFR;
     private javax.swing.JButton btnShowIL;
     private javax.swing.JButton btnShowPO;
+    private javax.swing.JButton btnShowPR;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel41;
@@ -870,28 +1412,48 @@ public class FMGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JLabel lblItemID;
     private javax.swing.JLabel lblName;
     private javax.swing.JTabbedPane tab;
+    private javax.swing.JTable tblFR;
     private javax.swing.JTable tblIL;
     private javax.swing.JTable tblISM;
     private javax.swing.JTable tblPO;
+    private javax.swing.JTable tblPR;
+    private javax.swing.JTextField txtFRDate;
+    private javax.swing.JTextField txtFRID;
+    private javax.swing.JTextField txtFRPay;
+    private javax.swing.JTextField txtFRSearchField;
     private javax.swing.JTextField txtILDate;
     private javax.swing.JTextField txtILID;
+    private javax.swing.JTextField txtILIDMod;
     private javax.swing.JTextField txtILSearchField;
+    private javax.swing.JTextField txtILStatusMod;
     private javax.swing.JTextField txtPOIDMod;
     private javax.swing.JTextField txtPOSearchField;
     private javax.swing.JTextField txtPOSp;
     private javax.swing.JTextField txtPOStatusMod;
+    private javax.swing.JTextField txtPRSearchField;
     // End of variables declaration//GEN-END:variables
 }

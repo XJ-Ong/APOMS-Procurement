@@ -75,4 +75,20 @@ public class FinanceManager extends User{
         ImportList il = new ImportList(ilid, poid, itemid, spid, quantity, "pending", date, fmid);
         fh.WriteFile(il);
     }
+    
+    public List<ImportList> recreateILs()
+    {
+        return fh.recreateObj("ImportList");
+    }
+    
+    public List<ItemSupplierMap> recreateISMs()
+    {
+        return fh.recreateObj("ItemSupplierMap");
+    }
+    
+    public void addFR(String frid, String ilid, String itemid, String spid, double pay, String date, String fmid)
+    {
+        FinancialReport fr = new FinancialReport(frid, ilid, itemid, spid, pay, date, fmid);
+        fh.WriteFile(fr);
+    }
 }
