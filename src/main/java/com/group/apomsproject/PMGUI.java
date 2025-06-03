@@ -24,7 +24,7 @@ public class PMGUI extends javax.swing.JFrame {
         txtPOSupplierIDUpdate.setEditable(toggle);
         txtPODateUpdate.setEditable(toggle);
         btnPOUpdate.setEnabled(toggle);
-        btnPOUpdate.setEnabled(toggle);
+        btnPODel.setEnabled(toggle);
         txtPOIDUpdate.setEditable(!toggle);
     }
     /**
