@@ -112,6 +112,6 @@ public class Admin extends User{
     
     public <T> List<T> recreateUsers(String userType)
     {
-        return fh.recreateObj(userName);
+        return fh.recreateObj(userType);
     }
 }
