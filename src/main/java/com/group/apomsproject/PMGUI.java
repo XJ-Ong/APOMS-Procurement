@@ -18,6 +18,15 @@ public class PMGUI extends javax.swing.JFrame {
         btnApprove.setEnabled(toggle);
         btnReject.setEnabled(toggle);        
     }
+    
+    private void POEditable(boolean toggle)
+    {
+        txtPOSupplierIDUpdate.setEditable(toggle);
+        txtPODateUpdate.setEditable(toggle);
+        btnPOUpdate.setEnabled(toggle);
+        btnPOUpdate.setEnabled(toggle);
+        txtPOIDUpdate.setEditable(!toggle);
+    }
     /**
      * Creates new form PMGUI
      * @param manager
@@ -28,6 +37,12 @@ public class PMGUI extends javax.swing.JFrame {
         lblName.setText(manager.getUserName());
         PRMODEditable(false);
         txtPRStatusMod.setEditable(false);
+        POEditable(false);
+        txtPRIDUpdate.setEditable(false);
+        txtPOItemIDUpdate.setEditable(false);
+        txtPOQuantityUpdate.setEditable(false);
+        txtPOStatus.setEditable(false);
+        txtPMID.setEditable(false);
     }
 
     /**
@@ -41,6 +56,8 @@ public class PMGUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        jTextField1 = new javax.swing.JTextField();
+        jOptionPane1 = new javax.swing.JOptionPane();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         lblName = new javax.swing.JLabel();
@@ -86,6 +103,27 @@ public class PMGUI extends javax.swing.JFrame {
         btnShowPO = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblPO = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel47 = new javax.swing.JLabel();
+        txtPOStatus = new javax.swing.JTextField();
+        txtPMID = new javax.swing.JTextField();
+        txtPOQuantityUpdate = new javax.swing.JTextField();
+        jLabel48 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        btnPODel = new javax.swing.JButton();
+        jLabel50 = new javax.swing.JLabel();
+        btnPOUpdate = new javax.swing.JButton();
+        txtPODateUpdate = new javax.swing.JTextField();
+        btnPOUpdateClear = new javax.swing.JButton();
+        txtPOIDUpdate = new javax.swing.JTextField();
+        btnPOUpdateSearchID = new javax.swing.JButton();
+        jLabel51 = new javax.swing.JLabel();
+        txtPOItemIDUpdate = new javax.swing.JTextField();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        txtPRIDUpdate = new javax.swing.JTextField();
+        jLabel54 = new javax.swing.JLabel();
+        txtPOSupplierIDUpdate = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnShowItemBR = new javax.swing.JButton();
         btnShowItem = new javax.swing.JButton();
@@ -105,6 +143,8 @@ public class PMGUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItem2.setSelected(true);
         jCheckBoxMenuItem2.setText("jCheckBoxMenuItem2");
+
+        jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -563,6 +603,208 @@ public class PMGUI extends javax.swing.JFrame {
         );
 
         POTab.addTab("View PO", jPanel8);
+
+        jLabel47.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel47.setText("Status");
+
+        txtPOStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOStatusActionPerformed(evt);
+            }
+        });
+
+        txtPMID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPMIDActionPerformed(evt);
+            }
+        });
+
+        txtPOQuantityUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOQuantityUpdateActionPerformed(evt);
+            }
+        });
+
+        jLabel48.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel48.setText("Created By");
+
+        jLabel49.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel49.setText("Date Created");
+
+        btnPODel.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnPODel.setText("Delete");
+        btnPODel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPODelActionPerformed(evt);
+            }
+        });
+
+        jLabel50.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel50.setText("PO ID");
+
+        btnPOUpdate.setFont(new java.awt.Font("Serif", 1, 24)); // NOI18N
+        btnPOUpdate.setText("Update");
+        btnPOUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPOUpdateActionPerformed(evt);
+            }
+        });
+
+        txtPODateUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPODateUpdateActionPerformed(evt);
+            }
+        });
+
+        btnPOUpdateClear.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnPOUpdateClear.setText("Clear");
+        btnPOUpdateClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPOUpdateClearActionPerformed(evt);
+            }
+        });
+
+        txtPOIDUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOIDUpdateActionPerformed(evt);
+            }
+        });
+
+        btnPOUpdateSearchID.setFont(new java.awt.Font("Segoe UI Semilight", 0, 14)); // NOI18N
+        btnPOUpdateSearchID.setText("Search");
+        btnPOUpdateSearchID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPOUpdateSearchIDActionPerformed(evt);
+            }
+        });
+
+        jLabel51.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel51.setText("Item ID");
+
+        txtPOItemIDUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOItemIDUpdateActionPerformed(evt);
+            }
+        });
+
+        jLabel52.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel52.setText("Quantity");
+
+        jLabel53.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel53.setText("PR ID");
+
+        txtPRIDUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPRIDUpdateActionPerformed(evt);
+            }
+        });
+
+        jLabel54.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel54.setText("Supplier ID");
+
+        txtPOSupplierIDUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPOSupplierIDUpdateActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel54)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPOSupplierIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(btnPOUpdate)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnPODel))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel48)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPMID, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel47)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPOStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel49)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPODateUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel52)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPOQuantityUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel51)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtPOItemIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jLabel53)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtPRIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel9Layout.createSequentialGroup()
+                            .addComponent(jLabel50)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtPOIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(39, 39, 39)
+                            .addComponent(btnPOUpdateSearchID)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnPOUpdateClear))))
+                .addContainerGap(110, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnPOUpdateSearchID)
+                        .addComponent(btnPOUpdateClear))
+                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel50)
+                        .addComponent(txtPOIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(30, 30, 30)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel53)
+                    .addComponent(txtPRIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel51)
+                    .addComponent(txtPOItemIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel54)
+                    .addComponent(txtPOSupplierIDUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel52)
+                    .addComponent(txtPOQuantityUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel47)
+                    .addComponent(txtPOStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel49)
+                    .addComponent(txtPODateUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel48)
+                    .addComponent(txtPMID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPODel)
+                    .addComponent(btnPOUpdate))
+                .addGap(36, 36, 36))
+        );
+
+        POTab.addTab("Update PO", jPanel9);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -1084,6 +1326,137 @@ public class PMGUI extends javax.swing.JFrame {
         tblSp.setRowSorter(tableSorter);
     }//GEN-LAST:event_btnShowSpActionPerformed
 
+    private void txtPOStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOStatusActionPerformed
+
+    private void txtPMIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPMIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPMIDActionPerformed
+
+    private void txtPOQuantityUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOQuantityUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOQuantityUpdateActionPerformed
+
+    private void btnPODelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPODelActionPerformed
+        if(manager.deleteObject("PurchaseOrder", txtPOIDUpdate.getText().trim()))
+        {
+            JOptionPane.showMessageDialog(this, "PO Deleted");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "PO Deletion failed");
+        }
+
+        txtPOIDUpdate.setText("");
+        txtPRIDUpdate.setText("");
+        txtPOItemIDUpdate.setText("");
+        txtPOSupplierIDUpdate.setText("");
+        txtPOQuantityUpdate.setText("");
+        txtPOStatus.setText("");
+        txtPODateUpdate.setText("");
+        txtPMID.setText("");
+        POEditable(false);
+    }//GEN-LAST:event_btnPODelActionPerformed
+
+    private void btnPOUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOUpdateActionPerformed
+        if(txtPOStatus.getText().trim().equals("pending"))
+        {
+            PurchaseOrder po = new PurchaseOrder
+            (
+                txtPOIDUpdate.getText().trim(),
+                txtPRIDUpdate.getText().trim(),
+                txtPOItemIDUpdate.getText().trim(),
+                Integer.parseInt(txtPOQuantityUpdate.getText().trim()),
+                txtPOSupplierIDUpdate.getText().trim(),
+                txtPOStatus.getText().trim(),
+                txtPODateUpdate.getText().trim(),
+                manager.getPMID()
+            );
+
+            manager.updateObject(po, txtPOIDUpdate.getText());
+            JOptionPane.showMessageDialog(this, "PO Updated");
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "PO is not in pending state");
+        }
+        txtPOIDUpdate.setText("");
+        txtPRIDUpdate.setText("");
+        txtPOItemIDUpdate.setText("");
+        txtPOSupplierIDUpdate.setText("");
+        txtPOQuantityUpdate.setText("");
+        txtPOStatus.setText("");
+        txtPODateUpdate.setText("");
+        txtPMID.setText("");
+        POEditable(false);
+    }//GEN-LAST:event_btnPOUpdateActionPerformed
+
+    private void txtPODateUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPODateUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPODateUpdateActionPerformed
+
+    private void btnPOUpdateClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOUpdateClearActionPerformed
+        txtPOIDUpdate.setText("");
+        txtPRIDUpdate.setText("");
+        txtPOItemIDUpdate.setText("");
+        txtPOSupplierIDUpdate.setText("");
+        txtPOQuantityUpdate.setText("");
+        txtPOStatus.setText("");
+        txtPODateUpdate.setText("");
+        txtPMID.setText("");
+        POEditable(false);
+    }//GEN-LAST:event_btnPOUpdateClearActionPerformed
+
+    private void txtPOIDUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOIDUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOIDUpdateActionPerformed
+
+    private void btnPOUpdateSearchIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPOUpdateSearchIDActionPerformed
+        String id = txtPOIDUpdate.getText().trim();
+        PurchaseOrder targetPO = new PurchaseOrder("1","1","1",1,"1","1","1","1");
+        boolean found = false;
+
+        List<PurchaseOrder> pos = manager.recreatePOs();
+        for(PurchaseOrder po : pos)
+        {
+            if(id.equals(po.getPOID()))
+            {
+                targetPO = po;
+                found = true;
+                break;
+            }
+        }
+
+        if(!found)
+        {
+            JOptionPane.showMessageDialog(this, "Purchase Order " + id + " not found");
+        }
+        else
+        {
+            txtPRIDUpdate.setText(targetPO.getPRID());
+            txtPOItemIDUpdate.setText(targetPO.getItemID());
+            txtPOSupplierIDUpdate.setText(targetPO.getSupplierID());
+            txtPOQuantityUpdate.setText(String.valueOf(targetPO.getOrderQuantity()));
+            txtPOStatus.setText(targetPO.getStatus());
+            txtPODateUpdate.setText(targetPO.getDateCreated());
+            txtPMID.setText(targetPO.getPMID());
+            POEditable(true);
+        }
+    }//GEN-LAST:event_btnPOUpdateSearchIDActionPerformed
+
+    private void txtPOItemIDUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOItemIDUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOItemIDUpdateActionPerformed
+
+    private void txtPRIDUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPRIDUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPRIDUpdateActionPerformed
+
+    private void txtPOSupplierIDUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPOSupplierIDUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPOSupplierIDUpdateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1125,6 +1498,10 @@ public class PMGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnApprove;
     private javax.swing.JButton btnChooseSp;
     private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnPODel;
+    private javax.swing.JButton btnPOUpdate;
+    private javax.swing.JButton btnPOUpdateClear;
+    private javax.swing.JButton btnPOUpdateSearchID;
     private javax.swing.JButton btnPRUpdateClear;
     private javax.swing.JButton btnPRUpdateSearchID;
     private javax.swing.JButton btnReject;
@@ -1150,6 +1527,15 @@ public class PMGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1158,11 +1544,13 @@ public class PMGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblItemID;
     private javax.swing.JLabel lblName;
     private javax.swing.JTabbedPane tab;
@@ -1172,11 +1560,19 @@ public class PMGUI extends javax.swing.JFrame {
     private javax.swing.JTable tblPR;
     private javax.swing.JTable tblSp;
     private javax.swing.JTextField txtItemSearchField;
+    private javax.swing.JTextField txtPMID;
     private javax.swing.JTextField txtPODate;
+    private javax.swing.JTextField txtPODateUpdate;
     private javax.swing.JTextField txtPOID;
+    private javax.swing.JTextField txtPOIDUpdate;
+    private javax.swing.JTextField txtPOItemIDUpdate;
+    private javax.swing.JTextField txtPOQuantityUpdate;
     private javax.swing.JTextField txtPOSearchField;
     private javax.swing.JTextField txtPOSp;
+    private javax.swing.JTextField txtPOStatus;
+    private javax.swing.JTextField txtPOSupplierIDUpdate;
     private javax.swing.JTextField txtPRIDMod;
+    private javax.swing.JTextField txtPRIDUpdate;
     private javax.swing.JTextField txtPRSearchField;
     private javax.swing.JTextField txtPRStatusMod;
     private javax.swing.JTextField txtSpSearchField;

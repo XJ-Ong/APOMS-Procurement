@@ -1,1 +1,5 @@
 itemID,itemName,price,quantity,ROL
+ITM01,item1,10.0,5,10
+ITM02,item2,20.0,15,20
+ITM03,item3,30.0,25,30
+ITM04,item4,40.0,50,40
