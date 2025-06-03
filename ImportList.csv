@@ -1,3 +1,1 @@
 ILID,POID,itemID,supplierID,receivedQuantity,status,dateCreated,FMID
-IL01,PO01,ITM01,SP01,50,pending,3/6/2025,F01
-IL02,PO02,ITM02,SP01,50,pending,3/6/2025,F01
